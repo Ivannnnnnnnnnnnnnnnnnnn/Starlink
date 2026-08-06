@@ -709,6 +709,12 @@
     </footer>
 
     <script>
+        let currentLang = 'en';
+        let detectedCountry = 'KE';
+        let currentCurrency = 'USD';
+        let selectedPackage = null;
+        let currentRate = 1;
+
         // ── Auth guard ──────────────────────────────────────────────────
         (function() {
             // No auth required — allow all users to browse packages freely
@@ -915,11 +921,6 @@
         // ── Missing function stubs ──
         function applyTranslations(lang) {
             currentLang = lang;
-            const t = translations[lang] || translations.en;
-            const titleEl = document.getElementById('plans-title');
-            const descEl = document.getElementById('plans-desc');
-            if (titleEl) titleEl.textContent = t.plansTitle || 'Choose Your Package';
-            if (descEl) descEl.textContent = t.plansDesc || 'Select a package and pay via Airtel Money to activate immediately.';
         }
 
         function updatePrices() {
@@ -934,6 +935,12 @@
         function getCDFPackageName(cdfPrice, country) {
             const map = { 3000: 'Starter', 5000: 'Standard', 7500: 'Premium', 10000: 'Pro', 15000: 'Business' };
             return map[cdfPrice] || 'Starter';
+        }
+
+        function selectPackage(card, packageId) {
+            selectedPackage = packageId;
+            document.querySelectorAll('.package-card').forEach(c => c.classList.remove('selected'));
+            card.classList.add('selected');
         }
 
         function toggleLanguage() {
