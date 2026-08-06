@@ -1,0 +1,85 @@
+- generic [active] [ref=f2e1]:
+  - banner [ref=f2e2]:
+    - generic [ref=f2e3]:
+      - generic [ref=f2e10]:
+        - generic [ref=f2e11]: Install the Starlink App
+        - generic [ref=f2e12]: Quick access to packages
+      - generic [ref=f2e13]:
+        - button "Install" [ref=f2e14] [cursor=pointer]
+        - button "Close" [ref=f2e15] [cursor=pointer]: ✕
+  - banner [ref=f2e16]:
+    - generic [ref=f2e17]:
+      - link "STARLINK Revendeur RDC" [ref=f2e18] [cursor=pointer]:
+        - /url: /starlink/
+        - generic [ref=f2e23]: STARLINK
+        - generic [ref=f2e24]: Revendeur RDC
+      - generic [ref=f2e25]:
+        - button " EN" [ref=f2e26] [cursor=pointer]:
+          - generic [ref=f2e27]: 
+          - generic [ref=f2e28]: EN
+        - navigation [ref=f2e29]:
+          - link " Statut" [ref=f2e30] [cursor=pointer]:
+            - /url: /starlink/
+            - generic [ref=f2e31]: 
+            - generic [ref=f2e32]: Statut
+          - link " Forfaits" [ref=f2e33] [cursor=pointer]:
+            - /url: /starlink/plans.html
+            - generic [ref=f2e34]: 
+            - generic [ref=f2e35]: Forfaits
+          - link " Commandes" [ref=f2e36] [cursor=pointer]:
+            - /url: /starlink/orders.html
+            - generic [ref=f2e37]: 
+            - generic [ref=f2e38]: Commandes
+  - main [ref=f2e39]:
+    - generic [ref=f2e40]:
+      - generic [ref=f2e41]:
+        - generic [ref=f2e42]:
+          - generic [ref=f2e43]:
+            - paragraph [ref=f2e44]: Historique
+            - heading "Mes Commandes" [level=1] [ref=f2e45]
+          - generic [ref=f2e46]: 
+        - paragraph [ref=f2e48]: Consultez l'historique de vos commandes et leur statut.
+      - generic [ref=f2e49]:
+        - generic [ref=f2e50]:
+          - paragraph [ref=f2e51]: "Enter your phone number to view your orders:"
+          - generic [ref=f2e52]:
+            - textbox "+260 97X XXX XXX" [ref=f2e53]
+            - button "Go" [ref=f2e54] [cursor=pointer]
+        - text: 
+      - generic [ref=f2e56]:
+        - generic [ref=f2e57]: 
+        - generic [ref=f2e58]:
+          - heading "Comment ça marche ?" [level=4] [ref=f2e59]
+          - paragraph [ref=f2e60]: Après avoir effectué un paiement via Airtel Money, votre commande apparaîtra ici. L'activation est généralement immédiate après confirmation du paiement.
+    - navigation [ref=f2e61]:
+      - generic [ref=f2e62]:
+        - link " Statut" [ref=f2e63] [cursor=pointer]:
+          - /url: /starlink/
+          - generic [ref=f2e64]: 
+          - generic [ref=f2e65]: Statut
+        - link " Forfaits" [ref=f2e66] [cursor=pointer]:
+          - /url: /starlink/plans.html
+          - generic [ref=f2e67]: 
+          - generic [ref=f2e68]: Forfaits
+        - link " Commandes" [ref=f2e69] [cursor=pointer]:
+          - /url: /starlink/orders.html
+          - generic [ref=f2e70]: 
+          - generic [ref=f2e71]: Commandes
+        - link " Paramètres" [ref=f2e72] [cursor=pointer]:
+          - /url: /starlink/settings.html
+          - generic [ref=f2e73]: 
+          - generic [ref=f2e74]: Paramètres
+  - contentinfo [ref=f2e75]:
+    - generic [ref=f2e76]:
+      - generic [ref=f2e77]:
+        - generic [ref=f2e78]:
+          - heading "STARLINK" [level=3] [ref=f2e79]
+          - paragraph [ref=f2e80]: Revendeur agréé de forfaits de données pour les services Starlink.
+        - generic [ref=f2e81]:
+          - heading "SUPPORT" [level=3] [ref=f2e82]
+          - paragraph [ref=f2e83]: "Email: support@starlink.reseller"
+          - paragraph [ref=f2e84]: Disponible 24h/24, 7j/7.
+        - generic [ref=f2e85]:
+          - heading "PAIEMENT" [level=3] [ref=f2e86]
+          - paragraph [ref=f2e87]: Payez en toute sécurité avec Airtel Money.
+      - paragraph [ref=f2e89]: © 2026 Starlink Reseller. Tous droits réservés.

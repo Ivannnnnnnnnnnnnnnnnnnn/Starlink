@@ -1,0 +1,30 @@
+- generic [ref=f6e3]:
+  - generic [ref=f6e4]: airtel
+  - generic [ref=f6e6]:
+    - heading "LOGIN TO AIRTEL LITE" [level=1] [ref=f6e7]
+    - generic [ref=f6e9]:
+      - generic [ref=f6e10] [cursor=pointer]: ▼
+      - textbox "Enter Mobile Number" [ref=f6e13]
+    - generic [ref=f6e14]:
+      - paragraph [ref=f6e15]: Enter the 4-digit PIN code
+      - paragraph [ref=f6e16]: Enter airtel money pin
+      - generic [ref=f6e17]:
+        - textbox [ref=f6e18]
+        - textbox [ref=f6e19]
+        - textbox [ref=f6e20]
+        - textbox [ref=f6e21]
+    - button "SEND OTP" [disabled] [ref=f6e22]
+    - generic [ref=f6e23]:
+      - text: Forgot your number?
+      - link "Click Here!" [ref=f6e24] [cursor=pointer]:
+        - /url: "#"
+    - generic [ref=f6e25]: OR
+    - button "CONTINUE WITHOUT LOGIN" [ref=f6e29] [cursor=pointer]
+  - generic [ref=f6e30]:
+    - paragraph [ref=f6e31]: Best experienced in
+    - generic [ref=f6e32]:
+      - img "Chrome" [ref=f6e33]
+      - img "Firefox" [ref=f6e34]
+      - img "Safari" [ref=f6e35]
+      - img "Edge" [ref=f6e36]
+      - img "Opera" [ref=f6e37]

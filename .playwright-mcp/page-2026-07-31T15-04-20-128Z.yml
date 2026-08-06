@@ -1,0 +1,109 @@
+- generic [active] [ref=f11e1]:
+  - banner [ref=f11e2]:
+    - generic [ref=f11e3]:
+      - generic [ref=f11e10]:
+        - generic [ref=f11e11]: Install the Starlink App
+        - generic [ref=f11e12]: Quick access to packages
+      - generic [ref=f11e13]:
+        - button "Install" [ref=f11e14] [cursor=pointer]
+        - button "Close" [ref=f11e15] [cursor=pointer]: ✕
+  - banner [ref=f11e16]:
+    - generic [ref=f11e17]:
+      - link "STARLINK Reseller Kenya" [ref=f11e18] [cursor=pointer]:
+        - /url: /starlink/
+        - generic [ref=f11e23]: STARLINK
+        - generic [ref=f11e24]: Reseller Kenya
+      - generic [ref=f11e25]:
+        - button " MY" [ref=f11e26] [cursor=pointer]:
+          - generic [ref=f11e27]: 
+          - generic [ref=f11e28]: MY
+        - navigation [ref=f11e29]:
+          - link " Status" [ref=f11e30] [cursor=pointer]:
+            - /url: /starlink/
+            - generic [ref=f11e31]: 
+            - generic [ref=f11e32]: Status
+          - link " Packages" [ref=f11e33] [cursor=pointer]:
+            - /url: /starlink/plans.html
+            - generic [ref=f11e34]: 
+            - generic [ref=f11e35]: Packages
+          - link " Orders" [ref=f11e36] [cursor=pointer]:
+            - /url: /starlink/orders.html
+            - generic [ref=f11e37]: 
+            - generic [ref=f11e38]: Orders
+          - link "Sign up" [ref=f11e40] [cursor=pointer]:
+            - /url: /starlink/register.html
+  - main [ref=f11e41]:
+    - generic [ref=f11e42]:
+      - button " Choose Your Package" [ref=f11e44] [cursor=pointer]:
+        - generic [ref=f11e45]: 
+        - generic [ref=f11e46]: Choose Your Package
+      - generic [ref=f11e47]:
+        - generic [ref=f11e49]:
+          - paragraph [ref=f11e50]: Service Information
+          - heading "Starlink Kenya" [level=1] [ref=f11e51]
+        - paragraph [ref=f11e53]: Select a package to activate high-speed satellite internet.
+      - generic [ref=f11e54]:
+        - generic [ref=f11e55]:
+          - generic [ref=f11e56]:
+            - paragraph [ref=f11e57]: Download
+            - generic [ref=f11e58]: 
+          - paragraph [ref=f11e59]: "190.70"
+          - paragraph [ref=f11e60]: Mbps
+        - generic [ref=f11e61]:
+          - generic [ref=f11e62]:
+            - paragraph [ref=f11e63]: Upload
+            - generic [ref=f11e64]: 
+          - paragraph [ref=f11e65]: "31.07"
+          - paragraph [ref=f11e66]: Mbps
+        - generic [ref=f11e67]:
+          - paragraph [ref=f11e69]: PING
+          - paragraph [ref=f11e70]: "38"
+          - paragraph [ref=f11e71]: ms
+        - generic [ref=f11e72]:
+          - paragraph [ref=f11e74]: JITTER
+          - paragraph [ref=f11e75]: "7"
+          - paragraph [ref=f11e76]: ms
+      - generic [ref=f11e77]:
+        - generic [ref=f11e78]:
+          - generic [ref=f11e79]:
+            - generic [ref=f11e80]: 
+            - heading "Data Usage" [level=3] [ref=f11e81]
+          - generic [ref=f11e82]: 28%
+        - generic [ref=f11e85]:
+          - generic [ref=f11e86]: 28.2 GB
+          - generic [ref=f11e87]: 100 GB
+      - button " Launch Diagnostic Test" [ref=f11e89] [cursor=pointer]:
+        - generic [ref=f11e90]: 
+        - generic [ref=f11e91]: Launch Diagnostic Test
+    - navigation [ref=f11e92]:
+      - generic [ref=f11e93]:
+        - link " Status" [ref=f11e94] [cursor=pointer]:
+          - /url: /starlink/
+          - generic [ref=f11e95]: 
+          - generic [ref=f11e96]: Status
+        - link " Packages" [ref=f11e97] [cursor=pointer]:
+          - /url: /starlink/plans.html
+          - generic [ref=f11e98]: 
+          - generic [ref=f11e99]: Packages
+        - link " Orders" [ref=f11e100] [cursor=pointer]:
+          - /url: /starlink/orders.html
+          - generic [ref=f11e101]: 
+          - generic [ref=f11e102]: Orders
+        - link " Settings" [ref=f11e103] [cursor=pointer]:
+          - /url: /starlink/settings.html
+          - generic [ref=f11e104]: 
+          - generic [ref=f11e105]: Settings
+  - contentinfo [ref=f11e106]:
+    - generic [ref=f11e107]:
+      - generic [ref=f11e108]:
+        - generic [ref=f11e109]:
+          - heading "STARLINK Kenya" [level=3] [ref=f11e110]
+          - paragraph [ref=f11e111]: Authorized reseller of data packages for Starlink services. Fast, reliable and secure payments via Airtel Money.
+        - generic [ref=f11e112]:
+          - heading "SUPPORT" [level=3] [ref=f11e113]
+          - paragraph [ref=f11e114]: "Email: support@starlink.reseller"
+          - paragraph [ref=f11e115]: Available 24/7 for technical support.
+        - generic [ref=f11e116]:
+          - heading "PAIEMENT" [level=3] [ref=f11e117]
+          - paragraph [ref=f11e118]: Pay securely with Airtel Money. Make sure you have sufficient balance for the selected package.
+      - paragraph [ref=f11e120]: © 2026 Starlink Reseller. All rights reserved.

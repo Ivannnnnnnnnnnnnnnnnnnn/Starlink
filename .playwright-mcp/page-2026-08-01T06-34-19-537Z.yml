@@ -1,0 +1,111 @@
+- generic [active] [ref=f5e1]:
+  - generic [ref=f5e3]:
+    - generic [ref=f5e4]:
+      - generic [ref=f5e5]: Install the Starlink App
+      - generic [ref=f5e6]: Quick access to packages
+    - generic [ref=f5e7]:
+      - button "Install" [ref=f5e8] [cursor=pointer]
+      - button "✕" [ref=f5e9] [cursor=pointer]
+  - banner [ref=f5e10]:
+    - generic [ref=f5e11]:
+      - link "STARLINK Reseller Kenya" [ref=f5e12] [cursor=pointer]:
+        - /url: /starlink/
+        - generic [ref=f5e17]: STARLINK
+        - generic [ref=f5e18]: Reseller Kenya
+      - generic [ref=f5e19]:
+        - button " EN" [ref=f5e20] [cursor=pointer]:
+          - generic [ref=f5e21]: 
+          - generic [ref=f5e22]: EN
+        - navigation [ref=f5e23]:
+          - link " Status" [ref=f5e24] [cursor=pointer]:
+            - /url: /starlink/
+            - generic [ref=f5e25]: 
+            - generic [ref=f5e26]: Status
+          - link " Packages" [ref=f5e27] [cursor=pointer]:
+            - /url: /starlink/plans.html
+            - generic [ref=f5e28]: 
+            - generic [ref=f5e29]: Packages
+          - link " Orders" [ref=f5e30] [cursor=pointer]:
+            - /url: /starlink/orders.html
+            - generic [ref=f5e31]: 
+            - generic [ref=f5e32]: Orders
+          - link " Sign up" [ref=f5e33] [cursor=pointer]:
+            - /url: /starlink/register.html
+            - generic [ref=f5e34]: 
+            - generic [ref=f5e35]: Sign up
+  - main [ref=f5e36]:
+    - generic [ref=f5e37]:
+      - button " Choisissez Votre Forfait" [ref=f5e38] [cursor=pointer]:
+        - generic [ref=f5e39]: 
+        - generic [ref=f5e40]: Choisissez Votre Forfait
+      - generic [ref=f5e41]:
+        - generic [ref=f5e43]:
+          - paragraph [ref=f5e44]: Informations du Service
+          - heading "Starlink RDC" [level=1] [ref=f5e45]
+        - paragraph [ref=f5e47]: Sélectionnez un forfait pour activer Internet satellite haut débit.
+      - generic [ref=f5e48]:
+        - generic [ref=f5e49]:
+          - paragraph [ref=f5e50]: Téléchargement
+          - paragraph [ref=f5e51]: 190.70 Mbps
+        - generic [ref=f5e52]:
+          - paragraph [ref=f5e53]: Téléversement
+          - paragraph [ref=f5e54]: 31.07 Mbps
+        - generic [ref=f5e55]:
+          - paragraph [ref=f5e56]: Ping
+          - paragraph [ref=f5e57]: 38 ms
+        - generic [ref=f5e58]:
+          - paragraph [ref=f5e59]: Jitter
+          - paragraph [ref=f5e60]: 7 ms
+      - generic [ref=f5e61]:
+        - generic [ref=f5e62]:
+          - generic [ref=f5e63]: Utilisation des données
+          - generic [ref=f5e64]: 28%
+        - generic [ref=f5e67]:
+          - generic [ref=f5e68]: 28.2 GB
+          - generic [ref=f5e69]: 100 GB
+        - button " Launch Diagnostic Test" [ref=f5e70] [cursor=pointer]:
+          - generic [ref=f5e71]: 
+          - text: Launch Diagnostic Test
+      - generic [ref=f5e72]:
+        - generic [ref=f5e73]:
+          - heading "STARLINK RDC" [level=3] [ref=f5e74]
+          - paragraph [ref=f5e75]: Revendeur agréé de forfaits de données pour les services Starlink. Paiements rapides, fiables et sécurisés via Airtel Money.
+        - generic [ref=f5e76]:
+          - heading "Support" [level=3] [ref=f5e77]
+          - paragraph [ref=f5e78]: "Email: support@starlink.reseller"
+          - paragraph [ref=f5e79]: Disponible 24h/24 et 7j/7 pour l'assistance technique.
+        - generic [ref=f5e80]:
+          - heading "PAIEMENT" [level=3] [ref=f5e81]
+          - paragraph [ref=f5e82]: Payez en toute sécurité avec Airtel Money. Assurez-vous d'avoir un solde suffisant pour le forfait sélectionné.
+  - contentinfo [ref=f5e83]:
+    - generic [ref=f5e84]:
+      - generic [ref=f5e85]:
+        - generic [ref=f5e86]:
+          - heading "STARLINK RDC" [level=3] [ref=f5e87]
+          - paragraph [ref=f5e88]: Revendeur agréé de forfaits de données pour les services Starlink. Paiements rapides, fiables et sécurisés via Airtel Money.
+        - generic [ref=f5e89]:
+          - heading "SUPPORT" [level=3] [ref=f5e90]
+          - paragraph [ref=f5e91]: "Email: support@starlink.reseller"
+          - paragraph [ref=f5e92]: Disponible 24h/24, 7j/7 pour l'assistance technique.
+        - generic [ref=f5e93]:
+          - heading "PAIEMENT" [level=3] [ref=f5e94]
+          - paragraph [ref=f5e95]: Payez en toute sécurité avec Airtel Money. Assurez-vous d'avoir un solde suffisant pour le forfait sélectionné.
+      - paragraph [ref=f5e97]: © 2026 Starlink Reseller. Tous droits réservés.
+  - navigation [ref=f5e98]:
+    - generic [ref=f5e99]:
+      - link " Statut" [ref=f5e100] [cursor=pointer]:
+        - /url: /starlink/
+        - generic [ref=f5e101]: 
+        - generic [ref=f5e102]: Statut
+      - link " Forfaits" [ref=f5e103] [cursor=pointer]:
+        - /url: /starlink/plans.html
+        - generic [ref=f5e104]: 
+        - generic [ref=f5e105]: Forfaits
+      - link " Commandes" [ref=f5e106] [cursor=pointer]:
+        - /url: /starlink/orders.html
+        - generic [ref=f5e107]: 
+        - generic [ref=f5e108]: Commandes
+      - link " Paramètres" [ref=f5e109] [cursor=pointer]:
+        - /url: /starlink/settings.html
+        - generic [ref=f5e110]: 
+        - generic [ref=f5e111]: Paramètres

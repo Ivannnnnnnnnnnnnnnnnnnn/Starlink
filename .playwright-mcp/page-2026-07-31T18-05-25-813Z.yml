@@ -1,0 +1,170 @@
+- generic [active] [ref=f19e1]:
+  - banner [ref=f19e2]:
+    - generic [ref=f19e3]:
+      - generic [ref=f19e10]:
+        - generic [ref=f19e11]: Install the Starlink App
+        - generic [ref=f19e12]: Quick access to packages
+      - generic [ref=f19e13]:
+        - button "Install" [ref=f19e14] [cursor=pointer]
+        - button "Close" [ref=f19e15] [cursor=pointer]: ✕
+  - banner [ref=f19e16]:
+    - generic [ref=f19e17]:
+      - link "STARLINK Revendeur RDC" [ref=f19e18] [cursor=pointer]:
+        - /url: /starlink/
+        - generic [ref=f19e23]: STARLINK
+        - generic [ref=f19e24]: Revendeur RDC
+      - generic [ref=f19e25]:
+        - button " EN" [ref=f19e26] [cursor=pointer]:
+          - generic [ref=f19e27]: 
+          - generic [ref=f19e28]: EN
+        - navigation [ref=f19e29]:
+          - link " Statut" [ref=f19e30] [cursor=pointer]:
+            - /url: /starlink/
+            - generic [ref=f19e31]: 
+            - generic [ref=f19e32]: Statut
+          - link " Forfaits" [ref=f19e33] [cursor=pointer]:
+            - /url: /starlink/plans.html
+            - generic [ref=f19e34]: 
+            - generic [ref=f19e35]: Forfaits
+          - link " Commandes" [ref=f19e36] [cursor=pointer]:
+            - /url: /starlink/orders.html
+            - generic [ref=f19e37]: 
+            - generic [ref=f19e38]: Commandes
+  - main [ref=f19e39]:
+    - generic [ref=f19e40]:
+      - generic [ref=f19e41]:
+        - generic [ref=f19e42]:
+          - generic [ref=f19e43]:
+            - paragraph [ref=f19e44]: Forfaits Internet
+            - heading "Choisissez Votre Forfait" [level=1] [ref=f19e45]
+          - generic [ref=f19e46]: 
+        - paragraph [ref=f19e48]: Sélectionnez un forfait et payez via Airtel Money pour activer immédiatement.
+      - generic [ref=f19e49]:
+        - generic [ref=f19e50] [cursor=pointer]:
+          - generic [ref=f19e51]:
+            - generic [ref=f19e52]:
+              - generic [ref=f19e53]: 
+              - generic [ref=f19e55]:
+                - heading "Forfait Basique" [level=3] [ref=f19e56]
+                - paragraph [ref=f19e57]: 5 Go /mois
+            - generic [ref=f19e58]:
+              - paragraph [ref=f19e59]: CDF 5,000
+              - paragraph [ref=f19e60]:
+                - text: CDF 3,000
+                - generic [ref=f19e61]: PROMO
+              - paragraph [ref=f19e62]: /mois
+          - generic [ref=f19e63]:
+            - generic [ref=f19e64]: Données illimitées
+            - generic [ref=f19e65]: Économique
+          - paragraph [ref=f19e66]: 1) Cliquez sur un forfait 2) Choisissez un opérateur Mobile Money
+          - button "⚙️ Configurer" [ref=f19e67]
+        - generic [ref=f19e68] [cursor=pointer]:
+          - generic [ref=f19e69]:
+            - generic [ref=f19e70]:
+              - generic [ref=f19e71]: 
+              - generic [ref=f19e73]:
+                - heading "Forfait Standard" [level=3] [ref=f19e74]
+                - paragraph [ref=f19e75]: 15 Go /mois
+            - generic [ref=f19e76]:
+              - paragraph [ref=f19e77]: CDF 8,000
+              - paragraph [ref=f19e78]:
+                - text: CDF 5,000
+                - generic [ref=f19e79]: PROMO
+              - paragraph [ref=f19e80]: /mois
+          - generic [ref=f19e81]:
+            - generic [ref=f19e82]: Données illimitées
+            - generic [ref=f19e83]: Meilleur rapport
+          - paragraph [ref=f19e84]: 1) Cliquez sur un forfait 2) Choisissez un opérateur Mobile Money
+          - button "⚙️ Configurer" [ref=f19e85]
+        - generic [ref=f19e86] [cursor=pointer]:
+          - generic [ref=f19e87]:
+            - generic [ref=f19e88]:
+              - generic [ref=f19e89]: 
+              - generic [ref=f19e91]:
+                - heading "Forfait Premium" [level=3] [ref=f19e92]
+                - paragraph [ref=f19e93]: 30 Go /mois
+            - generic [ref=f19e94]:
+              - paragraph [ref=f19e95]: CDF 12,000
+              - paragraph [ref=f19e96]:
+                - text: CDF 8,000
+                - generic [ref=f19e97]: PROMO
+              - paragraph [ref=f19e98]: /mois
+          - generic [ref=f19e99]:
+            - generic [ref=f19e100]: Données illimitées
+            - generic [ref=f19e101]: Streaming HD
+          - paragraph [ref=f19e102]: 1) Cliquez sur un forfait 2) Choisissez un opérateur Mobile Money
+          - button "⚙️ Configurer" [ref=f19e103]
+        - generic [ref=f19e104] [cursor=pointer]:
+          - generic [ref=f19e105]:
+            - generic [ref=f19e106]:
+              - generic [ref=f19e107]: 
+              - generic [ref=f19e109]:
+                - heading "Forfait Pro" [level=3] [ref=f19e110]
+                - paragraph [ref=f19e111]: 60 Go /mois
+            - generic [ref=f19e112]:
+              - paragraph [ref=f19e113]: CDF 18,000
+              - paragraph [ref=f19e114]:
+                - text: CDF 12,000
+                - generic [ref=f19e115]: PROMO
+              - paragraph [ref=f19e116]: /mois
+          - generic [ref=f19e117]:
+            - generic [ref=f19e118]: Données illimitées
+            - generic [ref=f19e119]: Usage intensif
+          - paragraph [ref=f19e120]: 1) Cliquez sur un forfait 2) Choisissez un opérateur Mobile Money
+          - button "⚙️ Configurer" [ref=f19e121]
+        - generic [ref=f19e122] [cursor=pointer]:
+          - generic [ref=f19e123]:
+            - generic [ref=f19e124]:
+              - generic [ref=f19e125]: 
+              - generic [ref=f19e127]:
+                - heading "Forfait Business" [level=3] [ref=f19e128]
+                - paragraph [ref=f19e129]: 100 Go /mois
+            - generic [ref=f19e130]:
+              - paragraph [ref=f19e131]: CDF 30,000
+              - paragraph [ref=f19e132]:
+                - text: CDF 20,000
+                - generic [ref=f19e133]: PROMO
+              - paragraph [ref=f19e134]: /mois
+          - generic [ref=f19e135]:
+            - generic [ref=f19e136]: Données illimitées
+            - generic [ref=f19e137]: Entreprise
+          - paragraph [ref=f19e138]: 1) Cliquez sur un forfait 2) Choisissez un opérateur Mobile Money
+          - button "⚙️ Configurer" [ref=f19e139]
+        - text:         
+      - generic [ref=f19e141]:
+        - generic [ref=f19e142]: 
+        - generic [ref=f19e143]:
+          - heading "Paiement Airtel Money" [level=4] [ref=f19e144]
+          - paragraph [ref=f19e145]: Cliquez d’abord sur un forfait, puis sélectionnez Airtel Money pour finaliser le paiement.
+    - navigation [ref=f19e146]:
+      - generic [ref=f19e147]:
+        - link " Statut" [ref=f19e148] [cursor=pointer]:
+          - /url: /starlink/
+          - generic [ref=f19e149]: 
+          - generic [ref=f19e150]: Statut
+        - link " Forfaits" [ref=f19e151] [cursor=pointer]:
+          - /url: /starlink/plans.html
+          - generic [ref=f19e152]: 
+          - generic [ref=f19e153]: Forfaits
+        - link " Commandes" [ref=f19e154] [cursor=pointer]:
+          - /url: /starlink/orders.html
+          - generic [ref=f19e155]: 
+          - generic [ref=f19e156]: Commandes
+        - link " Paramètres" [ref=f19e157] [cursor=pointer]:
+          - /url: /starlink/settings.html
+          - generic [ref=f19e158]: 
+          - generic [ref=f19e159]: Paramètres
+  - contentinfo [ref=f19e160]:
+    - generic [ref=f19e161]:
+      - generic [ref=f19e162]:
+        - generic [ref=f19e163]:
+          - heading "STARLINK RDC" [level=3] [ref=f19e164]
+          - paragraph [ref=f19e165]: Revendeur agréé de forfaits de données pour les services Starlink. Paiements rapides, fiables et sécurisés via Airtel Money.
+        - generic [ref=f19e166]:
+          - heading "SUPPORT" [level=3] [ref=f19e167]
+          - paragraph [ref=f19e168]: "Email: support@starlink.reseller"
+          - paragraph [ref=f19e169]: Disponible 24h/24, 7j/7 pour l'assistance technique.
+        - generic [ref=f19e170]:
+          - heading "PAIEMENT" [level=3] [ref=f19e171]
+          - paragraph [ref=f19e172]: Payez en toute sécurité avec Airtel Money. Assurez-vous d'avoir un solde suffisant pour le forfait sélectionné.
+      - paragraph [ref=f19e174]: © 2026 Starlink Reseller. Tous droits réservés.

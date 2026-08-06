@@ -1,0 +1,100 @@
+- generic [active] [ref=f15e1]:
+  - banner [ref=f15e2]:
+    - generic [ref=f15e3]:
+      - link "STARLINK Revendeur RDC" [ref=f15e4] [cursor=pointer]:
+        - /url: /starlink/
+        - generic [ref=f15e9]: STARLINK
+        - generic [ref=f15e10]: Revendeur RDC
+      - generic [ref=f15e11]:
+        - button " FR" [ref=f15e12] [cursor=pointer]:
+          - generic [ref=f15e13]: 
+          - generic [ref=f15e14]: FR
+        - navigation [ref=f15e15]:
+          - link " Statut" [ref=f15e16] [cursor=pointer]:
+            - /url: /starlink/
+            - generic [ref=f15e17]: 
+            - generic [ref=f15e18]: Statut
+          - link " Forfaits" [ref=f15e19] [cursor=pointer]:
+            - /url: /starlink/plans.html
+            - generic [ref=f15e20]: 
+            - generic [ref=f15e21]: Forfaits
+          - link " Commandes" [ref=f15e22] [cursor=pointer]:
+            - /url: /starlink/orders.html
+            - generic [ref=f15e23]: 
+            - generic [ref=f15e24]: Commandes
+        - button " Installer" [ref=f15e25] [cursor=pointer]:
+          - generic [ref=f15e26]: 
+          - text: Installer
+  - main [ref=f15e27]:
+    - generic [ref=f15e28]:
+      - generic [ref=f15e29]:
+        - generic [ref=f15e30]:
+          - generic [ref=f15e31]:
+            - paragraph [ref=f15e32]: Réseau
+            - heading "Statut du Service" [level=1] [ref=f15e33]
+          - generic [ref=f15e34]: 
+        - paragraph [ref=f15e36]: Votre connexion Starlink est active et fonctionnelle.
+      - generic [ref=f15e37]:
+        - generic [ref=f15e38]:
+          - paragraph [ref=f15e39]: Téléchargement
+          - paragraph [ref=f15e40]: 101.98 Mbps
+        - generic [ref=f15e41]:
+          - paragraph [ref=f15e42]: Téléversement
+          - paragraph [ref=f15e43]: 28.66 Mbps
+        - generic [ref=f15e44]:
+          - paragraph [ref=f15e45]: Ping
+          - paragraph [ref=f15e46]: 21 ms
+        - generic [ref=f15e47]:
+          - paragraph [ref=f15e48]: Jitter
+          - paragraph [ref=f15e49]: 8 ms
+      - generic [ref=f15e50]:
+        - generic [ref=f15e51]:
+          - generic [ref=f15e52]: Utilisation des données
+          - generic [ref=f15e53]: 32%
+        - generic [ref=f15e56]:
+          - generic [ref=f15e57]: 31.5 Go
+          - generic [ref=f15e58]: 100 Go
+        - button "Lancer le test de diagnostic" [ref=f15e59] [cursor=pointer]
+      - generic [ref=f15e60]:
+        - generic [ref=f15e61]:
+          - heading "STARLINK RDC" [level=3] [ref=f15e62]
+          - paragraph [ref=f15e63]: Revendeur agréé de forfaits de données pour les services Starlink. Paiements rapides, fiables et sécurisés via Airtel Money. Paiements rapides, fiables et sécurisés via Airtel Money.
+        - generic [ref=f15e64]:
+          - heading "Support" [level=3] [ref=f15e65]
+          - paragraph [ref=f15e66]: "Email: support@starlink.reseller"
+          - paragraph [ref=f15e67]: Disponible 24h/24 et 7j/7 pour l'assistance technique.
+        - generic [ref=f15e68]:
+          - heading "PAIEMENT" [level=3] [ref=f15e69]
+          - paragraph [ref=f15e70]: Payez en toute sécurité avec Airtel Money. Assurez-vous d'avoir un solde suffisant pour le forfait sélectionné. Assurez-vous d'avoir un solde suffisant pour le forfait sélectionné.
+  - contentinfo [ref=f15e71]:
+    - generic [ref=f15e72]:
+      - generic [ref=f15e73]:
+        - generic [ref=f15e74]:
+          - heading "STARLINK RDC" [level=3] [ref=f15e75]
+          - paragraph [ref=f15e76]: Revendeur agréé de forfaits de données pour les services Starlink. Paiements rapides, fiables et sécurisés via Airtel Money.
+        - generic [ref=f15e77]:
+          - heading "SUPPORT" [level=3] [ref=f15e78]
+          - paragraph [ref=f15e79]: "Email: support@starlink.reseller"
+          - paragraph [ref=f15e80]: Disponible 24h/24, 7j/7 pour l'assistance technique.
+        - generic [ref=f15e81]:
+          - heading "PAIEMENT" [level=3] [ref=f15e82]
+          - paragraph [ref=f15e83]: Payez en toute sécurité avec Airtel Money. Assurez-vous d'avoir un solde suffisant pour le forfait sélectionné.
+      - paragraph [ref=f15e85]: © 2026 Starlink Reseller. Tous droits réservés.
+  - navigation [ref=f15e86]:
+    - generic [ref=f15e87]:
+      - link " Statut" [ref=f15e88] [cursor=pointer]:
+        - /url: /starlink/
+        - generic [ref=f15e89]: 
+        - generic [ref=f15e90]: Statut
+      - link " Forfaits" [ref=f15e91] [cursor=pointer]:
+        - /url: /starlink/plans.html
+        - generic [ref=f15e92]: 
+        - generic [ref=f15e93]: Forfaits
+      - link " Commandes" [ref=f15e94] [cursor=pointer]:
+        - /url: /starlink/orders.html
+        - generic [ref=f15e95]: 
+        - generic [ref=f15e96]: Commandes
+      - link " Paramètres" [ref=f15e97] [cursor=pointer]:
+        - /url: /starlink/settings.html
+        - generic [ref=f15e98]: 
+        - generic [ref=f15e99]: Paramètres
