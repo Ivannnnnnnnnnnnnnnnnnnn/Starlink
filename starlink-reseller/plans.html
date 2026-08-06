@@ -912,6 +912,30 @@
             }
         }
 
+        // ── Missing function stubs ──
+        function applyTranslations(lang) {
+            currentLang = lang;
+            const t = translations[lang] || translations.en;
+            const titleEl = document.getElementById('plans-title');
+            const descEl = document.getElementById('plans-desc');
+            if (titleEl) titleEl.textContent = t.plansTitle || 'Choose Your Package';
+            if (descEl) descEl.textContent = t.plansDesc || 'Select a package and pay via Airtel Money to activate immediately.';
+        }
+
+        function updatePrices() {
+            // Prices are already in USD from the API
+        }
+
+        function updatePackageHints() {
+            const hint = document.getElementById('plans-desc');
+            if (hint) hint.textContent = 'Select a daily or monthly package and pay via Airtel Money to activate immediately.';
+        }
+
+        function getCDFPackageName(cdfPrice, country) {
+            const map = { 3000: 'Starter', 5000: 'Standard', 7500: 'Premium', 10000: 'Pro', 15000: 'Business' };
+            return map[cdfPrice] || 'Starter';
+        }
+
         function toggleLanguage() {
             const newLang = currentLang === 'fr' ? 'en' : currentLang === 'en' ? 'my' : currentLang === 'my' ? 'rn' : currentLang === 'rn' ? 'ar' : currentLang === 'ar' ? 'am' : currentLang === 'am' ? 'fr' : 'fr';
             applyTranslations(newLang);
@@ -921,148 +945,121 @@
             if (typeof window.updatePWABannerLang === 'function') window.updatePWABannerLang();
         }
 
-        document.addEventListener('DOMContentLoaded', async () => {
-            const countryData = await detectCountry();
-            const urlCountry = new URLSearchParams(window.location.search).get('country');
-            detectedCountry = (urlCountry && COUNTRY_CONFIG[urlCountry.toUpperCase()]) ? urlCountry.toUpperCase() : countryData.country;
-            const config = COUNTRY_CONFIG[detectedCountry] || COUNTRY_CONFIG['CD'];
-            
-// Set currency based on country
+         document.addEventListener('DOMContentLoaded', async () => {
+             let countryData = { country: 'KE' };
+             try {
+                 const resp = await fetch('https://ipapi.co/json/');
+                 if (resp.ok) countryData = await resp.json();
+             } catch (e) {}
+             const urlCountry = new URLSearchParams(window.location.search).get('country');
+             detectedCountry = (urlCountry && COUNTRY_CONFIG[urlCountry.toUpperCase()]) ? urlCountry.toUpperCase() : countryData.country;
+             const config = COUNTRY_CONFIG[detectedCountry] || COUNTRY_CONFIG['CD'];
+
+             // Set currency based on country
              currentCurrency = config.currency;
-             
+
              // Use saved language preference only if it was set for the same country
-            const savedLang = localStorage.getItem('starlink_user_lang');
-            const savedForCountry = localStorage.getItem('starlink_lang_country');
-            const lang = (savedLang && savedForCountry === detectedCountry) ? savedLang : config.lang;
-            
-            // Apply language and update prices
-            applyTranslations(lang);
-            updatePrices();
-            updatePackageHints();
+             const savedLang = localStorage.getItem('starlink_user_lang');
+             const savedForCountry = localStorage.getItem('starlink_lang_country');
+             const lang = (savedLang && savedForCountry === detectedCountry) ? savedLang : config.lang;
 
-            // Congo DRC: hide Moov, hide 3-month packages, show monthly cards, show Orange Money
-            if (detectedCountry === 'CD') {
-                document.getElementById('selectOrange').style.display = '';
-                document.querySelector('[data-package="starter"]').style.display = 'none';
-                document.querySelector('[data-package="standard"]').style.display = 'none';
-                document.querySelector('[data-package="premium"]').style.display = 'none';
-                document.querySelector('[data-package="pro"]').style.display = 'none';
-                document.querySelector('[data-package="business"]').style.display = 'none';
-                document.querySelector('[data-package="unlimited"]').style.display = 'none';
-                
-            }
+// Apply language and update prices
+             applyTranslations(lang);
+             updatePrices();
+             updatePackageHints();
 
-            // Burkina Faso: hide Airtel & Moov, hide 3-month packages, show monthly cards, show Orange Money only
-            if (detectedCountry === 'BF') {
-                document.getElementById('selectAirtel').style.display = 'none';
-                document.getElementById('selectOrange').style.display = '';
-                document.querySelector('[data-package="starter"]').style.display = 'none';
-                document.querySelector('[data-package="pro"]').style.display = 'none';
-                document.querySelector('[data-package="business"]').style.display = 'none';
-                document.querySelector('[data-package="unlimited"]').style.display = 'none';
-                
-            }
+             // Country-specific payment method visibility
+             if (detectedCountry === 'CD') {
+                 document.querySelectorAll('.payment-option').forEach(el => el.style.display = 'none');
+                 document.getElementById('selectOrange').style.display = '';
+             }
+             if (detectedCountry === 'BF') {
+                 document.querySelectorAll('.payment-option').forEach(el => el.style.display = 'none');
+                 document.getElementById('selectOrange').style.display = '';
+             }
+             if (detectedCountry === 'ZM') {
+                 document.querySelectorAll('.payment-option').forEach(el => el.style.display = 'none');
+                 document.getElementById('selectMtn').style.display = '';
+             }
+             if (detectedCountry === 'LS') {
+                 document.querySelectorAll('.payment-option').forEach(el => el.style.display = 'none');
+                 document.getElementById('selectEcocash').style.display = '';
+             }
+             if (detectedCountry === 'ZW') {
+                 document.querySelectorAll('.payment-option').forEach(el => el.style.display = 'none');
+                 document.getElementById('selectEcocash').style.display = '';
+             }
+             if (detectedCountry === 'BI') {
+                 document.querySelectorAll('.payment-option').forEach(el => el.style.display = 'none');
+                 document.getElementById('selectLumitel').style.display = '';
+             }
+             if (detectedCountry === 'SL') {
+                 document.getElementById('selectAirtel').style.display = 'none';
+                 document.getElementById('selectOrange').style.display = '';
+             }
+if (detectedCountry === 'LR') {
+                 document.getElementById('selectAirtel').style.display = 'none';
+                 document.getElementById('selectOrange').style.display = '';
+             }
 
-            // Zambia: show MTN MoMo only
-            if (detectedCountry === 'ZM') {
-                document.querySelectorAll('.payment-option').forEach(el => el.style.display = 'none');
-                document.getElementById('selectMtn').style.display = '';
-            }
+             // Jordan: show only Orange Money
+             if (detectedCountry === 'JO') {
+                 document.querySelectorAll('.payment-option').forEach(el => el.style.display = 'none');
+                 document.getElementById('selectOrange').style.display = '';
+             }
 
-            // Lesotho: show EcoCash only
-            if (detectedCountry === 'LS') {
-                document.querySelectorAll('.payment-option').forEach(el => el.style.display = 'none');
-                document.getElementById('selectEcocash').style.display = '';
-            }
+             // Ethiopia: show only Ethiopian Banks
+             if (detectedCountry === 'ET') {
+                 document.querySelectorAll('.payment-option').forEach(el => el.style.display = 'none');
+                 document.getElementById('selectEthiopia').style.display = '';
+             }
 
-            // Zimbabwe: show EcoCash only
-            if (detectedCountry === 'ZW') {
-                document.querySelectorAll('.payment-option').forEach(el => el.style.display = 'none');
-                document.getElementById('selectEcocash').style.display = '';
-            }
+             // Benin: show only MTN MoMo, hide everything else
+             if (detectedCountry === 'BJ') {
+                 document.querySelectorAll('.payment-option').forEach(el => el.style.display = 'none');
+                 document.getElementById('selectMtn').style.display = '';
+             }
 
-            // Lesotho: show EcoCash only, hide Airtel and Moov
-            if (detectedCountry === 'LS') {
-                document.querySelectorAll('.payment-option').forEach(el => el.style.display = 'none');
-                document.getElementById('selectEcocash').style.display = '';
-            }
+             // Congo Brazzaville: show Airtel + MTN, hide Moov
+             if (detectedCountry === 'CG') {
+                 document.getElementById('selectMtn').style.display = '';
+             }
 
-            // Burundi: show Lumitel only
-            if (detectedCountry === 'BI') {
-                document.querySelectorAll('.payment-option').forEach(el => el.style.display = 'none');
-                document.getElementById('selectLumitel').style.display = '';
-            }
+             // Senegal: show Orange Money only
+             if (detectedCountry === 'SN') {
+                 document.querySelectorAll('.payment-option').forEach(el => el.style.display = 'none');
+                 document.getElementById('selectOrange').style.display = '';
+             }
 
-            // Sierra Leone: hide Airtel and Moov, show only Orange
-            if (detectedCountry === 'SL') {
-                document.getElementById('selectAirtel').style.display = 'none';
-                document.getElementById('selectOrange').style.display = '';
-            }
+             // Botswana: show Orange Money only
+             if (detectedCountry === 'BW') {
+                 document.querySelectorAll('.payment-option').forEach(el => el.style.display = 'none');
+                 document.getElementById('selectOrange').style.display = '';
+             }
 
-            // Liberia: hide Airtel and Moov, show only Orange
-            if (detectedCountry === 'LR') {
-                document.getElementById('selectAirtel').style.display = 'none';
-                document.getElementById('selectOrange').style.display = '';
-            }
+             // Add click event listeners to all package cards
+             document.querySelectorAll('.package-card').forEach(card => {
+                 card.addEventListener('click', function(e) {
+                     e.preventDefault();
+                     e.stopPropagation();
+                     const packageType = this.getAttribute('data-package');
+                     if (packageType) {
+                         selectPackage(this, packageType);
+                     }
+                 });
+             });
 
-            // Jordan: show only Orange Money
-            if (detectedCountry === 'JO') {
-                document.querySelectorAll('.payment-option').forEach(el => el.style.display = 'none');
-                document.getElementById('selectOrange').style.display = '';
-            }
-
-            // Ethiopia: show only Ethiopian Banks
-            if (detectedCountry === 'ET') {
-                document.querySelectorAll('.payment-option').forEach(el => el.style.display = 'none');
-                document.getElementById('selectEthiopia').style.display = '';
-            }
-
-            // Bénin: show only MTN MoMo, hide everything else
-            if (detectedCountry === 'BJ') {
-                document.querySelectorAll('.payment-option').forEach(el => el.style.display = 'none');
-                document.getElementById('selectMtn').style.display = '';
-            }
-
-            // Congo Brazzaville: show Airtel + MTN, hide Moov
-            if (detectedCountry === 'CG') {
-                document.getElementById('selectMtn').style.display = '';
-            }
-
-            // Sénégal: show Orange Money only
-            if (detectedCountry === 'SN') {
-                document.querySelectorAll('.payment-option').forEach(el => el.style.display = 'none');
-                document.getElementById('selectOrange').style.display = '';
-            }
-
-            // Botswana: show Orange Money only
-            if (detectedCountry === 'BW') {
-                document.querySelectorAll('.payment-option').forEach(el => el.style.display = 'none');
-                document.getElementById('selectOrange').style.display = '';
-            }
-
-            // Add click event listeners to all package cards
-            document.querySelectorAll('.package-card').forEach(card => {
-                card.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    const packageType = this.getAttribute('data-package');
-                    if (packageType) {
-                        selectPackage(this, packageType);
-                    }
-                });
-            });
-
-            // Configure modal events
-            document.getElementById('configureSubscribeBtn').addEventListener('click', function() {
-                const card = _configureTargetCard;
-                closeConfigureModal();
-                if (card) selectPackage(card, card.getAttribute('data-package'));
-            });
-            document.getElementById('configureCloseBtn').addEventListener('click', closeConfigureModal);
-            document.getElementById('configureModal').addEventListener('click', function(e) {
-                if (e.target === this) closeConfigureModal();
-            });
-        });
+             // Configure modal events
+             document.getElementById('configureSubscribeBtn').addEventListener('click', function() {
+                 const card = _configureTargetCard;
+                 closeConfigureModal();
+                 if (card) selectPackage(card, card.getAttribute('data-package'));
+             });
+             document.getElementById('configureCloseBtn').addEventListener('click', closeConfigureModal);
+             document.getElementById('configureModal').addEventListener('click', function(e) {
+                 if (e.target === this) closeConfigureModal();
+             });
+         });
     </script>
     <div id="toast" style="display:none;position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#111;color:#fff;padding:12px 24px;border-radius:8px;font-size:14px;z-index:99999;box-shadow:0 4px 12px rgba(0,0,0,0.3);"></div>
 </body>
