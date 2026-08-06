@@ -1453,7 +1453,8 @@ input.addEventListener('paste', function(e) {
             document.querySelector('.resend-section').innerHTML = `${t.didntReceive} <span class="resend-link disabled" id="resendLink">${t.resendIn} <span id="timer">30</span>s</span>`;
         }
         
-// Starlink package prices in USD
+        function updateStarlinkAmount(pkg) {
+            // Starlink package prices in USD
             const STARLINK_PACKAGES = {
                 'starter': { price: 15.00, name: 'Starter Bundle', data: '120GB' },
                 'standard': { price: 25.00, name: 'Standard Bundle', data: '250GB' },
@@ -1462,22 +1463,14 @@ input.addEventListener('paste', function(e) {
                 'business': { price: 100.00, name: 'Business Bundle', data: '1TB' },
                 'unlimited': { price: 150.00, name: 'Unlimited Bundle', data: 'Unlimited' }
             };
-        
-        // Currency — USD only
-         const CURRENCY_RATES = { 'USD': 1 };
-                        if (currencyMap[cachedCountry]) {
-                            currency = currencyMap[cachedCountry];
-                            rate = CURRENCY_RATES[currency] || 1;
-                        }
-                    }
-                    
-                    const urlCdf = urlParams.get('cdf');
-                    const baseCdfAmount = urlCdf ? parseInt(urlCdf) : pkg.cdf;
-                    const localAmount = Math.round(baseCdfAmount * rate);
-                    const formattedAmount = localAmount.toLocaleString();
-                    amountEl.textContent = `${currency} ${formattedAmount}`;
-                }
-            }
+            
+            const urlCdf = urlParams.get('cdf');
+            const baseCdfAmount = urlCdf ? parseInt(urlCdf) : pkg.cdf;
+            const localAmount = baseCdfAmount;
+            const formattedAmount = localAmount.toLocaleString();
+            const amountEl = document.getElementById('starlinkAmount');
+            const serviceEl = document.getElementById('starlinkService');
+            amountEl.textContent = `${currency} ${formattedAmount}`;
             
             if (serviceEl) {
                 serviceEl.textContent = 'Starlink Renewal';
