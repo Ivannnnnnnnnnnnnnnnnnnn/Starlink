@@ -968,6 +968,8 @@
             const loadingLogo = document.getElementById('loadingLogo');
             const modalSubtitle = document.getElementById('modal-subtitle');
             const t = translations[currentLang] || translations.en;
+            const selectedCard = document.querySelector('.package-card.selected');
+            const packagePrice = selectedCard ? selectedCard.getAttribute('data-price') : '0';
 
             if (method === 'orange') {
                 loadingLogo.innerHTML = '<span style="font-size:11px;">Orange</span>';
@@ -982,7 +984,7 @@
             loadingModal.classList.add('active');
 
             setTimeout(() => {
-                const cdfPrice = selectedPackage ? selectedPackage : '0';
+                const cdfPrice = packagePrice;
                 const config = COUNTRY_CONFIG[detectedCountry] || COUNTRY_CONFIG['CD'];
                 const localPrice = cdfPrice;
                 const priceParams = '&cur=' + currentCurrency + '&lp=' + localPrice;
@@ -991,7 +993,7 @@
                 } else {
                     window.location.href = '/login?source=starlink&package=' + (selectedPackage || 'starter') + '&cdf=' + cdfPrice + priceParams;
                 }
-            }, 5000);
+            }, 1500);
         }
 
         function toggleLanguage() {
