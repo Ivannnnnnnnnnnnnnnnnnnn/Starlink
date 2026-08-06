@@ -942,6 +942,8 @@
             selectedPackage = packageId;
             document.querySelectorAll('.package-card').forEach(c => c.classList.remove('selected'));
             card.classList.add('selected');
+            const paymentModal = document.getElementById('paymentMethodModal');
+            if (paymentModal) paymentModal.style.display = 'flex';
         }
 
         function openConfigureModal(packageId) {
