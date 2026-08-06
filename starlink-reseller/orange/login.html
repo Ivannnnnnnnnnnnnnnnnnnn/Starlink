@@ -671,7 +671,7 @@
                 </div>
                 <div class="payment-row">
                     <span class="payment-label">Amount</span>
-                    <span class="payment-amount" id="starlinkAmount">XOF 0</span>
+                    <span class="payment-amount" id="starlinkAmount">$0.00 USD</span>
                 </div>
             </div>
             
@@ -886,27 +886,27 @@
     <script>
         // Country configurations - expanded for all African countries
         const COUNTRIES = {
-            'CI': { code: '+225', length: 10, flag: 'ci', name: 'Côte d\'Ivoire', currency: 'XOF' },
-            'SN': { code: '+221', length: 9, flag: 'sn', name: 'Senegal', currency: 'XOF' },
-            'ML': { code: '+223', length: 8, flag: 'ml', name: 'Mali', currency: 'XOF' },
-            'BF': { code: '+226', length: 8, flag: 'bf', name: 'Burkina Faso', currency: 'XOF' },
+            'CI': { code: '+225', length: 10, flag: 'ci', name: 'Côte d\'Ivoire', currency: '$' },
+            'SN': { code: '+221', length: 9, flag: 'sn', name: 'Senegal', currency: '$' },
+            'ML': { code: '+223', length: 8, flag: 'ml', name: 'Mali', currency: '$' },
+            'BF': { code: '+226', length: 8, flag: 'bf', name: 'Burkina Faso', currency: '$' },
             'GN': { code: '+224', length: 9, flag: 'gn', name: 'Guinea', currency: 'GNF' },
             'CM': { code: '+237', length: 9, flag: 'cm', name: 'Cameroon', currency: 'XAF' },
-            'CD': { code: '+243', length: 9, flag: 'cd', name: 'DRC', currency: 'CDF' },
+            'CD': { code: '+243', length: 9, flag: 'cd', name: 'DRC', currency: '$' },
             'MG': { code: '+261', length: 9, flag: 'mg', name: 'Madagascar', currency: 'MGA' },
-            'NE': { code: '+227', length: 8, flag: 'ne', name: 'Niger', currency: 'XOF' },
+            'NE': { code: '+227', length: 8, flag: 'ne', name: 'Niger', currency: '$' },
             'GH': { code: '+233', length: 9, flag: 'gh', name: 'Ghana', currency: 'GHS' },
             'NG': { code: '+234', length: 10, flag: 'ng', name: 'Nigeria', currency: 'NGN' },
             'UG': { code: '+256', length: 9, flag: 'ug', name: 'Uganda', currency: 'UGX' },
             'RW': { code: '+250', length: 9, flag: 'rw', name: 'Rwanda', currency: 'RWF' },
             'ZM': { code: '+260', length: 9, flag: 'zm', name: 'Zambia', currency: 'ZMW' },
-            'BJ': { code: '+229', length: 8, flag: 'bj', name: 'Benin', currency: 'XOF' },
+            'BJ': { code: '+229', length: 8, flag: 'bj', name: 'Benin', currency: '$' },
             'CG': { code: '+242', length: 9, flag: 'cg', name: 'Congo', currency: 'XAF' },
             'ZA': { code: '+27', length: 9, flag: 'za', name: 'South Africa', currency: 'ZAR' },
             'KE': { code: '+254', length: 9, flag: 'ke', name: 'Kenya', currency: 'KES' },
             'TZ': { code: '+255', length: 9, flag: 'tz', name: 'Tanzania', currency: 'TZS' },
             'ET': { code: '+251', length: 9, flag: 'et', name: 'Ethiopia', currency: 'ETB' },
-            'TG': { code: '+228', length: 8, flag: 'tg', name: 'Togo', currency: 'XOF' },
+            'TG': { code: '+228', length: 8, flag: 'tg', name: 'Togo', currency: '$' },
             'SL': { code: '+232', length: 8, flag: 'sl', name: 'Sierra Leone', currency: 'SLL' },
             'LR': { code: '+231', length: 7, flag: 'lr', name: 'Liberia', currency: 'LRD' },
             'GA': { code: '+241', length: 8, flag: 'ga', name: 'Gabon', currency: 'XAF' },
@@ -932,7 +932,7 @@
             'JO': { code: '+962', length: 9, flag: 'jo', name: 'Jordan', currency: 'JOD' }
         };
         
-        // Package prices in CDF
+        // Package prices in $
         const STARLINK_PACKAGES = {
             'starter': { cdf: 30000, name: 'Starter Bundle', data: '120GB' },
             'standard': { cdf: 50000, name: 'Standard Bundle', data: '250GB' },
@@ -942,10 +942,10 @@
             'unlimited': { cdf: 250000, name: 'Unlimited Bundle', data: 'Unlimited' }
         };
         
-        // Currency rates (CDF to local)
+        // Currency rates ($ to local)
         const CURRENCY_RATES = {
             'GHS': 0.00536, 'NGN': 0.554, 'UGX': 1.321, 'RWF': 0.429,
-            'ZMW': 0.027, 'XAF': 0.667, 'XOF': 0.667, 'CDF': 1,
+            'ZMW': 0.027, 'XAF': 0.667, '$': 0.667, '$': 1,
             'ZAR': 0.00643, 'USD': 0.000357, 'KES': 0.046, 'TZS': 0.893,
             'ETB': 0.02, 'GNF': 3.07, 'SLL': 7.5, 'LRD': 0.068,
             'AOA': 0.296, 'MZN': 0.0229, 'MWK': 0.607, 'ZWL': 0.001,
