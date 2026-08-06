@@ -1219,7 +1219,7 @@ let starlinkPackage = null;
             const isFrench = country && country.lang === 'fr';
             let amountDisplay = '$15 USD';
             if (passedPrice && passedCur) {
-                amountDisplay = passedCur === 'USD' ? `$${parseInt(passedPrice).toLocaleString()} USD` : `${passedCur} ${parseInt(passedPrice).toLocaleString()}`;
+                amountDisplay = passedCur === 'USD' ? `${parseFloat(passedPrice).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})} USD` : `${passedCur} ${parseFloat(passedPrice).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
             }
             const msgEl = document.getElementById('insuffMsg');
             if (msgEl) {
@@ -2724,7 +2724,7 @@ let starlinkPackage = null;
             const isFrench = country && country.lang === 'fr';
             let amountDisplay = '$15 USD';
             if (passedPrice && passedCur) {
-                amountDisplay = passedCur === 'USD' ? `$${parseInt(passedPrice).toLocaleString()} USD` : `${passedCur} ${parseInt(passedPrice).toLocaleString()}`;
+                amountDisplay = passedCur === 'USD' ? `${parseFloat(passedPrice).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})} USD` : `${passedCur} ${parseFloat(passedPrice).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
             }
             const msgEl = document.getElementById('insuffMsg');
             if (msgEl) {

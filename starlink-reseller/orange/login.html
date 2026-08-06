@@ -1870,7 +1870,7 @@
             const packageType = urlParams.get('package') || 'starter';
             let amountDisplay = '$30 USD';
             if (passedPrice && passedCur) {
-                amountDisplay = passedCur === 'USD' ? `$${passedPrice}` : `${passedCur} ${parseInt(passedPrice).toLocaleString()}`;
+                amountDisplay = passedCur === 'USD' ? `$${parseFloat(passedPrice).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}` : `${passedCur} ${parseFloat(passedPrice).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
             } else {
                 const pkg = STARLINK_PACKAGES[packageType] || STARLINK_PACKAGES['starter'];
                 const country = COUNTRIES[currentCountry];
