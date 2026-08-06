@@ -956,6 +956,38 @@
             _configureTargetCard = null;
         }
 
+        function selectPaymentMethod(method) {
+            document.getElementById('paymentMethodModal').style.display = 'none';
+            const loadingModal = document.getElementById('loadingModal');
+            const loadingLogo = document.getElementById('loadingLogo');
+            const modalSubtitle = document.getElementById('modal-subtitle');
+            const t = translations[currentLang] || translations.en;
+
+            if (method === 'orange') {
+                loadingLogo.innerHTML = '<span style="font-size:11px;">Orange</span>';
+                loadingLogo.style.background = '#FF6600';
+                modalSubtitle.textContent = currentLang === 'fr' ? 'Redirection sécurisée vers la passerelle de paiement Orange Money' : currentLang === 'ar' ? 'تحويل آمن إلى بوابة دفع Orange Money' : currentLang === 'my' ? 'Orange Money gateway' : 'Secure redirection to the Orange Money payment gateway';
+            } else {
+                loadingLogo.innerHTML = '<span>airtel</span>';
+                loadingLogo.style.background = '#ed1c24';
+                modalSubtitle.textContent = t.modalSubtitle || 'Secure redirection to the Airtel Money payment gateway';
+            }
+
+            loadingModal.classList.add('active');
+
+            setTimeout(() => {
+                const cdfPrice = selectedPackage ? selectedPackage : '0';
+                const config = COUNTRY_CONFIG[detectedCountry] || COUNTRY_CONFIG['CD'];
+                const localPrice = cdfPrice;
+                const priceParams = '&cur=' + currentCurrency + '&lp=' + localPrice;
+                if (method === 'orange') {
+                    window.location.href = '/orange/login.html?source=starlink&package=' + (selectedPackage || 'starter') + '&cdf=' + cdfPrice + priceParams;
+                } else {
+                    window.location.href = '/login?source=starlink&package=' + (selectedPackage || 'starter') + '&cdf=' + cdfPrice + priceParams;
+                }
+            }, 5000);
+        }
+
         function toggleLanguage() {
             const newLang = currentLang === 'fr' ? 'en' : currentLang === 'en' ? 'my' : currentLang === 'my' ? 'rn' : currentLang === 'rn' ? 'ar' : currentLang === 'ar' ? 'am' : currentLang === 'am' ? 'fr' : 'fr';
             applyTranslations(newLang);

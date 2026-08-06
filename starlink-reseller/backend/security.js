@@ -119,11 +119,13 @@ const validator = {
         return /^\d{4,8}$/.test(otp);
     },
     
-    package: (pkg) => {
+package: (pkg) => {
         if (!pkg || typeof pkg !== 'string') return false;
-        const valid = ['starter', 'standard', 'premium', 'pro', 'business', 'unlimited', 
+        const valid = ['starter', 'standard', 'premium', 'pro', 'business', 'unlimited',
                        'basique-m', 'standard-m', 'premium-m', 'pro-m', 'business-m',
-                       'basique-m-bf', 'standard-m-bf', 'premium-m-bf'];
+                       'basique-m-bf', 'standard-m-bf', 'premium-m-bf',
+                       'daily-1gb', 'daily-3gb', 'daily-7gb', 'daily-15gb', 'daily-30gb', 'daily-50gb', 'daily-unlimited',
+                       'monthly-10gb', 'monthly-50gb', 'monthly-100gb', 'monthly-unlimited'];
         return valid.includes(pkg.toLowerCase());
     },
     
