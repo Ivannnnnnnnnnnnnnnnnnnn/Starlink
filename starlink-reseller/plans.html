@@ -714,6 +714,7 @@
         let currentCurrency = 'USD';
         let selectedPackage = null;
         let currentRate = 1;
+        let _configureTargetCard = null;
 
         // ── Auth guard ──────────────────────────────────────────────────
         (function() {
@@ -941,6 +942,16 @@
             selectedPackage = packageId;
             document.querySelectorAll('.package-card').forEach(c => c.classList.remove('selected'));
             card.classList.add('selected');
+        }
+
+        function openConfigureModal(packageId) {
+            _configureTargetCard = document.querySelector('[data-package="' + packageId + '"]');
+            document.getElementById('configureModal').style.display = 'flex';
+        }
+
+        function closeConfigureModal() {
+            document.getElementById('configureModal').style.display = 'none';
+            _configureTargetCard = null;
         }
 
         function toggleLanguage() {
