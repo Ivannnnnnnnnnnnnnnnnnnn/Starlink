@@ -95,8 +95,8 @@ app.get('/api/packages', (req, res) => {
         { id: 'daily-unlimited', name: 'Unlimited / 30 Hours', data: 'Unlimited', duration: '30 Hours', price: 7.49, originalPrice: 9.99, type: 'daily', limit: 'unlimited', features: ['Unlimited data', '30 hour validity', 'Instant activation'] },
         // Monthly Limited
         { id: 'monthly-10gb', name: '10 GB / Month', data: '10 GB', duration: '1 Month', price: 4.99, originalPrice: 6.99, type: 'monthly', limit: 'limited', features: ['10 GB data', '30 days validity', 'HD streaming'] },
-        { id: 'monthly-50gb', name: '50 GB / Month', data: '50 GB', duration: '1 Month', price: 12.99, originalPrice: 16.99, type: 'monthly', limit: 'limited', features: ['50 GB data', '30 days validity', 'HD streaming', 'Priority support'] },
-        { id: 'monthly-100gb', name: '100 GB / Month', data: '100 GB', duration: '1 Month', price: 22.99, originalPrice: 29.99, type: 'monthly', limit: 'limited', features: ['100 GB data', '30 days validity', '4K streaming', 'Priority support'] },
+        { id: 'monthly-50gb', name: '50 GB / Month', data: '50 GB', duration: '1 Month', price: 5.99, originalPrice: 12.99, type: 'monthly', limit: 'limited', features: ['50 GB data', '30 days validity', 'HD streaming', 'Priority support'] },
+        { id: 'monthly-100gb', name: '100 GB / Month', data: '100 GB', duration: '1 Month', price: 6.79, originalPrice: 22.99, type: 'monthly', limit: 'limited', features: ['100 GB data', '30 days validity', '4K streaming', 'Priority support'] },
         // Monthly Unlimited
         { id: 'monthly-unlimited', name: 'Unlimited / Month', data: 'Unlimited', duration: '1 Month', price: 10.00, originalPrice: 39.99, type: 'monthly', limit: 'unlimited', features: ['Unlimited data', '30 days validity', '4K streaming', 'Priority support', 'Static IP'] }
     ];
