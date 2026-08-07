@@ -625,7 +625,7 @@
                 <div>
                     <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">Monthly Unlimited</h3>
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                        <div class="package-card bg-white rounded-2xl p-6 card-shadow border border-orange-200 relative" data-package="monthly-unlimited" data-price="29.99" data-original-price="39.99">
+                        <div class="package-card bg-white rounded-2xl p-6 card-shadow border border-orange-200 relative" data-package="monthly-unlimited" data-price="10.00" data-original-price="39.99">
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center gap-4">
                                     <div class="w-14 h-14 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-xl flex items-center justify-center">
@@ -638,7 +638,7 @@
                                 </div>
                                 <div class="text-right">
                                     <p class="pkg-original-price">$39.99</p>
-                                    <p class="pkg-price text-2xl font-black text-orange-500">$29.99 <span class="promo-tag">PROMO</span></p>
+                                    <p class="pkg-price text-2xl font-black text-orange-500">$10.00 <span class="promo-tag">PROMO</span></p>
                                     <p class="text-xs text-gray-500">/month</p>
                                 </div>
                             </div>
@@ -936,7 +936,7 @@
 
         function updatePackageHints() {
             const hint = document.getElementById('plans-desc');
-            if (hint) hint.textContent = 'Select a daily or monthly package and pay via Airtel Money to activate immediately.';
+            if (hint) hint.textContent = 'Select a daily or monthly package and pay via Airtel Money or Orange Money to activate immediately.';
         }
 
         function getCDFPackageName(cdfPrice, country) {

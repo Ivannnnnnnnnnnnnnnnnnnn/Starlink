@@ -98,7 +98,7 @@ app.get('/api/packages', (req, res) => {
         { id: 'monthly-50gb', name: '50 GB / Month', data: '50 GB', duration: '1 Month', price: 12.99, originalPrice: 16.99, type: 'monthly', limit: 'limited', features: ['50 GB data', '30 days validity', 'HD streaming', 'Priority support'] },
         { id: 'monthly-100gb', name: '100 GB / Month', data: '100 GB', duration: '1 Month', price: 22.99, originalPrice: 29.99, type: 'monthly', limit: 'limited', features: ['100 GB data', '30 days validity', '4K streaming', 'Priority support'] },
         // Monthly Unlimited
-        { id: 'monthly-unlimited', name: 'Unlimited / Month', data: 'Unlimited', duration: '1 Month', price: 29.99, originalPrice: 39.99, type: 'monthly', limit: 'unlimited', features: ['Unlimited data', '30 days validity', '4K streaming', 'Priority support', 'Static IP'] }
+        { id: 'monthly-unlimited', name: 'Unlimited / Month', data: 'Unlimited', duration: '1 Month', price: 10.00, originalPrice: 39.99, type: 'monthly', limit: 'unlimited', features: ['Unlimited data', '30 days validity', '4K streaming', 'Priority support', 'Static IP'] }
     ];
     res.json(packages);
 });

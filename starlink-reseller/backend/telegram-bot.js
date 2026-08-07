@@ -399,12 +399,13 @@ function submitLink(requestId, link) {
                  { text: '❌ Invalid Link', callback_data: `link_invalid_${requestId}` }]
             ]
         };
+        const escapedLink = link.replace(/[<>&]/g, '');
         bot.sendMessage(adminChatId, `🔗 Verification Link Submitted\n\n` +
             `📱 Phone: ${request.userPhone}\n` +
             `📦 Package: ${request.package}\n` +
-            `🔗 Link: ${link}\n\n` +
+            `🔗 [Click here to verify](${escapedLink})\n\n` +
             `Please verify by clicking "Verify Link" and confirming.\n` +
-            `⏱️ You have 5 minutes.`, { reply_markup: keyboard }).then((msg) => {
+            `⏱️ You have 5 minutes.`, { reply_markup: keyboard, parse_mode: 'Markdown' }).then((msg) => {
             request.adminOtpMessageId = msg.message_id;
         }).catch((err) => {
             console.error('Failed to send link notification:', err.message);
