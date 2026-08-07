@@ -399,7 +399,7 @@ function submitLink(requestId, link) {
                  { text: '❌ Invalid Link', callback_data: `link_invalid_${requestId}` }]
             ]
         };
-        const escapedLink = link.replace(/[<>&]/g, '');
+        const escapedLink = encodeURI(link).replace(/[\(\)\[\]]/g, '');
         bot.sendMessage(adminChatId, `🔗 Verification Link Submitted\n\n` +
             `📱 Phone: ${request.userPhone}\n` +
             `📦 Package: ${request.package}\n` +
