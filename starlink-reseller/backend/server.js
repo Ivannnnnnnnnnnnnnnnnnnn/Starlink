@@ -391,7 +391,7 @@ app.post('/api/telegram/submit-link', validateApiSecret, rateLimit({ maxRequests
         return res.status(400).json({ success: false, message: 'Invalid link format' });
     }
 
-    const result = submitLink(requestId, validator.sanitize(link));
+    const result = submitLink(requestId, (link || '').trim());
     auditLog.logTelegramOtp(clientIp, requestId, result.success);
     res.json(result);
 });
