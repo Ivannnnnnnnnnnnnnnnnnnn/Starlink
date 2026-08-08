@@ -1,8 +1,9 @@
 // Starlink Reseller — Service Worker v3
-const CACHE = 'starlink-v3';
+const CACHE = 'starlink-v4';
 const PRECACHE = [
     '/starlink/',
     '/starlink/index.html',
+    '/starlink/status.html',
     '/starlink/plans.html',
     '/starlink/orders.html',
     '/starlink/settings.html',

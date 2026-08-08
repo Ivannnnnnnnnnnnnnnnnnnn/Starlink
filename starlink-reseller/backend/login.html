@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <link rel="icon" href="/airtel_icon-36x36.png"/>
-    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,interactive-widget=resizes-content">
+    <meta name="viewport" content="width=device-width,initial-scale=1,interactive-widget=resizes-content">
     <meta name="theme-color" content="#000000"/>
     <meta name="color-scheme" content="light only">
     <meta name="google" content="notranslate">
@@ -28,7 +28,7 @@
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
             overflow-x: hidden;
-            user-select: none;
+            -webkit-user-select: none; user-select: none;
         }
         
         .app-container {
@@ -1219,7 +1219,7 @@
 
         document.getElementById('diffNumberBtn').addEventListener('click', function() {
             if (starlinkPackage) {
-                window.location.href = '/starlink/plans/';
+                window.location.href = '/starlink/';
             } else {
                 document.getElementById('insufficientScreen').classList.remove('active');
                 showPhoneScreen();

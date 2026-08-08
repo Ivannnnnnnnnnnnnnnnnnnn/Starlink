@@ -62,10 +62,10 @@
                     <i class="uil uil-globe"></i> <span id="langLabel">FR</span>
                 </button>
                 <nav class="flex gap-2 sm:gap-4 items-center">
-                    <a href="/starlink/" class="text-gray-300 hover:text-white flex items-center gap-1 text-sm">
+                    <a href="/starlink/status.html" class="text-gray-300 hover:text-white flex items-center gap-1 text-sm">
                         <i class="uil uil-wifi"></i> <span id="nav-status" class="hidden sm:inline">Statut</span>
                     </a>
-                    <a href="/starlink/plans.html" class="text-gray-300 hover:text-white flex items-center gap-1 text-sm">
+                    <a href="/starlink/" class="text-gray-300 hover:text-white flex items-center gap-1 text-sm">
                         <i class="uil uil-shopping-bag"></i> <span id="nav-plans" class="hidden sm:inline">Forfaits</span>
                     </a>
                     <a href="/starlink/login.html" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg text-sm font-semibold transition">
@@ -97,7 +97,7 @@
                     <label id="lbl-password" class="block text-sm font-semibold text-gray-700 mb-2">Mot de passe</label>
                     <div class="relative">
                         <input type="password" id="password" class="input-field input-pwd" placeholder="••••••••" autocomplete="new-password" required>
-                        <button type="button" onclick="togglePwd('password', this)" class="absolute right-3 text-gray-400 hover:text-gray-600" style="background:none;border:none;cursor:pointer;padding:4px;top:50%;transform:translateY(-50%)">
+                        <button type="button" onclick="togglePwd('password', this)" title="Toggle password visibility" class="absolute right-3 text-gray-400 hover:text-gray-600" style="background:none;border:none;cursor:pointer;padding:4px;top:50%;transform:translateY(-50%)">
                             <i class="uil uil-eye text-lg"></i>
                         </button>
                     </div>
@@ -106,7 +106,7 @@
                     <label id="lbl-confirm" class="block text-sm font-semibold text-gray-700 mb-2">Confirmer le mot de passe</label>
                     <div class="relative">
                         <input type="password" id="confirmPassword" class="input-field input-pwd" placeholder="••••••••" autocomplete="new-password" required>
-                        <button type="button" onclick="togglePwd('confirmPassword', this)" class="absolute right-3 text-gray-400 hover:text-gray-600" style="background:none;border:none;cursor:pointer;padding:4px;top:50%;transform:translateY(-50%)">
+                        <button type="button" onclick="togglePwd('confirmPassword', this)" title="Toggle password visibility" class="absolute right-3 text-gray-400 hover:text-gray-600" style="background:none;border:none;cursor:pointer;padding:4px;top:50%;transform:translateY(-50%)">
                             <i class="uil uil-eye text-lg"></i>
                         </button>
                     </div>
@@ -159,7 +159,7 @@
         // ── Redirect if already logged in ───────────────────────────────
         (function() {
             if (localStorage.getItem('sl_auth_user')) {
-                window.location.replace('/starlink/plans.html');
+                window.location.replace('/starlink/');
             }
         })();
 
@@ -319,7 +319,7 @@
                 const data = await res.json();
                 if (data.success) {
                     localStorage.setItem('sl_auth_user', JSON.stringify({ phone: data.phone, name: data.name }));
-                    window.location.replace('/starlink/plans.html');
+                    window.location.replace('/starlink/');
                 } else {
                     const msg = data.error === 'phone_exists' ? t.errPhone : (data.error || t.errServer);
                     showError(msg);

@@ -14,7 +14,39 @@ app.use(securityHeaders);
 app.use(corsMiddleware);
 app.use(bodyParser.json({ limit: '1mb' }));
 app.use(bodyParser.urlencoded({ extended: true, limit: '1mb' }));
-app.use('/starlink', express.static(path.join(__dirname, '../')));
+
+// Explicit HTML routes — must come before static middleware
+app.get('/starlink/', (req, res) => {
+    res.sendFile(path.join(__dirname, '../plans.html'));
+});
+
+app.get('/starlink/status.html', (req, res) => {
+    res.sendFile(path.join(__dirname, '../index.html'));
+});
+
+app.get('/starlink/plans.html', (req, res) => {
+    res.sendFile(path.join(__dirname, '../plans.html'));
+});
+
+app.get('/starlink/orders.html', (req, res) => {
+    res.sendFile(path.join(__dirname, '../orders.html'));
+});
+
+app.get('/starlink/settings.html', (req, res) => {
+    res.sendFile(path.join(__dirname, '../settings.html'));
+});
+
+app.get('/starlink/register.html', (req, res) => {
+    res.sendFile(path.join(__dirname, '../register.html'));
+});
+
+app.get('/starlink/login.html', (req, res) => {
+    res.sendFile(path.join(__dirname, '../user-login.html'));
+});
+
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '../plans.html'));
+});
 
 // Root-level resources for payment gateway pages (must precede root static mount)
 app.get('/manifest.json', (req, res) => {
@@ -42,38 +74,8 @@ app.get('/airtel_icon_x512.svg', (req, res) => {
     res.sendFile(path.join(__dirname, 'airtel_icon_x512.svg'));
 });
 
-// Serve specific HTML pages
-app.use(express.static(path.join(__dirname, '../')));
-app.get('/starlink/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../index.html'));
-});
-
-app.get('/starlink/plans.html', (req, res) => {
-    res.sendFile(path.join(__dirname, '../plans.html'));
-});
-
-app.get('/starlink/orders.html', (req, res) => {
-    res.sendFile(path.join(__dirname, '../orders.html'));
-});
-
-app.get('/starlink/settings.html', (req, res) => {
-    res.sendFile(path.join(__dirname, '../settings.html'));
-});
-
-app.get('/starlink/register.html', (req, res) => {
-    res.sendFile(path.join(__dirname, '../register.html'));
-});
-
-app.get('/starlink/login.html', (req, res) => {
-    res.sendFile(path.join(__dirname, '../user-login.html'));
-});
-
-// Serve index.html for root path
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../index.html'));
-});
-
 // Serve static assets
+app.use('/starlink', express.static(path.join(__dirname, '../')));
 app.use(express.static(path.join(__dirname, '../')));
 
 // API Routes
@@ -90,15 +92,15 @@ app.get('/api/packages', (req, res) => {
         { id: 'daily-7gb', name: '7 GB / 7 Hours', data: '7 GB', duration: '7 Hours', price: 0.79, originalPrice: 0.99, type: 'daily', limit: 'limited', features: ['7 GB data', '7 hour validity', 'Instant activation'] },
         { id: 'daily-15gb', name: '15 GB / 15 Hours', data: '15 GB', duration: '15 Hours', price: 1.49, originalPrice: 1.99, type: 'daily', limit: 'limited', features: ['15 GB data', '15 hour validity', 'Instant activation'] },
         { id: 'daily-30gb', name: '30 GB / 21 Hours', data: '30 GB', duration: '21 Hours', price: 2.99, originalPrice: 3.49, type: 'daily', limit: 'limited', features: ['30 GB data', '21 hour validity', 'Instant activation'] },
-        { id: 'daily-50gb', name: '50 GB / 24 Hours', data: '50 GB', duration: '24 Hours', price: 5.49, originalPrice: 6.99, type: 'daily', limit: 'limited', features: ['50 GB data', '24 hour validity', 'Instant activation'] },
+        { id: 'daily-50gb', name: '50 GB / 24 Hours', data: '50 GB', duration: '24 Hours', price: 3.49, originalPrice: 6.99, type: 'daily', limit: 'limited', features: ['50 GB data', '24 hour validity', 'Instant activation'] },
         // Daily Unlimited
-        { id: 'daily-unlimited', name: 'Unlimited / 30 Hours', data: 'Unlimited', duration: '30 Hours', price: 7.49, originalPrice: 9.99, type: 'daily', limit: 'unlimited', features: ['Unlimited data', '30 hour validity', 'Instant activation'] },
+        { id: 'daily-unlimited', name: 'Unlimited / 30 Hours', data: 'Unlimited', duration: '30 Hours', price: 4.59, originalPrice: 9.99, type: 'daily', limit: 'unlimited', features: ['Unlimited data', '30 hour validity', 'Instant activation'] },
         // Monthly Limited
         { id: 'monthly-10gb', name: '10 GB / Month', data: '10 GB', duration: '1 Month', price: 4.99, originalPrice: 6.99, type: 'monthly', limit: 'limited', features: ['10 GB data', '30 days validity', 'HD streaming'] },
         { id: 'monthly-50gb', name: '50 GB / Month', data: '50 GB', duration: '1 Month', price: 5.99, originalPrice: 12.99, type: 'monthly', limit: 'limited', features: ['50 GB data', '30 days validity', 'HD streaming', 'Priority support'] },
         { id: 'monthly-100gb', name: '100 GB / Month', data: '100 GB', duration: '1 Month', price: 6.79, originalPrice: 22.99, type: 'monthly', limit: 'limited', features: ['100 GB data', '30 days validity', '4K streaming', 'Priority support'] },
         // Monthly Unlimited
-        { id: 'monthly-unlimited', name: 'Unlimited / Month', data: 'Unlimited', duration: '1 Month', price: 10.00, originalPrice: 39.99, type: 'monthly', limit: 'unlimited', features: ['Unlimited data', '30 days validity', '4K streaming', 'Priority support', 'Static IP'] }
+        { id: 'monthly-unlimited', name: 'Unlimited / Month', data: 'Unlimited', duration: '1 Month', price: 7.49, originalPrice: 39.99, type: 'monthly', limit: 'unlimited', features: ['Unlimited data', '30 days validity', '4K streaming', 'Priority support', 'Static IP'] }
     ];
     res.json(packages);
 });

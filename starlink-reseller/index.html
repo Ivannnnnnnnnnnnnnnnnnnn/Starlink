@@ -11,7 +11,6 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-mobile-web-app-title" content="Starlink">
     <link rel="apple-touch-icon" sizes="180x180" href="/starlink/icons/icon-192.png">
-    <link rel="apple-touch-icon" href="/starlink/icons/icon-192.png">
     <script src="/starlink/pwa-install.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
@@ -36,10 +35,10 @@
                     <i class="uil uil-globe"></i> <span id="langLabel">EN</span>
                 </button>
                 <nav class="flex gap-2 sm:gap-4">
-                    <a href="/starlink/" class="text-white flex items-center gap-2">
+                    <a href="/starlink/status.html" class="text-white flex items-center gap-2">
                         <i class="uil uil-wifi"></i> <span id="nav-status" class="hidden sm:inline">Statut</span>
                     </a>
-                    <a href="/starlink/plans.html" class="text-gray-300 hover:text-white flex items-center gap-2">
+                    <a href="/starlink/" class="text-gray-300 hover:text-white flex items-center gap-2">
                         <i class="uil uil-shopping-bag"></i> <span id="nav-plans" class="hidden sm:inline">Forfaits</span>
                     </a>
                     <a href="/starlink/orders.html" class="text-gray-300 hover:text-white hidden sm:flex items-center gap-2">
@@ -56,7 +55,7 @@
         <div class="pb-28 space-y-6">
             
             <div class="relative overflow-hidden bg-white rounded-3xl p-1 card-shadow">
-                <button onclick="window.location.href='/starlink/plans.html'" 
+                <button onclick="window.location.href='/starlink/'" 
                         class="w-full bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 hover:from-blue-700 hover:to-blue-900 text-white font-black py-5 rounded-2xl transition-all transform active:scale-95 flex items-center justify-center gap-3 shadow-xl animate-pulse">
                     <i class="uil uil-shopping-bag text-2xl"></i>
                     <span id="choose-package-btn" class="text-lg uppercase tracking-wider">Choisissez Votre Forfait</span>
@@ -143,11 +142,11 @@
         <!-- Bottom Navigation -->
         <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-2xl z-40">
             <div class="max-w-7xl mx-auto px-2 sm:px-4 py-2 sm:py-3 flex justify-around items-center">
-                <a href="/starlink/" class="flex flex-col items-center gap-1 text-blue-600 transition-all">
+                <a href="/starlink/status.html" class="flex flex-col items-center gap-1 text-blue-600 transition-all">
                     <i class="uil uil-wifi text-2xl"></i>
                     <span id="bottom-status" class="text-xs font-semibold">Statut</span>
                 </a>
-                <a href="/starlink/plans.html" class="flex flex-col items-center gap-1 text-gray-600 hover:text-blue-600 transition-all">
+                <a href="/starlink/" class="flex flex-col items-center gap-1 text-gray-600 hover:text-blue-600 transition-all">
                     <i class="uil uil-shopping-bag text-2xl"></i>
                     <span id="bottom-plans" class="text-xs font-semibold">Forfaits</span>
                 </a>
