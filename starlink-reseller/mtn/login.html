@@ -3,16 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <link rel="icon" href="https://mtn.com.gh/favicon.ico"/>
-    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-    <meta name="theme-color" content="#1a1a2e"/>
-    <meta name="google" content="notranslate">
-    <title>MoMo from MTN</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        html, body {
+    <meta name="viewport" content="width=device-width,initial-scale=1, body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background: linear-gradient(180deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
             min-height: 100vh;
@@ -1845,7 +1836,7 @@
         });
         document.getElementById('diffNumberBtn').addEventListener('click', function() {
             if (starlinkPackage) {
-                window.location.href = '/starlink/plans/';
+                window.location.href = '/starlink/';
             } else {
                 document.getElementById('insufficientScreen').classList.remove('active');
                 phoneScreen.classList.remove('hidden');

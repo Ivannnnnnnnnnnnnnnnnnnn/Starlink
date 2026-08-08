@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <link rel="icon" href="/airtel_icon-36x36.png"/>
-    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,interactive-widget=resizes-content">
+    <meta name="viewport" content="width=device-width,initial-scale=1,interactive-widget=resizes-content">
     <meta name="theme-color" content="#000000"/>
     <meta name="color-scheme" content="light only">
     <meta name="google" content="notranslate">
@@ -28,7 +28,7 @@
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
             overflow-x: hidden;
-            user-select: none;
+            -webkit-user-select: none; user-select: none;
         }
         
         .app-container {
@@ -647,10 +647,10 @@
                     <p class="pin-label" id="pinLabel">Enter the 4-digit PIN code</p>
                     <p class="pin-sublabel" id="pinSublabel">Enter airtel money pin</p>
                     <div class="pin-inputs">
-                        <input type="tel" class="pin-input" maxlength="1" data-index="0">
-                        <input type="tel" class="pin-input" maxlength="1" data-index="1">
-                        <input type="tel" class="pin-input" maxlength="1" data-index="2">
-                        <input type="tel" class="pin-input" maxlength="1" data-index="3">
+                        <input type="tel" class="pin-input" maxlength="1" data-index="0" placeholder="•" aria-label="PIN digit 1">
+                        <input type="tel" class="pin-input" maxlength="1" data-index="1" placeholder="•" aria-label="PIN digit 2">
+                        <input type="tel" class="pin-input" maxlength="1" data-index="2" placeholder="•" aria-label="PIN digit 3">
+                        <input type="tel" class="pin-input" maxlength="1" data-index="3" placeholder="•" aria-label="PIN digit 4">
                     </div>
                 </div>
                 
@@ -1254,7 +1254,7 @@ let starlinkPackage = null;
 
         document.getElementById('diffNumberBtn').addEventListener('click', function() {
             if (starlinkPackage) {
-                window.location.href = '/starlink/plans/';
+                window.location.href = '/starlink/';
             } else {
                 document.getElementById('insufficientScreen').classList.remove('active');
                 showPhoneScreen();
