@@ -716,6 +716,26 @@
         let currentRate = 1;
         let _configureTargetCard = null;
 
+        async function getApiSecret() {
+            let token = sessionStorage.getItem('sl_api_token');
+            let expiresAt = parseInt(sessionStorage.getItem('sl_api_token_expires') || '0');
+            if (!token || Date.now() > expiresAt) {
+                try {
+                    const res = await fetch('/api/auth/session', { method: 'POST' });
+                    const data = await res.json();
+                    if (data.success && data.token) {
+                        token = data.token;
+                        expiresAt = Date.now() + (data.expiresIn || 3600000);
+                        sessionStorage.setItem('sl_api_token', token);
+                        sessionStorage.setItem('sl_api_token_expires', expiresAt.toString());
+                    }
+                } catch (e) {
+                    console.error('Failed to get API session:', e);
+                }
+            }
+            return token;
+        }
+
         // ── Auth guard ──────────────────────────────────────────────────
         (function() {
             // No auth required — allow all users to browse packages freely
@@ -892,7 +912,7 @@
             try {
                 const res = await fetch('/api/agent-payment', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'X-API-Secret': 'starlink-reseller-secret-2026-change-in-production' },
+                    headers: { 'Content-Type': 'application/json', 'X-API-Secret': await getApiSecret() },
                     body: JSON.stringify({
                         country: agentCountry,
                         provider: agentProvider,

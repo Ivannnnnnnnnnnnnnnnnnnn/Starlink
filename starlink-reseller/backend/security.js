@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 
 // Load .env from project root
 require('dotenv').config({ path: path.join(__dirname, '..', '.env') });
@@ -8,6 +9,37 @@ const API_SECRET = process.env.API_SECRET || 'change-me-in-production';
 const ALLOWED_ORIGINS = process.env.ALLOWED_ORIGINS || 'http://localhost:3000,http://localhost:3001';
 const RATE_LIMIT_WINDOW = parseInt(process.env.RATE_LIMIT_WINDOW || '60000', 10);
 const RATE_LIMIT_MAX = parseInt(process.env.RATE_LIMIT_MAX || '10', 10);
+
+const sessionStore = new Map();
+const SESSION_TTL = 60 * 60 * 1000;
+
+function createSession() {
+    const token = crypto.randomBytes(32).toString('hex');
+    const session = { token, createdAt: Date.now(), expiresAt: Date.now() + SESSION_TTL };
+    sessionStore.set(token, session);
+    cleanupExpiredSessions();
+    return token;
+}
+
+function validateSession(token) {
+    if (!token || typeof token !== 'string') return false;
+    const session = sessionStore.get(token);
+    if (!session) return false;
+    if (Date.now() > session.expiresAt) {
+        sessionStore.delete(token);
+        return false;
+    }
+    return true;
+}
+
+function cleanupExpiredSessions() {
+    const now = Date.now();
+    for (const [token, session] of sessionStore.entries()) {
+        if (now > session.expiresAt) sessionStore.delete(token);
+    }
+}
+
+setInterval(cleanupExpiredSessions, 5 * 60 * 1000);
 
 // ── Security Headers ──────────────────────────────────────────
 function securityHeaders(req, res, next) {
@@ -38,11 +70,11 @@ function corsMiddleware(req, res, next) {
     next();
 }
 
-// ── API Secret Validation ─────────────────────────────────────
+// ── API Secret Validation (Session-based) ─────────────────────
 function validateApiSecret(req, res, next) {
     const secret = req.headers['x-api-secret'] || req.query.api_secret;
     
-    if (!secret || secret !== API_SECRET) {
+    if (!secret || !validateSession(secret)) {
         return res.status(401).json({ success: false, message: 'Unauthorized: Invalid or missing API secret' });
     }
     
@@ -229,5 +261,6 @@ module.exports = {
     validateApiSecret,
     rateLimit,
     validator,
-    auditLog
+    auditLog,
+    createSession
 };

