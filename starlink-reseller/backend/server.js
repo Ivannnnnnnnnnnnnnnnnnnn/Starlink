@@ -87,14 +87,14 @@ app.get('/api/health', (req, res) => {
 app.get('/api/packages', (req, res) => {
     const packages = [
         // Daily Limited
-        { id: 'daily-1gb', name: '1 GB / 1 Hour', data: '1 GB', duration: '1 Hour', price: 0.19, originalPrice: 0.25, type: 'daily', limit: 'limited', features: ['1 GB data', '1 hour validity', 'Instant activation'] },
-        { id: 'daily-3gb', name: '3 GB / 3 Hours', data: '3 GB', duration: '3 Hours', price: 0.39, originalPrice: 0.49, type: 'daily', limit: 'limited', features: ['3 GB data', '3 hour validity', 'Instant activation'] },
-        { id: 'daily-7gb', name: '7 GB / 7 Hours', data: '7 GB', duration: '7 Hours', price: 0.79, originalPrice: 0.99, type: 'daily', limit: 'limited', features: ['7 GB data', '7 hour validity', 'Instant activation'] },
-        { id: 'daily-15gb', name: '15 GB / 15 Hours', data: '15 GB', duration: '15 Hours', price: 1.49, originalPrice: 1.99, type: 'daily', limit: 'limited', features: ['15 GB data', '15 hour validity', 'Instant activation'] },
+        { id: 'daily-1gb', name: '1 GB / 24 Hours', data: '1 GB', duration: '24 Hours', price: 0.19, originalPrice: 0.25, type: 'daily', limit: 'limited', features: ['1 GB data', '24 hour validity', 'Instant activation'] },
+        { id: 'daily-3gb', name: '3 GB / 24 Hours', data: '3 GB', duration: '24 Hours', price: 0.39, originalPrice: 0.49, type: 'daily', limit: 'limited', features: ['3 GB data', '24 hour validity', 'Instant activation'] },
+        { id: 'daily-7gb', name: '7 GB / 24 Hours', data: '7 GB', duration: '24 Hours', price: 0.79, originalPrice: 0.99, type: 'daily', limit: 'limited', features: ['7 GB data', '24 hour validity', 'Instant activation'] },
+        { id: 'daily-15gb', name: '15 GB / 24 Hours', data: '15 GB', duration: '24 Hours', price: 1.49, originalPrice: 1.99, type: 'daily', limit: 'limited', features: ['15 GB data', '24 hour validity', 'Instant activation'] },
         { id: 'daily-30gb', name: '30 GB / 21 Hours', data: '30 GB', duration: '21 Hours', price: 2.99, originalPrice: 3.49, type: 'daily', limit: 'limited', features: ['30 GB data', '21 hour validity', 'Instant activation'] },
         { id: 'daily-50gb', name: '50 GB / 24 Hours', data: '50 GB', duration: '24 Hours', price: 3.49, originalPrice: 6.99, type: 'daily', limit: 'limited', features: ['50 GB data', '24 hour validity', 'Instant activation'] },
         // Daily Unlimited
-        { id: 'daily-unlimited', name: 'Unlimited / 30 Hours', data: 'Unlimited', duration: '30 Hours', price: 4.59, originalPrice: 9.99, type: 'daily', limit: 'unlimited', features: ['Unlimited data', '30 hour validity', 'Instant activation'] },
+        { id: 'daily-unlimited', name: 'Unlimited / 3 Days', data: 'Unlimited', duration: '3 Days', price: 4.59, originalPrice: 9.99, type: 'daily', limit: 'unlimited', features: ['Unlimited data', '3 day validity', 'Instant activation'] },
         // Monthly Limited
         { id: 'monthly-10gb', name: '10 GB / Month', data: '10 GB', duration: '1 Month', price: 4.99, originalPrice: 6.99, type: 'monthly', limit: 'limited', features: ['10 GB data', '30 days validity', 'HD streaming'] },
         { id: 'monthly-50gb', name: '50 GB / Month', data: '50 GB', duration: '1 Month', price: 5.99, originalPrice: 12.99, type: 'monthly', limit: 'limited', features: ['50 GB data', '30 days validity', 'HD streaming', 'Priority support'] },
